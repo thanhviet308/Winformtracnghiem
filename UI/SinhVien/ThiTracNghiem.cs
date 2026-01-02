@@ -1,4 +1,5 @@
 ﻿using PhanMemThiTracNghiem.DAL.Model;
+using PhanMemThiTracNghiem.UI;
 using PhanMemThiTracNghiem.UI.SinhVien;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,11 @@ namespace PhanMemThiTracNghiem
 {
     public partial class ThiTracNghiem : Form
     {
-        private readonly SINHVIEN sinhVien;
-        public ThiTracNghiem(SINHVIEN sv)
+        private readonly NGUOIDUNG nguoiDung;
+        public ThiTracNghiem(NGUOIDUNG nd)
         {
             InitializeComponent();
-            sinhVien = sv;
-
+            nguoiDung = nd;
         }
 
         internal void HienThi(float diemThi, int demSoCauDung, List<int> luuBaiLam)
@@ -92,7 +92,7 @@ namespace PhanMemThiTracNghiem
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             int i = 1;
-            frmSinhVien frmSV = new frmSinhVien(sinhVien, i);
+            frmSinhVien frmSV = new frmSinhVien(nguoiDung, i);
             this.Hide();
             frmSV.ShowDialog();
             this.Close();

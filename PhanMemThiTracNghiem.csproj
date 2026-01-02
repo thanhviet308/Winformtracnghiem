@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -107,6 +108,9 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Resources.Extensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Resources.Extensions.8.0.0\lib\net462\System.Resources.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -138,7 +142,9 @@
     <Compile Include="BAL\DeThiBAL.cs" />
     <Compile Include="BAL\GiangVienBAL.cs" />
     <Compile Include="BAL\MonThiBAL.cs" />
+    <Compile Include="BAL\NguoiDungBAL.cs" />
     <Compile Include="BAL\QuanTriBAL.cs" />
+    <Compile Include="BAL\RoleBAL.cs" />
     <Compile Include="BAL\SinhVienBAL.cs" />
     <Compile Include="DAL\BangDiemDAL.cs" />
     <Compile Include="DAL\CauHoiDAL.cs" />
@@ -152,23 +158,19 @@
     <Compile Include="DAL\KyThiDAL.cs" />
     <Compile Include="DAL\DeThiDAL.cs" />
     <Compile Include="DAL\DTO\CauHoiDTO.cs" />
-    <Compile Include="DAL\DTO\GiangVienDTO.cs" />
-    <Compile Include="DAL\DTO\SinhVienDTO.cs" />
-    <Compile Include="DAL\GiangVienDAL.cs" />
     <Compile Include="DAL\Model\BANGDIEM.cs" />
     <Compile Include="DAL\Model\CAUHOI.cs" />
     <Compile Include="DAL\Model\CHITIETDETHI.cs" />
     <Compile Include="DAL\Model\CHITIETKYTHI.cs" />
     <Compile Include="DAL\Model\DETHI.cs" />
     <Compile Include="DAL\Model\DuLieuDAL.cs" />
-    <Compile Include="DAL\Model\GIANGVIEN.cs" />
     <Compile Include="DAL\Model\KITHI.cs" />
     <Compile Include="DAL\Model\MONTHI.cs" />
-    <Compile Include="DAL\Model\QUANTRI.cs" />
-    <Compile Include="DAL\Model\SINHVIEN.cs" />
+    <Compile Include="DAL\Model\NGUOIDUNG.cs" />
+    <Compile Include="DAL\Model\ROLE.cs" />
     <Compile Include="DAL\MonThiDAL.cs" />
-    <Compile Include="DAL\QuanTriDAL.cs" />
-    <Compile Include="DAL\SinhVienDAL.cs" />
+    <Compile Include="DAL\NguoiDungDAL.cs" />
+    <Compile Include="DAL\RoleDAL.cs" />
     <Compile Include="Migrations\202401020410540_initdatabase.cs" />
     <Compile Include="Migrations\202401020410540_initdatabase.designer.cs">
       <DependentUpon>202401020410540_initdatabase.cs</DependentUpon>
@@ -262,6 +264,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ThemeHelper.cs" />
     <Compile Include="UI\SinhVien\ThiTracNghiem.cs">
       <SubType>Form</SubType>
     </Compile>

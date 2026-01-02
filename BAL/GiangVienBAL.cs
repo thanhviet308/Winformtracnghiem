@@ -1,55 +1,73 @@
-﻿using PhanMemThiTracNghiem.DAL;
-using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhanMemThiTracNghiem.BAL
 {
-    internal class GiangVienBAL
+    /// <summary>
+    /// GiangVienBAL - Wrapper class để tương thích ngược với code cũ
+    /// Sử dụng NGUOIDUNG với MAROLE = 2 (GiangVien)
+    /// </summary>
+    public class GiangVienBAL
     {
-        private readonly GiangVienDAL giangVienDAL;
+        private readonly NguoiDungBAL nguoiDungBAL;
+        private const int ROLE_GIANGVIEN = 2;
+
         public GiangVienBAL()
         {
-            this.giangVienDAL = new GiangVienDAL();     
+            nguoiDungBAL = new NguoiDungBAL();
         }
 
-        public List<GIANGVIEN> GetGIANGVIENs()
+        // Lấy tất cả giảng viên
+        public List<NGUOIDUNG> GetGIANGVIENs()
         {
-            return giangVienDAL.GetGIANGVIENs();
+            return nguoiDungBAL.GetByRole(ROLE_GIANGVIEN);
         }
 
-        public static void InsertUpdate(GiangVienDTO a)
+        // Lấy giảng viên theo mã
+        public static NGUOIDUNG GETGiangVien(string magv)
         {
-            GiangVienDAL.InsertUpdate(a);
+            var nguoiDungBAL = new NguoiDungBAL();
+            return nguoiDungBAL.GetByMaNguoiDung(magv);
         }
 
-        public static void Delete(string magv)
+        // Cập nhật giảng viên
+        public void CapNhapGiangVien(string magv, string tengv, DateTime ngaysinh, string matkhau)
         {
-            GIANGVIEN.Delete(magv); 
+            var gv = nguoiDungBAL.GetByMaNguoiDung(magv);
+            if (gv != null)
+            {
+                gv.HOTEN = tengv;
+                gv.NGAYSINH = ngaysinh;
+                gv.MATKHAU = matkhau;
+                nguoiDungBAL.Update(gv);
+            }
         }
 
-        public List<GIANGVIEN> FindName(string magv)
-        {
-            return giangVienDAL.FindName(magv); 
-        }
-
-        public void CapNhapGiangVien(string magv, string Hoten, DateTime date, string matkhau)
-        {
-            giangVienDAL.CapNhapGiangVien(magv, Hoten, date, matkhau);
-        }
-
-        public static GiangVienDTO GETGiangVien(string magv)
-        {
-            return GiangVienDAL.GETGiangVien(magv);
-        }
-
+        // Đổi mật khẩu
         public void DoiMatKhau(string magv, string matkhau)
         {
-            giangVienDAL.DoiMatKhau(magv, matkhau); 
+            var gv = nguoiDungBAL.GetByMaNguoiDung(magv);
+            if (gv != null)
+            {
+                gv.MATKHAU = matkhau;
+                nguoiDungBAL.Update(gv);
+            }
+        }
+
+        // Xóa giảng viên
+        public static void Delete(string magv)
+        {
+            var nguoiDungBAL = new NguoiDungBAL();
+            nguoiDungBAL.Delete(magv);
+        }
+
+        // Tìm theo tên
+        public List<NGUOIDUNG> FindName(string tengv)
+        {
+            return nguoiDungBAL.GetByRole(ROLE_GIANGVIEN)
+                .Where(x => x.HOTEN.Contains(tengv)).ToList();
         }
     }
 }

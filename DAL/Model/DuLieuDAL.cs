@@ -17,11 +17,10 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public virtual DbSet<CHITIETDETHI> CHITIETDETHI { get; set; }
         public virtual DbSet<CHITIETKYTHI> CHITIETKYTHI { get; set; }
         public virtual DbSet<DETHI> DETHI { get; set; }
-        public virtual DbSet<GIANGVIEN> GIANGVIEN { get; set; }
         public virtual DbSet<KITHI> KITHI { get; set; }
         public virtual DbSet<MONTHI> MONTHI { get; set; }
-        public virtual DbSet<QUANTRI> QUANTRI { get; set; }
-        public virtual DbSet<SINHVIEN> SINHVIEN { get; set; }
+        public virtual DbSet<ROLE> ROLE { get; set; }
+        public virtual DbSet<NGUOIDUNG> NGUOIDUNG { get; set; }
       
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -88,19 +87,6 @@ namespace PhanMemThiTracNghiem.DAL.Model
                 .WithRequired(e => e.DETHI)
                 .WillCascadeOnDelete(false);*/
 
-            modelBuilder.Entity<GIANGVIEN>()
-                .Property(e => e.MAGV)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<GIANGVIEN>()
-                .Property(e => e.MATKHAU)
-                .IsUnicode(false);
-
-       /*     modelBuilder.Entity<GIANGVIEN>()
-                .HasMany(e => e.CAUHOI)
-                .WithRequired(e => e.GIANGVIEN)
-                .WillCascadeOnDelete(false);*/
-
             modelBuilder.Entity<KITHI>()
                 .Property(e => e.MAKITHI)
                 .IsUnicode(false);
@@ -123,26 +109,24 @@ namespace PhanMemThiTracNghiem.DAL.Model
                 .WithRequired(e => e.MONTHI)
                 .WillCascadeOnDelete(false);*/
 
-            modelBuilder.Entity<QUANTRI>()
-                .Property(e => e.ADMIN)
+            // ROLE configuration
+            modelBuilder.Entity<ROLE>()
+                .HasMany(e => e.NGUOIDUNG)
+                .WithOptional(e => e.ROLE)
+                .HasForeignKey(e => e.MAROLE);
+
+            // NGUOIDUNG configuration
+            modelBuilder.Entity<NGUOIDUNG>()
+                .Property(e => e.TENTAIKHOAN)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<SINHVIEN>()
-                .Property(e => e.MASV)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<SINHVIEN>()
-                .Property(e => e.LOP)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<SINHVIEN>()
+            modelBuilder.Entity<NGUOIDUNG>()
                 .Property(e => e.MATKHAU)
                 .IsUnicode(false);
 
-         /*   modelBuilder.Entity<SINHVIEN>()
-                .HasMany(e => e.CHITIETKYTHI)
-                .WithRequired(e => e.SINHVIEN)
-                .WillCascadeOnDelete(false);*/
+            modelBuilder.Entity<NGUOIDUNG>()
+                .Property(e => e.EMAIL)
+                .IsUnicode(false);
         }
     }
 }

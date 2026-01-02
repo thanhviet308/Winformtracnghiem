@@ -35,11 +35,11 @@ namespace PhanMemThiTracNghiem.DAL
             cHITIETKYTHI.MASV = chiTietKiThiDTO.MaSinhVien;
             cHITIETKYTHI.InsertUpdate();
         }
-        public void LuuChiTietKyThi(SINHVIEN sv, String MAKT, MONTHI monThi, float diem, DateTime thoiGianBD, DateTime thoiGianKT, int thoiGianThi)
+        public void LuuChiTietKyThi(NGUOIDUNG nd, String MAKT, MONTHI monThi, float diem, DateTime thoiGianBD, DateTime thoiGianKT, int thoiGianThi)
         {
             foreach (var item in GetThongTinChiTietKyThi())
             {
-                if (item.MAKITHI == MAKT && item.MASV == sv.MASV && item.MAMT == item.MAMT)
+                if (item.MAKITHI == MAKT && item.MASV == nd.TENTAIKHOAN && item.MAMT == item.MAMT)
                 {
                     item.DIEM = diem;
                     item.THOIGIANBD = thoiGianBD;

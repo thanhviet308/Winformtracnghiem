@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PhanMemThiTracNghiem.DAL;
 using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
+using PhanMemThiTracNghiem.DAL.Model;
 
 namespace PhanMemThiTracNghiem.DAL
 {
@@ -25,9 +26,9 @@ namespace PhanMemThiTracNghiem.DAL
         {
             ChiTietKyThiDAL.InsertUpdate(chiTietKiThiDTO);  
         }
-        public void LuuChiTietKyThi(SINHVIEN sv, String MAKT, MONTHI monThi, float diem, DateTime thoiGianBD, DateTime thoiGianKT, int thoiGianThi)
+        public void LuuChiTietKyThi(NGUOIDUNG nd, String MAKT, MONTHI monThi, float diem, DateTime thoiGianBD, DateTime thoiGianKT, int thoiGianThi)
         {
-            chiTietKyThiDAL.LuuChiTietKyThi(sv, MAKT, monThi, diem, thoiGianBD, thoiGianKT, thoiGianThi);
+            chiTietKyThiDAL.LuuChiTietKyThi(nd, MAKT, monThi, diem, thoiGianBD, thoiGianKT, thoiGianThi);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using PhanMemThiTracNghiem.BAL;
-using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -15,10 +14,12 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachSinhVien
 {
     public partial class ThemMotSinhVien : Form
     {
+        private readonly NguoiDungBAL nguoiDungBAL;
         frmAdmin frmAdmin = new frmAdmin();
         public ThemMotSinhVien(frmAdmin frm)
         {
             InitializeComponent();
+            nguoiDungBAL = new NguoiDungBAL();
             this.frmAdmin = frm;
         }
 
@@ -26,15 +27,14 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachSinhVien
         {
             try
             {
-                SinhVienDTO sinhVienDTO = new SinhVienDTO();
+                NGUOIDUNG sinhVien = new NGUOIDUNG();
 
-                sinhVienDTO.STT++;
-                sinhVienDTO.MaSV = txtMaSinhVien.Text;
-                sinhVienDTO.Lop = txtLop.Text;
-                sinhVienDTO.TenSV = txtTenSinhVien.Text;
-                sinhVienDTO.NgaySinh = dtNgaySinhSinhVien.Value;
-                sinhVienDTO.MatKhau = txtMatKhau.Text;
-                SinhVienBAL.InsertUpdate(sinhVienDTO);
+                sinhVien.TENTAIKHOAN = txtMaSinhVien.Text;
+                sinhVien.HOTEN = txtTenSinhVien.Text;
+                sinhVien.NGAYSINH = dtNgaySinhSinhVien.Value;
+                sinhVien.MATKHAU = txtMatKhau.Text;
+                sinhVien.MAROLE = 3; // Role SinhVien
+                nguoiDungBAL.Add(sinhVien);
                 frmAdmin.frmAdmin_Load(sender, e);
                 MessageBox.Show("Thêm thành công!");
                 this.Close();

@@ -23,13 +23,13 @@ namespace PhanMemThiTracNghiem.UI.Admin
         private readonly GiangVienBAL giangVienBAL;
         private readonly SinhVienBAL sinhVienBAL;
         private readonly QuanTriBAL quanTriBAL;
-        private readonly QUANTRI quanTri;
+        private readonly NGUOIDUNG nguoiDung;
         private readonly KyThiBAL kyThiBAL;
         private readonly DuLieuDAL duLieuDAL;
         private readonly MonThiBAL monThiBAL;
      
         
-        public frmAdmin(QUANTRI qt)
+        public frmAdmin(NGUOIDUNG nd)
         {
             InitializeComponent();
             giangVienBAL = new GiangVienBAL();
@@ -38,7 +38,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             kyThiBAL = new KyThiBAL();
             duLieuDAL = new DuLieuDAL();
             monThiBAL = new MonThiBAL();
-            quanTri = qt;
+            nguoiDung = nd;
         }
 
         public frmAdmin()
@@ -55,7 +55,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
 
         public void frmAdmin_Load(object sender, EventArgs e)
         {
-            labelAdmin.Text = quanTri.ADMIN.ToString();
+            labelAdmin.Text = nguoiDung.HOTEN.ToString();
             dgvDanhSachGiangVien.DataSource = giangVienBAL.GetGIANGVIENs();
             dgvDanhSachSinhVien.DataSource = sinhVienBAL.GetSINHVIENs();
            
@@ -261,7 +261,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
                 kithi.ID++;
                 kithi.MaKiThi = txtMaKiThi.Text;
                 kithi.TenKiThi = txtTenKiThi.Text;
-                kithi.Admin = quanTri.ADMIN.ToString();
+                kithi.Admin = nguoiDung.TENTAIKHOAN.ToString();
                 kithi.ThoiGianBD = dateBD.Value;
                 kithi.ThoiGianKT = dateKT.Value;
                 frmThemChiTiet frmThemChiTiet = new frmThemChiTiet(txtMaKiThi.Text, txtTenKiThi.Text);

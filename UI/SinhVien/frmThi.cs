@@ -1,6 +1,7 @@
 ﻿using PhanMemThiTracNghiem.DAL;
 using PhanMemThiTracNghiem.BAL;
 using PhanMemThiTracNghiem.DAL.Model;
+using PhanMemThiTracNghiem.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +31,7 @@ namespace PhanMemThiTracNghiem
         private readonly ChiTietKyThiBAL chiTietKyThiBAL;
         private readonly GiangVienBAL giangVienBAL;
         private readonly SinhVienBAL sinhVienBAL;
-        private readonly SINHVIEN sinhVien;
+        private readonly NGUOIDUNG nguoiDung;
         private readonly MONTHI monThi;
         private readonly KyThiBAL kiThiBAL;
         private readonly DateTime thoiGianBatDau;
@@ -44,7 +45,7 @@ namespace PhanMemThiTracNghiem
 
 
 
-        public frmThi(SINHVIEN sv, MONTHI mt, DateTime ThoiGianBatDauVaoThi, DateTime thoiGianKetThucThi)
+        public frmThi(NGUOIDUNG nd, MONTHI mt, DateTime ThoiGianBatDauVaoThi, DateTime thoiGianKetThucThi)
         {
             InitializeComponent();
 
@@ -61,11 +62,11 @@ namespace PhanMemThiTracNghiem
             kiThiBAL = new KyThiBAL();
             thoiGianBatDau = ThoiGianBatDauVaoThi;
             thoiGianKetThuc = thoiGianKetThucThi;
-            sinhVien = sv;
+            nguoiDung = nd;
             monThi = mt;
 
             // Hiển thị thông tin sinh viên 
-            lblTenSinhVien.Text = sinhVien.TENSV.ToString() + "  ||  " + sinhVien.MASV.ToString();
+            lblTenSinhVien.Text = nguoiDung.HOTEN.ToString() + "  ||  " + nguoiDung.TENTAIKHOAN.ToString();
 
             // Hiển thị môn thi
             lblMonThi.Text = monThi.TENMT;
@@ -370,8 +371,8 @@ namespace PhanMemThiTracNghiem
                 {
                     foreach (var i in chiTietKyThiBAL.GetThongTinChiTietKyThi())
                     {
-                        chiTietKyThiBAL.LuuChiTietKyThi(sinhVien, item.MAKITHI, monThi, diemThi, thoiGianBatDau, thoiGianThi, (thoiGianThi.Hour * 60 + thoiGianThi.Minute) - (thoiGianBatDau.Hour * 60 + thoiGianBatDau.Minute));
-                     //   bangDiemBAL.LuuDiemThi(1, diemThi, sinhVien.MASV, item.MAKITHI, monThi.MAMT);
+                        chiTietKyThiBAL.LuuChiTietKyThi(nguoiDung, item.MAKITHI, monThi, diemThi, thoiGianBatDau, thoiGianThi, (thoiGianThi.Hour * 60 + thoiGianThi.Minute) - (thoiGianBatDau.Hour * 60 + thoiGianBatDau.Minute));
+                     //   bangDiemBAL.LuuDiemThi(1, diemThi, nguoiDung.TENTAIKHOAN, item.MAKITHI, monThi.MAMT);
                         break;
                     }
                 }
@@ -379,7 +380,7 @@ namespace PhanMemThiTracNghiem
 
             // Hiển thị  điểm
 
-            ThiTracNghiem thiTracNghiem = new ThiTracNghiem(sinhVien);
+            ThiTracNghiem thiTracNghiem = new ThiTracNghiem(nguoiDung);
             thiTracNghiem.HienThi(diemThi, demSoCauDung, luuBaiLam);
             this.Hide();
             thiTracNghiem.ShowDialog();

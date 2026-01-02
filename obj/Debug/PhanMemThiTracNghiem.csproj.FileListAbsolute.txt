@@ -516,3 +516,5 @@ D:\.net\MULTIPLE-CHOICE-EXAM-APP\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForm
 D:\.net\MULTIPLE-CHOICE-EXAM-APP\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
 D:\.net\MULTIPLE-CHOICE-EXAM-APP\bin\Debug\System.ValueTuple.dll
 D:\.net\MULTIPLE-CHOICE-EXAM-APP\bin\Debug\System.ValueTuple.xml
+D:\.net\MULTIPLE-CHOICE-EXAM-APP\bin\Debug\System.Resources.Extensions.dll
+D:\.net\MULTIPLE-CHOICE-EXAM-APP\bin\Debug\System.Resources.Extensions.xml

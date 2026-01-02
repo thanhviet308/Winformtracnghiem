@@ -19,13 +19,15 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
     public partial class NhapExcelGiangVien : Form
     {
         DuLieuDAL duLieuDAL = new DuLieuDAL();
-        List<GIANGVIEN> listGV = new List<GIANGVIEN>();
+        List<NGUOIDUNG> listGV = new List<NGUOIDUNG>();
         frmAdmin frmAdmin = new frmAdmin();
         private readonly GiangVienBAL giangVienBAL;
+        private readonly NguoiDungBAL nguoiDungBAL;
         public NhapExcelGiangVien(frmAdmin _frmAdmin)
         {
             InitializeComponent();
             giangVienBAL = new GiangVienBAL();
+            nguoiDungBAL = new NguoiDungBAL();
             frmAdmin = _frmAdmin;
         }
 
@@ -64,12 +66,12 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    GIANGVIEN giangvien = new GIANGVIEN();
-                    giangvien.STT = Convert.ToInt32(dt.Rows[i]["STT"].ToString());
-                    giangvien.MAGV = dt.Rows[i]["MAGV"].ToString();
-                    giangvien.TENGV = dt.Rows[i]["TENGV"].ToString();
+                    NGUOIDUNG giangvien = new NGUOIDUNG();
+                    giangvien.TENTAIKHOAN = dt.Rows[i]["MAGV"].ToString();
+                    giangvien.HOTEN = dt.Rows[i]["TENGV"].ToString();
                     giangvien.NGAYSINH = DateTime.Parse(dt.Rows[i]["NGAYSINH"].ToString());
                     giangvien.MATKHAU = dt.Rows[i]["MATKHAU"].ToString();
+                    giangvien.MAROLE = 2; // Role GiangVien
                     listGV.Add(giangvien);
                 }
             }
@@ -79,27 +81,26 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
         private void btnLuuDL_Click(object sender, EventArgs e)
         {
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-            List<GIANGVIEN> list = new List<GIANGVIEN>();   
+            List<NGUOIDUNG> list = new List<NGUOIDUNG>();   
          
             try
             {
                
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        GIANGVIEN giangvien = new GIANGVIEN()
+                        NGUOIDUNG giangvien = new NGUOIDUNG()
                         {
-                            STT = Convert.ToInt32(dt.Rows[i]["STT"].ToString()),
-                            MAGV = dt.Rows[i]["MAGV"].ToString(),
-                            TENGV = dt.Rows[i]["TENGV"].ToString(),
+                            TENTAIKHOAN = dt.Rows[i]["MAGV"].ToString(),
+                            HOTEN = dt.Rows[i]["TENGV"].ToString(),
                             NGAYSINH = DateTime.Parse(dt.Rows[i]["NGAYSINH"].ToString()),
-                            MATKHAU = dt.Rows[i]["MATKHAU"].ToString()
+                            MATKHAU = dt.Rows[i]["MATKHAU"].ToString(),
+                            MAROLE = 2 // Role GiangVien
                         };
                         list.Add(giangvien);
                     }
                     foreach (var giangvien in list)
                     {
-                        duLieuDAL.GIANGVIEN.Add(giangvien);
-                        duLieuDAL.SaveChanges();
+                        nguoiDungBAL.Add(giangvien);
                     frmAdmin.frmAdmin_Load(sender, e);
                     }
                 MessageBox.Show("Lưu thành công");

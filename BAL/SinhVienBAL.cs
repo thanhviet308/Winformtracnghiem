@@ -1,46 +1,62 @@
-﻿using PhanMemThiTracNghiem.DAL;
-using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhanMemThiTracNghiem.BAL
 {
-    internal class SinhVienBAL
+    /// <summary>
+    /// SinhVienBAL - Wrapper class để tương thích ngược với code cũ
+    /// Sử dụng NGUOIDUNG với MAROLE = 3 (SinhVien)
+    /// </summary>
+    public class SinhVienBAL
     {
-        private readonly SinhVienDAL sinhVienDAL;
+        private readonly NguoiDungBAL nguoiDungBAL;
+        private const int ROLE_SINHVIEN = 3;
+
         public SinhVienBAL()
         {
-            sinhVienDAL = new SinhVienDAL();
-        }
-        
-        public List<SINHVIEN> GetSINHVIENs()
-        {
-            return sinhVienDAL.GetSINHVIENs();  
+            nguoiDungBAL = new NguoiDungBAL();
         }
 
-        public static void InsertUpdate(SinhVienDTO a)
+        // Lấy tất cả sinh viên
+        public List<NGUOIDUNG> GetSINHVIENs()
         {
-            SinhVienDAL.InsertUpdate(a);
+            return nguoiDungBAL.GetByRole(ROLE_SINHVIEN);
         }
 
-        public List<SINHVIEN> FindName(string tensv)
+        // Lấy sinh viên theo mã
+        public static NGUOIDUNG GETSinhVien(string masv)
         {
-            return sinhVienDAL.FindName(tensv);
+            var nguoiDungBAL = new NguoiDungBAL();
+            return nguoiDungBAL.GetByMaNguoiDung(masv);
         }
 
+        // Cập nhật sinh viên
+        public void CapNhapSinhVien(string masv, string lop, string tensv, DateTime ngaysinh)
+        {
+            var sv = nguoiDungBAL.GetByMaNguoiDung(masv);
+            if (sv != null)
+            {
+                sv.HOTEN = tensv;
+                sv.NGAYSINH = ngaysinh;
+                // LOP không còn trong NGUOIDUNG, bỏ qua
+                nguoiDungBAL.Update(sv);
+            }
+        }
+
+        // Xóa sinh viên
         public static void Delete(string masv)
         {
-            SINHVIEN.Delete(masv);
+            var nguoiDungBAL = new NguoiDungBAL();
+            nguoiDungBAL.Delete(masv);
         }
 
-        public void CapNhapSinhVien(string masv, string lop, string tensv,DateTime date)
+        // Tìm theo tên
+        public List<NGUOIDUNG> FindName(string tensv)
         {
-            sinhVienDAL.CapNhapSinhVien(masv,lop,tensv,date);
+            return nguoiDungBAL.GetByRole(ROLE_SINHVIEN)
+                .Where(x => x.HOTEN.Contains(tensv)).ToList();
         }
-        
     }
 }

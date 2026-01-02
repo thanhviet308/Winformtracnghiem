@@ -20,8 +20,7 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
         {
             this.magv1 = magv;
             InitializeComponent();
-            giangVienBAL = new GiangVienBAL();  
-           
+            giangVienBAL = new GiangVienBAL();
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)

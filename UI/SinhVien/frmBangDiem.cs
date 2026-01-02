@@ -16,12 +16,11 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
 {
     public partial class frmBangDiem : Form
     {
-        private readonly SINHVIEN sinhVien;
-        public frmBangDiem(SINHVIEN sv)
+        private readonly NGUOIDUNG nguoiDung;
+        public frmBangDiem(NGUOIDUNG nd)
         {
             InitializeComponent();
-            sinhVien = sv;
-            
+            nguoiDung = nd;
         }
 
         private void frmBangDiem_Load(object sender, EventArgs e)
@@ -32,11 +31,11 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             listBangDiem = duLieuDAL.BANGDIEM.ToList();
 
             // Mã số sinh viên label
-            lblMaSoSinhVien.Text = sinhVien.TENSV +" | "+ sinhVien.MASV;
+            lblMaSoSinhVien.Text = nguoiDung.HOTEN +" | "+ nguoiDung.TENTAIKHOAN;
 
             foreach (BANGDIEM item in listBangDiem)
             {
-                if (sinhVien.MASV == item.MASV)
+                if (nguoiDung.TENTAIKHOAN == item.MASV)
                 {
                     BANGDIEMreport diem = new BANGDIEMreport();
                     diem.ID = item.ID;
@@ -65,7 +64,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            frmSinhVien frmSinhVien = new frmSinhVien(sinhVien);
+            frmSinhVien frmSinhVien = new frmSinhVien(nguoiDung);
             this.Hide();
             frmSinhVien.ShowDialog();
             this.Close();

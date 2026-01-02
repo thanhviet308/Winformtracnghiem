@@ -14,21 +14,18 @@ using PhanMemThiTracNghiem.UI.GiangVien;
 using PhanMemThiTracNghiem.BAL;
 using PhanMemThiTracNghiem.UI.SinhVien;
 using PhanMemThiTracNghiem.DAL;
+using PhanMemThiTracNghiem.DAL.Model;
 
 namespace PhanMemThiTracNghiem
 {
     public partial class frmLogin : Form
     {
-        private readonly GiangVienBAL giangVienBAL;
-        private readonly SinhVienBAL sinhVienBAL;
-        private readonly QuanTriBAL quanTriBAL;
+        private readonly NguoiDungBAL nguoiDungBAL;
+
         public frmLogin()
         {
             InitializeComponent();
-
-            sinhVienBAL = new SinhVienBAL();
-            giangVienBAL = new GiangVienBAL();
-            quanTriBAL = new QuanTriBAL();
+            nguoiDungBAL = new NguoiDungBAL();
         }
 
 
@@ -56,104 +53,57 @@ namespace PhanMemThiTracNghiem
                 return;
             }
 
-            // Nếu thông tin tài khoản nhập vào sai
+            // Đăng nhập với bảng NGUOIDUNG
+            NGUOIDUNG nguoiDung = nguoiDungBAL.DangNhap(txtTaiKhoan.Text.Trim(), txtMatKhau.Text);
 
-            // ADMIN
-            if (comboPhanQuyen.Text.Equals("Quản trị"))
+            if (nguoiDung == null)
             {
-                foreach (var item in quanTriBAL.GetQuanTri())
-                {
-                    if (txtTaiKhoan.Text == item.ADMIN)
-                    {
-                        if (txtMatKhau.Text == item.MATKHAU)
-                        {
-                            frmAdmin frmAdmin = new frmAdmin(item);
-                            this.Hide();
-                            frmAdmin.ShowDialog();
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Thông tin mật khẩu không chính xác");
-                            return;
-                        }
-                    }
-
-                }
-                MessageBox.Show("Thông tin tài khoản không chính xác");
-                return;
-            }
-            // GIẢNG VIÊN
-            else if (comboPhanQuyen.Text.Equals("Giảng viên"))
-            {
-                foreach (var item in giangVienBAL.GetGIANGVIENs())
-                {
-                    if (txtTaiKhoan.Text == item.MAGV)
-                    {
-                        if (txtMatKhau.Text == item.MATKHAU)
-                        {
-                            frmGiangVien frmGiangVien = new frmGiangVien(item.MAGV);
-                            this.Hide();
-                            frmGiangVien.ShowDialog();
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Thông tin mật khẩu không chính xác");
-                            return;
-                        }
-                    }
-                }
-                MessageBox.Show("Thông tin tài khoản không chính xác");
-                return;
-            }
-            // SINH VIÊN
-            else
-            {
-                foreach (var item in sinhVienBAL.GetSINHVIENs())
-                {
-                    if (txtTaiKhoan.Text == item.MASV)
-                    {
-                        if (txtMatKhau.Text == item.MATKHAU)
-                        {
-                            frmSinhVien frmSinhVien = new frmSinhVien(item);
-                            this.Hide();
-                            frmSinhVien.ShowDialog();
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Thông tin mật khẩu không chính xác");
-                            return;
-                        }
-                    }
-                }
-                MessageBox.Show("Thông tin tài khoản không chính xác");
+                MessageBox.Show("Tài khoản hoặc mật khẩu không chính xác!");
                 return;
             }
 
+            // Điều hướng theo Role
+            // MAROLE: 1 = Admin, 2 = GiangVien, 3 = SinhVien
+            switch (nguoiDung.MAROLE)
+            {
+                case 1: // Admin
+                    frmAdmin frmAdmin = new frmAdmin(nguoiDung);
+                    this.Hide();
+                    frmAdmin.ShowDialog();
+                    this.Close();
+                    break;
 
+                case 2: // Giảng viên
+                    frmGiangVien frmGiangVien = new frmGiangVien(nguoiDung);
+                    this.Hide();
+                    frmGiangVien.ShowDialog();
+                    this.Close();
+                    break;
 
+                case 3: // Sinh viên
+                    frmSinhVien frmSinhVien = new frmSinhVien(nguoiDung);
+                    this.Hide();
+                    frmSinhVien.ShowDialog();
+                    this.Close();
+                    break;
 
-
+                default:
+                    MessageBox.Show("Tài khoản chưa được phân quyền!");
+                    break;
+            }
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            comboPhanQuyen.Items.Add("Sinh viên");
-            comboPhanQuyen.SelectedIndex = 0;
-            comboPhanQuyen.Items.Add("Giảng viên");
-            comboPhanQuyen.Items.Add("Quản trị");
-
-
-
+            // Focus vào textbox tài khoản
+            txtTaiKhoan.Focus();
         }
 
         
 
         private void chkHienMatKhau_CheckedChanged_1(object sender, EventArgs e)
         {
-            txtMatKhau.PasswordChar = (chkHienMatKhau.Checked) ? '\0' : '*';
+            txtMatKhau.PasswordChar = (chkHienMatKhau.Checked) ? '\0' : '●';
         }
     }
 }

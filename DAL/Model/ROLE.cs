@@ -4,28 +4,25 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
-    [Table("QUANTRI")]
-    public partial class QUANTRI
+    [Table("ROLE")]
+    public partial class ROLE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public QUANTRI()
+        public ROLE()
         {
-            KITHI = new HashSet<KITHI>();
+            NGUOIDUNG = new HashSet<NGUOIDUNG>();
         }
 
-        public int? STT { get; set; }
-
         [Key]
-        [StringLength(20)]
-        public string ADMIN { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int MAROLE { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public string MATKHAU { get; set; }
+        [StringLength(50)]
+        public string TENROLE { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<KITHI> KITHI { get; set; }
+        public virtual ICollection<NGUOIDUNG> NGUOIDUNG { get; set; }
     }
 }

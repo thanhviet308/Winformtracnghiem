@@ -20,26 +20,26 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
         ChiTietKyThiBAL chiTietKyThiBAL;
         MonThiBAL monThiBAL;
         KyThiBAL kyThiBAL;
-        SINHVIEN sinhVien ;
+        NGUOIDUNG nguoiDung;
         MONTHI monThi;
         DateTime thoiGianThiGanNhat = DateTime.Now;
         DateTime thoiGianThi ;
         DateTime thoiGianKetThuc;
 
-        public frmSinhVien(SINHVIEN sv)
+        public frmSinhVien(NGUOIDUNG nd)
         {
             InitializeComponent();
             chiTietKyThiBAL = new ChiTietKyThiBAL();
             kyThiBAL = new KyThiBAL();
             monThiBAL = new MonThiBAL();
-            sinhVien = sv;
+            nguoiDung = nd;
         }
-        public frmSinhVien(SINHVIEN sv, int i)
+        public frmSinhVien(NGUOIDUNG nd, int i)
         {
             InitializeComponent();
             chiTietKyThiBAL = new ChiTietKyThiBAL();
             kyThiBAL = new KyThiBAL();
-            sinhVien = sv;
+            nguoiDung = nd;
             btnVaoThi.Enabled = false;
         }
 
@@ -61,11 +61,11 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             thoiGianThiGanNhat = new DateTime(1 / 1 / 2000);
             foreach (var item in chiTietKyThiBAL.GetThongTinChiTietKyThi())
             {
-                if (lblTenKyThi.Name == item.MAKITHI && item.MASV == sinhVien.MASV)
+                if (lblTenKyThi.Name == item.MAKITHI && item.MASV == nguoiDung.TENTAIKHOAN)
                 {
                     
-                    lblHoTen.Text = sinhVien.TENSV;
-                    lblLop.Text = sinhVien.LOP;
+                    lblHoTen.Text = nguoiDung.HOTEN;
+                    lblLop.Text = ""; // Trường LOP đã được bỏ trong NGUOIDUNG
                     if (thoiGianThiGanNhat < item.THOIGIANBD)
                     {
                         thoiGianThiGanNhat = (DateTime)item.THOIGIANBD;
@@ -125,7 +125,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
 
         private void btnXemDiem_Click(object sender, EventArgs e)
         {
-            frmBangDiem frmBangDiem = new frmBangDiem(sinhVien);
+            frmBangDiem frmBangDiem = new frmBangDiem(nguoiDung);
             this.Hide();
             frmBangDiem.ShowDialog();         
             this.Close();
@@ -137,7 +137,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
         {
             if (KiemTraThoiGianVaoThi() == true)
             {
-                frmThi frmThi = new frmThi(sinhVien, monThi, DateTime.Now,thoiGianKetThuc);
+                frmThi frmThi = new frmThi(nguoiDung, monThi, DateTime.Now,thoiGianKetThuc);
                 this.Hide();
                 frmThi.WindowState = FormWindowState.Maximized;
                 frmThi.ShowDialog();

@@ -1,5 +1,4 @@
 ﻿using PhanMemThiTracNghiem.BAL;
-using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -17,26 +16,27 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
 
     public partial class ThemMotGiangVien : Form
     {
-        private readonly QUANTRI quanTri = new QUANTRI();
+        private readonly NguoiDungBAL nguoiDungBAL;
         frmAdmin frmAdmin = new frmAdmin();
         public ThemMotGiangVien(frmAdmin frm)
         {
             InitializeComponent();
-            this.frmAdmin = frm;    
+            nguoiDungBAL = new NguoiDungBAL();
+            this.frmAdmin = frm;
         }
 
         private void btnXacNhan_Click(object sender, EventArgs e)
         {
             try
             {
-                GiangVienDTO giangVien = new GiangVienDTO();
+                NGUOIDUNG giangVien = new NGUOIDUNG();
                 
-                giangVien.STT++;
-                giangVien.MAGV = txtMaGiangVien.Text;
-                giangVien.TENGV = txtTenGiangVien.Text;
+                giangVien.TENTAIKHOAN = txtMaGiangVien.Text;
+                giangVien.HOTEN = txtTenGiangVien.Text;
                 giangVien.NGAYSINH = dtNgaySinh.Value;
                 giangVien.MATKHAU = txtMatKhau.Text;
-                GiangVienBAL.InsertUpdate(giangVien);
+                giangVien.MAROLE = 2; // Role GiangVien
+                nguoiDungBAL.Add(giangVien);
                 frmAdmin.frmAdmin_Load(sender, e);
                 MessageBox.Show("Thêm thành công!");
                 this.Close();

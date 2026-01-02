@@ -57,7 +57,7 @@ namespace PhanMemThiTracNghiem.UI.Admin.KyThi
             string tenmt = cbMonThi.Text;
             string loaimt="";
             List<MONTHI> listmonthi = duLieuDAL.MONTHI.Where(p => p.TENMT == tenmt).ToList();
-            var users = duLieuDAL.SINHVIEN.ToList();
+            var users = duLieuDAL.NGUOIDUNG.Where(x => x.MAROLE == 3).ToList(); // Lấy sinh viên (MAROLE = 3)
             foreach (var item in listmonthi)
             {
                 loaimt = item.MAMT;
@@ -73,7 +73,7 @@ namespace PhanMemThiTracNghiem.UI.Admin.KyThi
                     chiTietKiThiDTO.ThoiGianBD = datetimeBD.Value;
                     chiTietKiThiDTO.ThoiGianKT = datetimeKT.Value;
                     chiTietKiThiDTO.ThoiGianThi = thoigianthi;
-                    chiTietKiThiDTO.MaSinhVien = user.MASV;
+                    chiTietKiThiDTO.MaSinhVien = user.TENTAIKHOAN;
                     ChiTietKyThiBAL.InsertUpdate(chiTietKiThiDTO);
                 }
                 MessageBox.Show("Cập nhập thành công");

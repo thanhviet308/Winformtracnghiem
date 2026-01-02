@@ -1,27 +1,35 @@
-﻿using PhanMemThiTracNghiem.DAL;
-using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhanMemThiTracNghiem.BAL
 {
-    internal class QuanTriBAL
+    /// <summary>
+    /// QuanTriBAL - Wrapper class để tương thích ngược với code cũ
+    /// Sử dụng NGUOIDUNG với MAROLE = 1 (Admin)
+    /// </summary>
+    public class QuanTriBAL
     {
-        private readonly QuanTriDAL quanTriDAL;
+        private readonly NguoiDungBAL nguoiDungBAL;
+        private const int ROLE_ADMIN = 1;
+
         public QuanTriBAL()
         {
-            quanTriDAL = new QuanTriDAL();
+            nguoiDungBAL = new NguoiDungBAL();
         }
 
-        public List<QUANTRI> GetQuanTri()
+        // Lấy tất cả quản trị
+        public List<NGUOIDUNG> GetQUANTRIs()
         {
-            return quanTriDAL.GetThongTinQuanTri();  
+            return nguoiDungBAL.GetByRole(ROLE_ADMIN);
         }
 
-        
+        // Lấy quản trị theo mã
+        public static NGUOIDUNG GETQuanTri(string admin)
+        {
+            var nguoiDungBAL = new NguoiDungBAL();
+            return nguoiDungBAL.GetByMaNguoiDung(admin);
+        }
     }
 }
