@@ -1,7 +1,7 @@
-﻿using PhanMemThiTracNghiem.UI.Admin;
-using PhanMemThiTracNghiem.UI.Admin.DeThi;
-using PhanMemThiTracNghiem.UI.Admin.KyThi;
-using PhanMemThiTracNghiem.UI.GiangVien;
+using PhanMemThiTracNghiem.Forms.Admin;
+using PhanMemThiTracNghiem.Forms.Admin.DeThi;
+using PhanMemThiTracNghiem.Forms.Admin.KyThi;
+using PhanMemThiTracNghiem.Forms.GiangVien;
 using System;
 using System.Collections.Generic;
 using System.Linq;

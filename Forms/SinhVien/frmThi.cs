@@ -1,0 +1,458 @@
+using PhanMemThiTracNghiem.Data;
+using PhanMemThiTracNghiem.Repositories;
+using PhanMemThiTracNghiem.Services;
+using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PhanMemThiTracNghiem
+{
+    public partial class frmThi : Form
+    {
+
+        AppDbContext duLieu = new AppDbContext();
+
+        List<Button> oCauHoi;
+        List<GroupBox> luuBaiCham;
+        List<RadioButton> layDapAnThi;
+
+        private readonly ChiTietDeThiService danhMucCauHoiBAL;
+        private readonly CauHoiService CauHoiService;
+        private readonly BangDiemService BangDiemService;
+        private readonly ChiTietKyThiService ChiTietKyThiService;
+        private readonly GiangVienService GiangVienService;
+        private readonly SinhVienService SinhVienService;
+        private readonly NGUOIDUNG nguoiDung;
+        private readonly MONTHI monThi;
+        private readonly KyThiService kiThiBAL;
+        private readonly DateTime thoiGianBatDau;
+        private readonly DateTime thoiGianKetThuc;
+        private readonly List<CAUHOI> cauHoiMonThi = new List<CAUHOI>();
+
+
+        public int TongThoiGian = 6;
+        int iPhut = 0;
+        int iGiay = 0;
+
+
+
+        public frmThi(NGUOIDUNG nd, MONTHI mt, DateTime ThoiGianBatDauVaoThi, DateTime thoiGianKetThucThi)
+        {
+            InitializeComponent();
+
+            oCauHoi = new List<Button>();
+            luuBaiCham = new List<GroupBox>();
+            layDapAnThi = new List<RadioButton>();
+
+            CauHoiService = new CauHoiService();
+            BangDiemService = new BangDiemService();
+            danhMucCauHoiBAL = new ChiTietDeThiService();
+            ChiTietKyThiService = new ChiTietKyThiService();
+            GiangVienService = new GiangVienService();
+            SinhVienService = new SinhVienService();
+            kiThiBAL = new KyThiService();
+            thoiGianBatDau = ThoiGianBatDauVaoThi;
+            thoiGianKetThuc = thoiGianKetThucThi;
+            nguoiDung = nd;
+            monThi = mt;
+
+            // Hi?n th? thông tin sinh viên 
+            lblTenSinhVien.Text = nguoiDung.HOTEN.ToString() + "  ||  " + nguoiDung.EMAIL.ToString();
+
+            // Hi?n th? môn thi
+            lblMonThi.Text = monThi.TENMT;
+            lblMonThi.Name = monThi.MAMT;
+
+            // G?i khung hi?n th? câu h?i tr?c nghi?m
+            flowLayoutPanel1.Enabled = true;
+            flowLayoutPanel1_Paint();
+
+
+
+
+
+
+        }
+        private void frmThi_Load(object sender, EventArgs e)
+        {
+            btnDemNguoc_Click(sender, e);
+            for (int i = 0; i < CauHoiService.GetThongTinCauHoi().Count(); i++)
+            {
+                layDapAnThi.Add(null);
+           
+            }
+        }
+        private void flowLayoutPanel1_Paint()
+        {
+            // T?o ô câu h?i bên trái
+            int x = 10, y = 105;
+            int soCauHoi = 0;
+            foreach (var item in CauHoiService.GetThongTinCauHoi())
+            {
+                if(item.MAMT == monThi.MAMT)
+                {
+                    soCauHoi++;
+                    cauHoiMonThi.Add(item);
+                }          
+            }
+            for (int i = 0; i < cauHoiMonThi.Count; i++)
+            {
+                oCauHoi.Add(TaoNut((i + 1), ref x, ref y));
+
+                x += 60;
+
+                if ((i + 1) % 2 == 0)
+                {
+                    y += 40;
+                    x = 10;
+                }
+                luuBaiCham.Add(TaoCauHoi( i));
+            }
+            
+            // T?o t?t c? có trong vùng ch?a câu h?i
+
+            foreach (CHITIETDETHI item in danhMucCauHoiBAL.GetCauHoi())
+            {
+                
+
+            }
+
+
+
+        }
+
+        private GroupBox TaoCauHoi(int i)
+        {
+            // T?o m?i GroupBox ch?a m?i 1 câu h?i
+            GroupBox groupBox = new GroupBox();
+            groupBox.Location = new Point();
+            groupBox.Font = new Font("Be Vietnam Pro", 10, FontStyle.Bold);
+            groupBox.Text = "Câu " + (i+1);
+            groupBox.Name = (i+1).ToString();
+            groupBox.Size = new System.Drawing.Size(1780, 300);
+            flowLayoutPanel1.Controls.Add(groupBox);
+
+            // Ti?p theo ta t?o câu h?i
+            Label label = new Label();
+            label.Location = new Point(30, 30);
+            label.Size = new Size(1600, 50);
+            label.Name = i.ToString();
+            label.Font = new Font("Be Vietnam Pro", 10);
+            
+            label.Text = cauHoiMonThi[i].NDCAUHOI;
+            groupBox.Controls.Add(label);
+
+            for (int j = 0; j < 4; j++)
+            {
+                RadioButton rdo = new RadioButton();
+                if (j == 1 || j == 3)
+                {
+                    rdo.Location = new Point(800, 150 + ((j - 1) * 30));
+                }
+                else
+                {
+                    rdo.Location = new Point(30, 150 + (j * 30));
+                }
+                rdo.Size = new Size(450, 30);
+                rdo.Name = "rdo" + j.ToString();
+                rdo.Font = new Font("Be Vietnam Pro", 10);
+
+                // L?y 4 dáp án
+                if (j == 0)
+                {
+                    rdo.Text = cauHoiMonThi[i].DAPAN1;
+                }
+                if (j == 1)
+                {
+                    rdo.Text = cauHoiMonThi[i].DAPAN2;
+                }
+                if (j == 2)
+                {
+                    rdo.Text = cauHoiMonThi[i].DAPAN3;
+                }
+                if (j == 3)
+                {
+                    rdo.Text = cauHoiMonThi[i].DAPAN4;
+                }
+
+                groupBox.Controls.Add(rdo);
+
+                rdo.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, groupBox.Name, rdo, (i + 1)) ; };
+                //   rdb.CheckedChanged += new System.EventHandler(gbxButtonType_CheckedChanged);
+            }
+
+
+
+
+
+            // Ti?p theo ta t?o các 4 ô d? ch?a dáp án
+
+            return groupBox;
+        }
+        private void buttonNext_Click(object sender, EventArgs e, string index, RadioButton rdo, int traloi)
+        {
+            try
+            {
+                layDapAnThi[traloi - 1] = rdo;
+                foreach (var item in oCauHoi)
+                {
+                    if (item.Name == index)
+                    {
+                        item.BackColor = Color.Yellow;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private System.EventHandler CauHoiRepositoryam(GroupBox a)
+        {
+
+            try
+            {
+
+                foreach (var item in oCauHoi)
+                {
+
+                    if (item.Name == a.Name)
+                    {
+                        item.BackColor = Color.Yellow;
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
+        private Button TaoNut(int i, ref int x, ref int y)
+        {
+            Button btn = new Button();
+            btn.Location = new Point(x, y);
+            btn.Font = new Font("Be Vietnam Pro", 10);
+            btn.Text = i.ToString();
+            //btn.Tag = item.MaSoBan;
+            btn.Name = i.ToString();
+            btn.TextAlign = ContentAlignment.MiddleCenter;
+            btn.Size = new Size(42, 36);
+            btn.BackColor = Color.White;
+            btn.Focus();
+            //btn.Click += Btn_Click;
+            //btn.Click += Btn_Oder;
+
+            panelMenu.Controls.Add(btn);
+
+            btn.BringToFront();
+
+            return btn;
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                flowLayoutPanel1.Controls.Add(new Button() { Text = "C? lên" });
+            }
+            for (int i = 0; i < 100; i++)
+            {
+                flowLayoutPanel1.Controls.Add(new Button() { Text = "M?nh m? lên" });
+            }
+        }
+
+        private void menuThi_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        // N?P BÀI
+        private void NopBai_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("B?n có mu?n n?p bài không?", "Thông báo", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.No)
+                return;
+            NopBai_Click();
+        }
+
+        // TÍNH TH?I GIAN CÒN L?I
+        private void btnDemNguoc_Click(object sender, EventArgs e)
+        {
+
+            TongThoiGian = (thoiGianKetThuc.Hour - DateTime.Now.Hour) * 60 + (60 - thoiGianBatDau.Minute) + thoiGianKetThuc.Minute;
+            iPhut = TongThoiGian - 1;
+            iGiay = 59;
+            this.timer1.Enabled = true;
+            HienThiPhutGio();
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            //Application.DoEvents();
+
+            iGiay--;
+
+            if (iGiay == 0)
+            {
+                if (iPhut > 0)
+                {
+                    iPhut--;
+                    iGiay = 59;
+                }
+                else
+                {
+                    iPhut = 0;
+                    iGiay = 0;
+                }
+            }
+
+            if ((iPhut == 0) && (iGiay == 0))
+            {
+                HienThiPhutGio();
+                this.timer1.Enabled = false;
+                MessageBox.Show("H?t gi? làm bài!!");
+                NopBai_Click();
+            }
+            else
+            {
+                HienThiPhutGio();
+            }
+
+        }
+
+        private void NopBai_Click()
+        {
+            // L?y th?i gian k?t thúc thi
+            DateTime thoiGianThi = DateTime.Now;
+            float diemMotCau;
+            float diemThi = 0;
+            int demSoCauDung = 0;
+            int soCauHoi = CauHoiService.GetThongTinCauHoi().Count();
+            diemMotCau = (float)10.0 / soCauHoi;
+            List<int> luuBaiLam = new List<int>(soCauHoi);
+            for (int i = 0; i < soCauHoi; i++)
+            {
+                luuBaiLam.Add(0);
+            }
+
+            for (int i = 0; i < soCauHoi; i++)
+            {
+                if (layDapAnThi[i] != null)
+                {
+                    if (String.Equals(layDapAnThi[i].Text.ToString(), CauHoiService.GetThongTinCauHoi()[i].DAPANDUNG))
+                    {
+                        diemThi += diemMotCau;
+                        demSoCauDung++;
+                        luuBaiLam[i] = 1;
+                    }
+                }
+            }
+            diemThi = (float)(Math.Round(diemThi, 2));
+
+            // Luu d? li?u vào Chi Ti?t K? Thi và Luu Ði?m
+            // Tìm th?i gian kh?p di?n ra k? thi d? thêm c?p nh?p di?m, th?i gian k?t thúc thi và th?i gian thi
+            foreach (var item in kiThiBAL.GetThongTinKyThi())
+            {
+                if (DateTime.Now >= item.THOIGIANBDKITHI && DateTime.Now <= item.THOIGIANKTKITHI)
+                {
+                    foreach (var i in ChiTietKyThiService.GetThongTinChiTietKyThi())
+                    {
+                        ChiTietKyThiService.LuuChiTietKyThi(nguoiDung, item.MAKITHI, monThi, diemThi, thoiGianBatDau, thoiGianThi, (thoiGianThi.Hour * 60 + thoiGianThi.Minute) - (thoiGianBatDau.Hour * 60 + thoiGianBatDau.Minute));
+                     //   BangDiemService.LuuDiemThi(1, diemThi, nguoiDung.TENTAIKHOAN, item.MAKITHI, monThi.MAMT);
+                        break;
+                    }
+                }
+            }
+
+            // Hi?n th?  di?m
+
+            ThiTracNghiem thiTracNghiem = new ThiTracNghiem(nguoiDung);
+            thiTracNghiem.HienThi(diemThi, demSoCauDung, luuBaiLam);
+            this.Hide();
+            thiTracNghiem.ShowDialog();
+            this.Close();
+
+        }
+
+        private void HienThiPhutGio()
+        {
+            string sPhut = "";
+            string sGiay = "";
+
+            if (iPhut < 10)
+                sPhut = "0" + iPhut.ToString();
+            else
+                sPhut = iPhut.ToString();
+
+            if (iGiay < 10)
+                sGiay = "0" + iGiay.ToString();
+            else
+                sGiay = iGiay.ToString();
+            // Hi?n th? th?i gian
+            this.lblHienThi.Text = sPhut + ":" + sGiay;
+
+        }
+
+        private void pnlThi_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblHienThi_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
+
+
+
+
+
+
+
+// CODE CU - LUU L?I KHI C?N XEM
+
+// T?o câu h?i
+//flowLayoutPanel1.Controls.Add(new GroupBox()
+//{
+//    Name = tenGbox.ToString(),
+//    Text = "Câu " + tenGbox,
+//    ForeColor = Color.Black,
+//    Size = new System.Drawing.Size(1200, 300),
+//    Anchor = AnchorStyles.Top & AnchorStyles.Bottom,
+//});
+//tenGbox++;
+
+
+//if (connection.State == ConnectionState.Closed) // "+soThuTu+",
+//    connection.Open();
+//SqlCommand sqlCommand = new SqlCommand();
+//string inSert = "insert into BANGDIEM(ID, MABD, TENBD, DIEM) values('" + soThuTu + "','" + lblMaSoSinhVien.Text + "','" + lblTenSinhVien.Text + "','" + diemThi + "')";
+//sqlCommand.CommandType = CommandType.Text;
+//sqlCommand.CommandText = inSert;
+//sqlCommand.Connection = connection;
+//sqlCommand.ExecuteNonQuery();
+
+//giay--;
+//lblCount.Text = giay / 60 + ":" + ((giay % 60) >= 10 ? (giay % 60).ToString() : "0" + (giay % 60));
+//if (giay == 0)
+//{
+//    timer1.Stop();
+//    MessageBox.Show("H?t gi? làm bài!");
+//}
