@@ -46,6 +46,11 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
         private void frmSinhVien_Load(object sender, EventArgs e)
         {
             btnXemDiem.Hide();
+            
+            // Ẩn trường Lớp (không còn trong NGUOIDUNG)
+            label2.Visible = false;
+            lblLop.Visible = false;
+            
            // Tìm kỳ thi trong thời gian hiện tại
             foreach (var item in kyThiBAL.GetThongTinKyThi())
             {
@@ -61,11 +66,10 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             thoiGianThiGanNhat = new DateTime(1 / 1 / 2000);
             foreach (var item in chiTietKyThiBAL.GetThongTinChiTietKyThi())
             {
-                if (lblTenKyThi.Name == item.MAKITHI && item.MASV == nguoiDung.TENTAIKHOAN)
+                if (lblTenKyThi.Name == item.MAKITHI && item.MASV == nguoiDung.ID.ToString())
                 {
                     
                     lblHoTen.Text = nguoiDung.HOTEN;
-                    lblLop.Text = ""; // Trường LOP đã được bỏ trong NGUOIDUNG
                     if (thoiGianThiGanNhat < item.THOIGIANBD)
                     {
                         thoiGianThiGanNhat = (DateTime)item.THOIGIANBD;

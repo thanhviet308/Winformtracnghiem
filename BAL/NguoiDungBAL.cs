@@ -20,16 +20,22 @@ namespace PhanMemThiTracNghiem.BAL
             return nguoiDungDAL.GetAll();
         }
 
-        // Lấy người dùng theo mã
-        public NGUOIDUNG GetByMaNguoiDung(string maNguoiDung)
+        // Lấy người dùng theo ID
+        public NGUOIDUNG GetById(int id)
         {
-            return nguoiDungDAL.GetByMaNguoiDung(maNguoiDung);
+            return nguoiDungDAL.GetById(id);
+        }
+
+        // Lấy người dùng theo Email
+        public NGUOIDUNG GetByEmail(string email)
+        {
+            return nguoiDungDAL.GetByEmail(email);
         }
 
         // Đăng nhập
-        public NGUOIDUNG DangNhap(string taiKhoan, string matKhau)
+        public NGUOIDUNG DangNhap(string email, string matKhau)
         {
-            return nguoiDungDAL.DangNhap(taiKhoan, matKhau);
+            return nguoiDungDAL.DangNhap(email, matKhau);
         }
 
         // Lấy người dùng theo role
@@ -41,8 +47,8 @@ namespace PhanMemThiTracNghiem.BAL
         // Thêm người dùng mới
         public bool Add(NGUOIDUNG nguoiDung)
         {
-            // Kiểm tra tài khoản đã tồn tại chưa
-            if (nguoiDungDAL.IsExist(nguoiDung.TENTAIKHOAN))
+            // Kiểm tra email đã tồn tại chưa
+            if (nguoiDungDAL.IsEmailExist(nguoiDung.EMAIL))
             {
                 return false;
             }
@@ -56,15 +62,15 @@ namespace PhanMemThiTracNghiem.BAL
         }
 
         // Xóa người dùng
-        public bool Delete(string maNguoiDung)
+        public bool Delete(int id)
         {
-            return nguoiDungDAL.Delete(maNguoiDung);
+            return nguoiDungDAL.Delete(id);
         }
 
-        // Kiểm tra tài khoản tồn tại
-        public bool IsExist(string maNguoiDung)
+        // Kiểm tra email tồn tại
+        public bool IsEmailExist(string email)
         {
-            return nguoiDungDAL.IsExist(maNguoiDung);
+            return nguoiDungDAL.IsEmailExist(email);
         }
     }
 }

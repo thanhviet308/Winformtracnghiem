@@ -41,6 +41,8 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
             this.txtFileName = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnOpen = new Guna.UI2.WinForms.Guna2Button();
+            this.btnTaiFileMau = new Guna.UI2.WinForms.Guna2Button();
+            this.lblHuongDan = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvThemExcelSinhVien)).BeginInit();
             this.SuspendLayout();
             // 
@@ -231,12 +233,44 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
             this.btnOpen.Text = "...";
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
+            // btnTaiFileMau
+            // 
+            this.btnTaiFileMau.AutoRoundedCorners = true;
+            this.btnTaiFileMau.BorderRadius = 17;
+            this.btnTaiFileMau.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnTaiFileMau.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnTaiFileMau.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnTaiFileMau.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnTaiFileMau.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(100)))));
+            this.btnTaiFileMau.Font = new System.Drawing.Font("Times New Roman", 12F);
+            this.btnTaiFileMau.ForeColor = System.Drawing.Color.White;
+            this.btnTaiFileMau.Location = new System.Drawing.Point(530, 502);
+            this.btnTaiFileMau.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTaiFileMau.Name = "btnTaiFileMau";
+            this.btnTaiFileMau.Size = new System.Drawing.Size(135, 37);
+            this.btnTaiFileMau.TabIndex = 15;
+            this.btnTaiFileMau.Text = "📥 Tải file mẫu";
+            this.btnTaiFileMau.Click += new System.EventHandler(this.btnTaiFileMau_Click);
+            // 
+            // lblHuongDan
+            // 
+            this.lblHuongDan.AutoSize = true;
+            this.lblHuongDan.Font = new System.Drawing.Font("Times New Roman", 10F, System.Drawing.FontStyle.Italic);
+            this.lblHuongDan.ForeColor = System.Drawing.Color.DarkBlue;
+            this.lblHuongDan.Location = new System.Drawing.Point(9, 10);
+            this.lblHuongDan.Name = "lblHuongDan";
+            this.lblHuongDan.Size = new System.Drawing.Size(500, 25);
+            this.lblHuongDan.TabIndex = 16;
+            this.lblHuongDan.Text = "Hướng dẫn: File Excel cần có các cột: EMAIL, TENGV, MATKHAU.";
+            // 
             // NhapExcelGiangVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(178)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(830, 548);
+            this.Controls.Add(this.lblHuongDan);
+            this.Controls.Add(this.btnTaiFileMau);
             this.Controls.Add(this.btnLuuDL);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboSheet);
@@ -268,5 +302,7 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
         private Guna.UI2.WinForms.Guna2TextBox txtFileName;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
         private Guna.UI2.WinForms.Guna2Button btnOpen;
+        private Guna.UI2.WinForms.Guna2Button btnTaiFileMau;
+        private System.Windows.Forms.Label lblHuongDan;
     }
 }

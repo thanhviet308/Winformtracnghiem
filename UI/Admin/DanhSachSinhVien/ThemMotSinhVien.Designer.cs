@@ -140,7 +140,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(149, 26);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Mã giảng viên:";
+            this.label1.Text = "Email:";
             // 
             // txtMaSinhVien
             // 
@@ -175,6 +175,7 @@
             this.guna2Panel4.Name = "guna2Panel4";
             this.guna2Panel4.Size = new System.Drawing.Size(611, 54);
             this.guna2Panel4.TabIndex = 18;
+            this.guna2Panel4.Visible = false;
             // 
             // label4
             // 
@@ -261,6 +262,7 @@
             this.guna2Panel3.Name = "guna2Panel3";
             this.guna2Panel3.Size = new System.Drawing.Size(611, 54);
             this.guna2Panel3.TabIndex = 17;
+            this.guna2Panel3.Visible = false;
             // 
             // dtNgaySinhSinhVien
             // 

@@ -4,8 +4,6 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
 
     [Table("KITHI")]
     public partial class KITHI
@@ -45,7 +43,11 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public void InsertUpdate()
         {
             DuLieuDAL context = new DuLieuDAL();
-            context.KITHI.AddOrUpdate(this);
+            var existing = context.KITHI.Find(this.MAKITHI);
+            if (existing == null)
+                context.KITHI.Add(this);
+            else
+                context.Entry(existing).CurrentValues.SetValues(this);
             context.SaveChanges();
         }
     }

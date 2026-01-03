@@ -40,6 +40,8 @@
             this.dgvThemExcelSinhVien = new Guna.UI2.WinForms.Guna2DataGridView();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.btnTaiFileMau = new Guna.UI2.WinForms.Guna2Button();
+            this.lblHuongDan = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvThemExcelSinhVien)).BeginInit();
             this.SuspendLayout();
             // 
@@ -229,12 +231,44 @@
             this.guna2ControlBox1.Size = new System.Drawing.Size(45, 30);
             this.guna2ControlBox1.TabIndex = 16;
             // 
+            // btnTaiFileMau
+            // 
+            this.btnTaiFileMau.AutoRoundedCorners = true;
+            this.btnTaiFileMau.BorderRadius = 22;
+            this.btnTaiFileMau.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnTaiFileMau.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnTaiFileMau.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnTaiFileMau.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnTaiFileMau.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(100)))));
+            this.btnTaiFileMau.Font = new System.Drawing.Font("Times New Roman", 12F);
+            this.btnTaiFileMau.ForeColor = System.Drawing.Color.White;
+            this.btnTaiFileMau.Location = new System.Drawing.Point(700, 619);
+            this.btnTaiFileMau.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnTaiFileMau.Name = "btnTaiFileMau";
+            this.btnTaiFileMau.Size = new System.Drawing.Size(180, 46);
+            this.btnTaiFileMau.TabIndex = 24;
+            this.btnTaiFileMau.Text = "📥 Tải file mẫu";
+            this.btnTaiFileMau.Click += new System.EventHandler(this.btnTaiFileMau_Click);
+            // 
+            // lblHuongDan
+            // 
+            this.lblHuongDan.AutoSize = true;
+            this.lblHuongDan.Font = new System.Drawing.Font("Times New Roman", 10F, System.Drawing.FontStyle.Italic);
+            this.lblHuongDan.ForeColor = System.Drawing.Color.DarkBlue;
+            this.lblHuongDan.Location = new System.Drawing.Point(13, 12);
+            this.lblHuongDan.Name = "lblHuongDan";
+            this.lblHuongDan.Size = new System.Drawing.Size(600, 30);
+            this.lblHuongDan.TabIndex = 25;
+            this.lblHuongDan.Text = "Hướng dẫn: File Excel cần có các cột: EMAIL, TENSV, MATKHAU. Nhấn \"Tải file mẫu\" để tải file Excel mẫu.";
+            // 
             // NhapExcelSinhVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(178)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1107, 674);
+            this.Controls.Add(this.lblHuongDan);
+            this.Controls.Add(this.btnTaiFileMau);
             this.Controls.Add(this.btnLuuDL);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboSheet);
@@ -266,5 +300,7 @@
         private Guna.UI2.WinForms.Guna2DataGridView dgvThemExcelSinhVien;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
+        private Guna.UI2.WinForms.Guna2Button btnTaiFileMau;
+        private System.Windows.Forms.Label lblHuongDan;
     }
 }

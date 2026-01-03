@@ -73,7 +73,7 @@ namespace PhanMemThiTracNghiem.UI.Admin.KyThi
                     chiTietKiThiDTO.ThoiGianBD = datetimeBD.Value;
                     chiTietKiThiDTO.ThoiGianKT = datetimeKT.Value;
                     chiTietKiThiDTO.ThoiGianThi = thoigianthi;
-                    chiTietKiThiDTO.MaSinhVien = user.TENTAIKHOAN;
+                    chiTietKiThiDTO.MaSinhVien = user.ID.ToString();
                     ChiTietKyThiBAL.InsertUpdate(chiTietKiThiDTO);
                 }
                 MessageBox.Show("Cập nhập thành công");

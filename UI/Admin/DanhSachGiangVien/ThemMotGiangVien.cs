@@ -31,10 +31,9 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
             {
                 NGUOIDUNG giangVien = new NGUOIDUNG();
                 
-                giangVien.TENTAIKHOAN = txtMaGiangVien.Text;
+                giangVien.EMAIL = txtMaGiangVien.Text;
                 giangVien.HOTEN = txtTenGiangVien.Text;
-                giangVien.NGAYSINH = dtNgaySinh.Value;
-                giangVien.MATKHAU = txtMatKhau.Text;
+                giangVien.MATKHAU = PhanMemThiTracNghiem.BAL.PasswordHelper.HashPassword(txtMatKhau.Text);
                 giangVien.MAROLE = 2; // Role GiangVien
                 nguoiDungBAL.Add(giangVien);
                 frmAdmin.frmAdmin_Load(sender, e);

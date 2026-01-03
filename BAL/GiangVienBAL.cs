@@ -1,3 +1,4 @@
+using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -19,55 +20,79 @@ namespace PhanMemThiTracNghiem.BAL
             nguoiDungBAL = new NguoiDungBAL();
         }
 
-        // Lấy tất cả giảng viên
-        public List<NGUOIDUNG> GetGIANGVIENs()
+        // Lấy tất cả giảng viên - trả về DTO để hiển thị
+        public List<NguoiDungDTO> GetGIANGVIENs()
         {
-            return nguoiDungBAL.GetByRole(ROLE_GIANGVIEN);
+            return nguoiDungBAL.GetByRole(ROLE_GIANGVIEN)
+                .Select(x => new NguoiDungDTO
+                {
+                    ID = x.ID,
+                    Email = x.EMAIL,
+                    HoTen = x.HOTEN,
+                    VaiTro = x.ROLE?.TENROLE ?? "Giảng viên"
+                }).ToList();
         }
 
-        // Lấy giảng viên theo mã
-        public static NGUOIDUNG GETGiangVien(string magv)
+        // Lấy giảng viên theo email
+        public static NGUOIDUNG GETGiangVien(string email)
         {
             var nguoiDungBAL = new NguoiDungBAL();
-            return nguoiDungBAL.GetByMaNguoiDung(magv);
+            return nguoiDungBAL.GetByEmail(email);
+        }
+
+        // Lấy giảng viên theo ID
+        public NGUOIDUNG GetById(int id)
+        {
+            return nguoiDungBAL.GetById(id);
         }
 
         // Cập nhật giảng viên
-        public void CapNhapGiangVien(string magv, string tengv, DateTime ngaysinh, string matkhau)
+        public void CapNhapGiangVien(int id, string email, string hoten, string matkhau)
         {
-            var gv = nguoiDungBAL.GetByMaNguoiDung(magv);
+            var gv = nguoiDungBAL.GetById(id);
             if (gv != null)
             {
-                gv.HOTEN = tengv;
-                gv.NGAYSINH = ngaysinh;
-                gv.MATKHAU = matkhau;
+                gv.EMAIL = email;
+                gv.HOTEN = hoten;
+                if (!string.IsNullOrEmpty(matkhau))
+                {
+                    gv.MATKHAU = PasswordHelper.HashPassword(matkhau);
+                }
                 nguoiDungBAL.Update(gv);
             }
         }
 
         // Đổi mật khẩu
-        public void DoiMatKhau(string magv, string matkhau)
+        public void DoiMatKhau(int id, string matkhau)
         {
-            var gv = nguoiDungBAL.GetByMaNguoiDung(magv);
+            var gv = nguoiDungBAL.GetById(id);
             if (gv != null)
             {
-                gv.MATKHAU = matkhau;
+                gv.MATKHAU = PasswordHelper.HashPassword(matkhau);
                 nguoiDungBAL.Update(gv);
             }
         }
 
         // Xóa giảng viên
-        public static void Delete(string magv)
+        public static void Delete(int id)
         {
             var nguoiDungBAL = new NguoiDungBAL();
-            nguoiDungBAL.Delete(magv);
+            nguoiDungBAL.Delete(id);
         }
 
-        // Tìm theo tên
-        public List<NGUOIDUNG> FindName(string tengv)
+        // Tìm theo tên hoặc email
+        public List<NguoiDungDTO> FindName(string keyword)
         {
+            var search = keyword.ToLower();
             return nguoiDungBAL.GetByRole(ROLE_GIANGVIEN)
-                .Where(x => x.HOTEN.Contains(tengv)).ToList();
+                .Where(x => x.HOTEN.ToLower().Contains(search) || x.EMAIL.ToLower().Contains(search))
+                .Select(x => new NguoiDungDTO
+                {
+                    ID = x.ID,
+                    Email = x.EMAIL,
+                    HoTen = x.HOTEN,
+                    VaiTro = x.ROLE?.TENROLE ?? "Giảng viên"
+                }).ToList();
         }
     }
 }

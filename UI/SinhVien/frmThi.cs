@@ -66,7 +66,7 @@ namespace PhanMemThiTracNghiem
             monThi = mt;
 
             // Hiển thị thông tin sinh viên 
-            lblTenSinhVien.Text = nguoiDung.HOTEN.ToString() + "  ||  " + nguoiDung.TENTAIKHOAN.ToString();
+            lblTenSinhVien.Text = nguoiDung.HOTEN.ToString() + "  ||  " + nguoiDung.EMAIL.ToString();
 
             // Hiển thị môn thi
             lblMonThi.Text = monThi.TENMT;

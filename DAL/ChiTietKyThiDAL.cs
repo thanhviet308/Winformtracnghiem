@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace PhanMemThiTracNghiem.DAL
         {
             foreach (var item in GetThongTinChiTietKyThi())
             {
-                if (item.MAKITHI == MAKT && item.MASV == nd.TENTAIKHOAN && item.MAMT == item.MAMT)
+                if (item.MAKITHI == MAKT && item.MASV == nd.ID.ToString() && item.MAMT == item.MAMT)
                 {
                     item.DIEM = diem;
                     item.THOIGIANBD = thoiGianBD;

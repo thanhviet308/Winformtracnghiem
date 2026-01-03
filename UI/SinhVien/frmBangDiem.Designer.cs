@@ -30,7 +30,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.dgvBangDiem = new Guna.UI2.WinForms.Guna2DataGridView();
             this.guna2ControlBox3 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -38,17 +38,37 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             this.lblMaSoSinhVien = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.BANGDIEMreportBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBangDiem)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BANGDIEMreportBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // reportViewer1
+            // dgvBangDiem
             // 
-            this.reportViewer1.Location = new System.Drawing.Point(1, 138);
-            this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.ServerReport.BearerToken = null;
-            this.reportViewer1.Size = new System.Drawing.Size(1220, 420);
-            this.reportViewer1.TabIndex = 0;
+            this.dgvBangDiem.AllowUserToAddRows = false;
+            this.dgvBangDiem.AllowUserToDeleteRows = false;
+            this.dgvBangDiem.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvBangDiem.BackgroundColor = System.Drawing.Color.White;
+            this.dgvBangDiem.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvBangDiem.ColumnHeadersHeight = 40;
+            this.dgvBangDiem.Location = new System.Drawing.Point(1, 138);
+            this.dgvBangDiem.Name = "dgvBangDiem";
+            this.dgvBangDiem.ReadOnly = true;
+            this.dgvBangDiem.RowHeadersVisible = false;
+            this.dgvBangDiem.RowHeadersWidth = 51;
+            this.dgvBangDiem.RowTemplate.Height = 35;
+            this.dgvBangDiem.Size = new System.Drawing.Size(1220, 420);
+            this.dgvBangDiem.TabIndex = 0;
+            this.dgvBangDiem.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(239)))), ((int)(((byte)(249)))));
+            this.dgvBangDiem.ThemeStyle.BackColor = System.Drawing.Color.White;
+            this.dgvBangDiem.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvBangDiem.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.dgvBangDiem.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvBangDiem.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.dgvBangDiem.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvBangDiem.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
+            this.dgvBangDiem.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.dgvBangDiem.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
             // 
             // guna2ControlBox3
             // 
@@ -142,7 +162,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.guna2ControlBox3);
             this.Controls.Add(this.guna2ControlBox1);
-            this.Controls.Add(this.reportViewer1);
+            this.Controls.Add(this.dgvBangDiem);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmBangDiem";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -151,6 +171,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BANGDIEMreportBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBangDiem)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,7 +179,7 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
 
         #endregion
         private System.Windows.Forms.BindingSource BANGDIEMreportBindingSource;
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private Guna.UI2.WinForms.Guna2DataGridView dgvBangDiem;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox3;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;

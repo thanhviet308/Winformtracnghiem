@@ -1,5 +1,4 @@
-﻿using Microsoft.Reporting.WinForms;
-using PhanMemThiTracNghiem.DAL;
+﻿using PhanMemThiTracNghiem.DAL;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -31,11 +30,11 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             listBangDiem = duLieuDAL.BANGDIEM.ToList();
 
             // Mã số sinh viên label
-            lblMaSoSinhVien.Text = nguoiDung.HOTEN +" | "+ nguoiDung.TENTAIKHOAN;
+            lblMaSoSinhVien.Text = nguoiDung.HOTEN +" | "+ nguoiDung.EMAIL;
 
             foreach (BANGDIEM item in listBangDiem)
             {
-                if (nguoiDung.TENTAIKHOAN == item.MASV)
+                if (nguoiDung.ID.ToString() == item.MASV)
                 {
                     BANGDIEMreport diem = new BANGDIEMreport();
                     diem.ID = item.ID;
@@ -52,13 +51,19 @@ namespace PhanMemThiTracNghiem.UI.SinhVien
             }
             else
             {
-                this.reportViewer1.LocalReport.ReportPath = "./UI/SinhVien/ReportBangDiem.rdlc";
-                var reportDatasource = new ReportDataSource("BangDiemDataSet", listReportBangDiem);
-                this.reportViewer1.LocalReport.DataSources.Clear();
-                this.reportViewer1.LocalReport.DataSources.Add(reportDatasource);
-
-                this.reportViewer1.RefreshReport();
-                this.reportViewer1.RefreshReport();
+                dgvBangDiem.DataSource = listReportBangDiem;
+                
+                // Đặt tên cột hiển thị
+                if (dgvBangDiem.Columns["ID"] != null)
+                    dgvBangDiem.Columns["ID"].HeaderText = "STT";
+                if (dgvBangDiem.Columns["MAKITHI"] != null)
+                    dgvBangDiem.Columns["MAKITHI"].HeaderText = "Mã Kỳ Thi";
+                if (dgvBangDiem.Columns["MASV"] != null)
+                    dgvBangDiem.Columns["MASV"].HeaderText = "ID Sinh Viên";
+                if (dgvBangDiem.Columns["DIEM"] != null)
+                    dgvBangDiem.Columns["DIEM"].HeaderText = "Điểm";
+                if (dgvBangDiem.Columns["MAMT"] != null)
+                    dgvBangDiem.Columns["MAMT"].HeaderText = "Mã Môn Thi";
             }           
         }
 

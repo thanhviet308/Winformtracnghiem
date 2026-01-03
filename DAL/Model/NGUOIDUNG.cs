@@ -16,26 +16,21 @@ namespace PhanMemThiTracNghiem.DAL.Model
             KITHI = new HashSet<KITHI>();
         }
 
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-
-        [Key]
-        [StringLength(15)]
-        public string TENTAIKHOAN { get; set; }
 
         [Required]
         [StringLength(100)]
         public string MATKHAU { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string EMAIL { get; set; }
 
         [Required]
         [StringLength(50)]
         public string HOTEN { get; set; }
-
-        [Column(TypeName = "date")]
-        public DateTime? NGAYSINH { get; set; }
 
         public int? MAROLE { get; set; }
 

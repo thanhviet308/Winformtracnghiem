@@ -1,4 +1,5 @@
 using PhanMemThiTracNghiem.DAL.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,27 +18,35 @@ namespace PhanMemThiTracNghiem.DAL
         // Lấy tất cả người dùng
         public List<NGUOIDUNG> GetAll()
         {
-            return duLieuDAL.NGUOIDUNG.Include("ROLE").ToList();
+            return duLieuDAL.NGUOIDUNG.Include(x => x.ROLE).ToList();
         }
 
-        // Lấy người dùng theo mã
-        public NGUOIDUNG GetByMaNguoiDung(string maNguoiDung)
+        // Lấy người dùng theo ID
+        public NGUOIDUNG GetById(int id)
         {
-            return duLieuDAL.NGUOIDUNG.Include("ROLE")
-                .FirstOrDefault(x => x.TENTAIKHOAN == maNguoiDung);
+            return duLieuDAL.NGUOIDUNG.Include(x => x.ROLE)
+                .FirstOrDefault(x => x.ID == id);
         }
 
-        // Đăng nhập - kiểm tra tài khoản (mã hoặc email) và mật khẩu
-        public NGUOIDUNG DangNhap(string taiKhoan, string matKhau)
+        // Lấy người dùng theo Email
+        public NGUOIDUNG GetByEmail(string email)
         {
-            return duLieuDAL.NGUOIDUNG.Include("ROLE")
-                .FirstOrDefault(x => (x.TENTAIKHOAN == taiKhoan || x.EMAIL == taiKhoan) && x.MATKHAU == matKhau);
+            return duLieuDAL.NGUOIDUNG.Include(x => x.ROLE)
+                .FirstOrDefault(x => x.EMAIL == email);
+        }
+
+        // Đăng nhập - kiểm tra email và mật khẩu
+        public NGUOIDUNG DangNhap(string email, string matKhau)
+        {
+            string hashedPassword = PhanMemThiTracNghiem.BAL.PasswordHelper.HashPassword(matKhau);
+            return duLieuDAL.NGUOIDUNG.Include(x => x.ROLE)
+                .FirstOrDefault(x => x.EMAIL == email && x.MATKHAU == hashedPassword);
         }
 
         // Lấy người dùng theo role
         public List<NGUOIDUNG> GetByRole(int maRole)
         {
-            return duLieuDAL.NGUOIDUNG.Include("ROLE")
+            return duLieuDAL.NGUOIDUNG.Include(x => x.ROLE)
                 .Where(x => x.MAROLE == maRole).ToList();
         }
 
@@ -61,13 +70,12 @@ namespace PhanMemThiTracNghiem.DAL
         {
             try
             {
-                var existing = duLieuDAL.NGUOIDUNG.Find(nguoiDung.TENTAIKHOAN);
+                var existing = duLieuDAL.NGUOIDUNG.Find(nguoiDung.ID);
                 if (existing != null)
                 {
                     existing.MATKHAU = nguoiDung.MATKHAU;
                     existing.EMAIL = nguoiDung.EMAIL;
                     existing.HOTEN = nguoiDung.HOTEN;
-                    existing.NGAYSINH = nguoiDung.NGAYSINH;
                     existing.MAROLE = nguoiDung.MAROLE;
                     duLieuDAL.SaveChanges();
                     return true;
@@ -81,11 +89,11 @@ namespace PhanMemThiTracNghiem.DAL
         }
 
         // Xóa người dùng
-        public bool Delete(string maNguoiDung)
+        public bool Delete(int id)
         {
             try
             {
-                var nguoiDung = duLieuDAL.NGUOIDUNG.Find(maNguoiDung);
+                var nguoiDung = duLieuDAL.NGUOIDUNG.Find(id);
                 if (nguoiDung != null)
                 {
                     duLieuDAL.NGUOIDUNG.Remove(nguoiDung);
@@ -100,10 +108,10 @@ namespace PhanMemThiTracNghiem.DAL
             }
         }
 
-        // Kiểm tra tài khoản tồn tại
-        public bool IsExist(string maNguoiDung)
+        // Kiểm tra email tồn tại
+        public bool IsEmailExist(string email)
         {
-            return duLieuDAL.NGUOIDUNG.Any(x => x.TENTAIKHOAN == maNguoiDung);
+            return duLieuDAL.NGUOIDUNG.Any(x => x.EMAIL == email);
         }
     }
 }

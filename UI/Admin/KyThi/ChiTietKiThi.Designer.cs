@@ -248,7 +248,7 @@
             // 
             // colMaSV
             // 
-            this.colMaSV.HeaderText = "Mã sinh viên";
+            this.colMaSV.HeaderText = "ID sinh viên";
             this.colMaSV.Name = "colMaSV";
             // 
             // colDiem

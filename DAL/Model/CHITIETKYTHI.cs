@@ -4,8 +4,6 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
 
     [Table("CHITIETKYTHI")]
     public partial class CHITIETKYTHI
@@ -15,13 +13,9 @@ namespace PhanMemThiTracNghiem.DAL.Model
 
         }
 
-        [Key]
-        [Column(Order = 0)]
         [StringLength(11)]
         public string MAKITHI { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
         [StringLength(40)]
         public string MAMT { get; set; }
 
@@ -33,10 +27,10 @@ namespace PhanMemThiTracNghiem.DAL.Model
 
         public DateTime? THOIGIANKT { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
         [StringLength(15)]
         public string MASV { get; set; }
+        
+        [NotMapped]
         public object MONTHI { get; internal set; }
 
         //public virtual BANGDIEM BANGDIEM { get; set; }
@@ -51,7 +45,11 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public void InsertUpdate()
         {
             DuLieuDAL context = new DuLieuDAL();
-            context.CHITIETKYTHI.AddOrUpdate(this);
+            var existing = context.CHITIETKYTHI.Find(this.MAKITHI, this.MAMT, this.MASV);
+            if (existing == null)
+                context.CHITIETKYTHI.Add(this);
+            else
+                context.Entry(existing).CurrentValues.SetValues(this);
             context.SaveChanges();
         }
     }

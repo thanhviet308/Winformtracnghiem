@@ -4,8 +4,6 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
     using System.Linq;
 
     [Table("CAUHOI")]
@@ -80,7 +78,11 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public void InsertUpdate()
         {
             DuLieuDAL context = new DuLieuDAL();
-            context.CAUHOI.AddOrUpdate(this);
+            var existing = context.CAUHOI.Find(this.STT);
+            if (existing == null)
+                context.CAUHOI.Add(this);
+            else
+                context.Entry(existing).CurrentValues.SetValues(this);
             context.SaveChanges();
         }
     }

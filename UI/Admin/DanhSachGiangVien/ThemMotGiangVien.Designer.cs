@@ -137,7 +137,7 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(149, 26);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Mã giảng viên:";
+            this.label1.Text = "Email:";
             // 
             // txtMaGiangVien
             // 
@@ -258,6 +258,7 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachGiangVien
             this.guna2Panel3.Name = "guna2Panel3";
             this.guna2Panel3.Size = new System.Drawing.Size(624, 54);
             this.guna2Panel3.TabIndex = 10;
+            this.guna2Panel3.Visible = false;
             // 
             // dtNgaySinh
             // 

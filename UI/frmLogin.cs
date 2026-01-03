@@ -39,12 +39,12 @@ namespace PhanMemThiTracNghiem
         {
             if (txtTaiKhoan.Text.Length == 0 && txtMatKhau.Text.Length == 0)
             {
-                MessageBox.Show("Vui lòng nhập tài khoản và mật khẩu");
+                MessageBox.Show("Vui lòng nhập email và mật khẩu");
                 return;
             }
             else if (txtTaiKhoan.Text.Length == 0)
             {
-                MessageBox.Show("Vui lòng nhập tài khoản");
+                MessageBox.Show("Vui lòng nhập email");
                 return;
             }
             else if (txtMatKhau.Text.Length == 0)
@@ -58,7 +58,7 @@ namespace PhanMemThiTracNghiem
 
             if (nguoiDung == null)
             {
-                MessageBox.Show("Tài khoản hoặc mật khẩu không chính xác!");
+                MessageBox.Show("Email hoặc mật khẩu không chính xác!");
                 return;
             }
 
@@ -88,14 +88,14 @@ namespace PhanMemThiTracNghiem
                     break;
 
                 default:
-                    MessageBox.Show("Tài khoản chưa được phân quyền!");
+                    MessageBox.Show("Email này chưa được phân quyền!");
                     break;
             }
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            // Focus vào textbox tài khoản
+            // Focus vào textbox email
             txtTaiKhoan.Focus();
         }
 

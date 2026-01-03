@@ -45,13 +45,14 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
         private void frmGiangVien_Load(object sender, EventArgs e)
         {
             dgvCauHoi.DataSource = cauHoiBAL.GetCAUHOIs();
-            txtMaGV.Text = nguoiDung.TENTAIKHOAN;
+            txtMaGV.Text = nguoiDung.EMAIL;
             txtTenGV.Text = nguoiDung.HOTEN;
-            txtPassword.Text = nguoiDung.MATKHAU;
-            if (nguoiDung.NGAYSINH.HasValue)
-            {
-                dateGV.Value = nguoiDung.NGAYSINH.Value;
-            }
+            txtPassword.Text = "********"; // Không hiển thị mật khẩu thật
+            
+            // Ẩn panel ngày sinh (không còn trong NGUOIDUNG)
+            panel3.Visible = false;
+            // Di chuyển panel mật khẩu lên
+            panel4.Location = panel3.Location;
 
             foreach (var item in monThiBAL.GetThongTinMonThi())
             {
@@ -200,7 +201,7 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
                         DAPAN3 = dt.Rows[i]["DAPAN3"].ToString(),
                         DAPAN4 = dt.Rows[i]["DAPAN4"].ToString(),
                         DAPANDUNG = dt.Rows[i]["DAPANDUNG"].ToString(),
-                        MAGV = nguoiDung.TENTAIKHOAN.ToString(),
+                        MAGV = nguoiDung.ID.ToString(),
                         MAMT = mamt.ToString()
                             
                     };
@@ -232,7 +233,7 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
                 string dapan3 = txtDapAnC.Text;
                 string dapan4 = txtDapAnD.Text;
                 string dapandung="";
-                string magv1 = nguoiDung.TENTAIKHOAN.ToString();
+                string magv1 = nguoiDung.ID.ToString();
                 if (checkBoxA.Checked == true)
                 {
                     dapandung = txtDapAnA.Text;
@@ -297,7 +298,7 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
                 {
                     cauHoiDTO.DapAnDung = txtDapAnD.Text;
                 }
-                cauHoiDTO.MaGiaoVien = nguoiDung.TENTAIKHOAN.ToString();
+                cauHoiDTO.MaGiaoVien = nguoiDung.ID.ToString();
                 cauHoiDTO.MaMT = mamt;
                 CauHoiBAL.InsertUpdate(cauHoiDTO);
                 frmGiangVien_Load(sender, e);
@@ -338,7 +339,7 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            DoiMKGiangVien doiMK = new DoiMKGiangVien(nguoiDung.TENTAIKHOAN);
+            DoiMKGiangVien doiMK = new DoiMKGiangVien(nguoiDung.ID);
             doiMK.ShowDialog();
         }
 

@@ -966,7 +966,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(175, 35);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Tên giảng viên:";
+            this.label4.Text = "Họ tên:";
             // 
             // panel1
             // 
@@ -1011,7 +1011,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(169, 35);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Mã giảng viên:";
+            this.label3.Text = "Email:";
             // 
             // label2
             // 

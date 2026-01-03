@@ -29,10 +29,9 @@ namespace PhanMemThiTracNghiem.UI.Admin.DanhSachSinhVien
             {
                 NGUOIDUNG sinhVien = new NGUOIDUNG();
 
-                sinhVien.TENTAIKHOAN = txtMaSinhVien.Text;
+                sinhVien.EMAIL = txtMaSinhVien.Text;
                 sinhVien.HOTEN = txtTenSinhVien.Text;
-                sinhVien.NGAYSINH = dtNgaySinhSinhVien.Value;
-                sinhVien.MATKHAU = txtMatKhau.Text;
+                sinhVien.MATKHAU = PhanMemThiTracNghiem.BAL.PasswordHelper.HashPassword(txtMatKhau.Text);
                 sinhVien.MAROLE = 3; // Role SinhVien
                 nguoiDungBAL.Add(sinhVien);
                 frmAdmin.frmAdmin_Load(sender, e);

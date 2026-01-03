@@ -22,7 +22,6 @@ namespace PhanMemThiTracNghiem.UI.Admin
     {
         private readonly GiangVienBAL giangVienBAL;
         private readonly SinhVienBAL sinhVienBAL;
-        private readonly QuanTriBAL quanTriBAL;
         private readonly NGUOIDUNG nguoiDung;
         private readonly KyThiBAL kyThiBAL;
         private readonly DuLieuDAL duLieuDAL;
@@ -34,7 +33,6 @@ namespace PhanMemThiTracNghiem.UI.Admin
             InitializeComponent();
             giangVienBAL = new GiangVienBAL();
             sinhVienBAL = new SinhVienBAL();
-            quanTriBAL = new QuanTriBAL();
             kyThiBAL = new KyThiBAL();
             duLieuDAL = new DuLieuDAL();
             monThiBAL = new MonThiBAL();
@@ -58,6 +56,9 @@ namespace PhanMemThiTracNghiem.UI.Admin
             labelAdmin.Text = nguoiDung.HOTEN.ToString();
             dgvDanhSachGiangVien.DataSource = giangVienBAL.GetGIANGVIENs();
             dgvDanhSachSinhVien.DataSource = sinhVienBAL.GetSINHVIENs();
+            
+            // Ẩn các panel không còn dùng
+            guna2Panel4.Visible = false; // Panel ngày sinh giáo viên
            
             foreach (var item in kyThiBAL.GetKITHIs())
             {
@@ -93,33 +94,35 @@ namespace PhanMemThiTracNghiem.UI.Admin
 
         private void dgvDanhSachGiangVien_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
             dgvDanhSachGiangVien.CurrentRow.Selected = true;
-            txtMaGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["MAGV"].FormattedValue.ToString();
-            txtTenGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["TENGV"].FormattedValue.ToString();
-            dtNgaySinhGiangVien.Value = DateTime.Parse(dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["NGAYSINH"].FormattedValue.ToString());
-            txtMatKhauGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["MATKHAU"].FormattedValue.ToString();
+            txtMaGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["Email"].FormattedValue.ToString();
+            txtTenGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["HoTen"].FormattedValue.ToString();
+            // Lưu ID vào Tag để dùng khi cập nhật
+            txtMaGiangVien.Tag = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["ID"].Value;
         }
 
         private void dgvDanhSachSinhVien_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
             dgvDanhSachSinhVien.CurrentRow.Selected = true;
-            txtMaSinhVien.Text = dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["MASV"].FormattedValue.ToString();
-            txtLopSinhVien.Text = dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["LOP"].FormattedValue.ToString();
-            txtTenSinhVien.Text = dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["TENSV"].FormattedValue.ToString();
-            dtNgaySinhSinhVien.Value = DateTime.Parse(dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["NGAYSINH"].FormattedValue.ToString());
+            txtMaSinhVien.Text = dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["Email"].FormattedValue.ToString();
+            txtTenSinhVien.Text = dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["HoTen"].FormattedValue.ToString();
+            // Lưu ID vào Tag để dùng khi cập nhật
+            txtMaSinhVien.Tag = dgvDanhSachSinhVien.Rows[e.RowIndex].Cells["ID"].Value;
         }
 
         private void btnCapNhapGiangVien_Click(object sender, EventArgs e)
         {
             try
             {
-                string magv = txtMaGiangVien.Text;
-                string tengv = txtTenGiangVien.Text;
-                DateTime ngaysinh = dtNgaySinhGiangVien.Value;
+                int id = int.Parse(dgvDanhSachGiangVien.SelectedRows[0].Cells["ID"].Value.ToString());
+                string email = txtMaGiangVien.Text;
+                string hoten = txtTenGiangVien.Text;
                 string matkhau = txtMatKhauGiangVien.Text;
-                giangVienBAL.CapNhapGiangVien(magv,tengv,ngaysinh,matkhau);
+                giangVienBAL.CapNhapGiangVien(id, email, hoten, matkhau);
                 
-                MessageBox.Show("Cập nhập thành công!");
+                MessageBox.Show("Cập nhật thành công!");
                 frmAdmin_Load(sender, e);
             }
             catch (Exception ex)
@@ -139,10 +142,10 @@ namespace PhanMemThiTracNghiem.UI.Admin
         private void btnXoaMotGiangVien_Click(object sender, EventArgs e)
         {
             dgvDanhSachGiangVien.CurrentRow.Selected = true;
-            string r = dgvDanhSachGiangVien.SelectedRows[0].Cells[1].Value.ToString();
+            int id = int.Parse(dgvDanhSachGiangVien.SelectedRows[0].Cells["ID"].Value.ToString());
             try
             {
-                GiangVienBAL.Delete(r);
+                GiangVienBAL.Delete(id);
                 MessageBox.Show("Xóa thành công !!!");
                 dgvDanhSachGiangVien.DataSource = giangVienBAL.GetGIANGVIENs();
             }
@@ -181,10 +184,10 @@ namespace PhanMemThiTracNghiem.UI.Admin
         private void btnXoaMotSinhVien_Click(object sender, EventArgs e)
         {
             dgvDanhSachSinhVien.CurrentRow.Selected = true;
-            string r = dgvDanhSachSinhVien.SelectedRows[0].Cells[1].Value.ToString();
+            int id = int.Parse(dgvDanhSachSinhVien.SelectedRows[0].Cells["ID"].Value.ToString());
             try
             {
-                SinhVienBAL.Delete(r);
+                SinhVienBAL.Delete(id);
                 MessageBox.Show("Xóa thành công !!!");
                 dgvDanhSachSinhVien.DataSource = sinhVienBAL.GetSINHVIENs();
             }
@@ -199,12 +202,11 @@ namespace PhanMemThiTracNghiem.UI.Admin
         {
             try
             {
-                string masv = txtMaSinhVien.Text;
-                string lop = txtLopSinhVien.Text;
-                string tensv = txtTenSinhVien.Text;
-                DateTime ngaysinh = dtNgaySinhSinhVien.Value;
-                sinhVienBAL.CapNhapSinhVien(masv,lop, tensv, ngaysinh);
-                MessageBox.Show("Cập nhập thành công!");
+                int id = int.Parse(dgvDanhSachSinhVien.SelectedRows[0].Cells["ID"].Value.ToString());
+                string email = txtMaSinhVien.Text;
+                string hoten = txtTenSinhVien.Text;
+                sinhVienBAL.CapNhapSinhVien(id, email, hoten);
+                MessageBox.Show("Cập nhật thành công!");
                 frmAdmin_Load(sender,e);
             }
             catch (Exception ex)
@@ -261,7 +263,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
                 kithi.ID++;
                 kithi.MaKiThi = txtMaKiThi.Text;
                 kithi.TenKiThi = txtTenKiThi.Text;
-                kithi.Admin = nguoiDung.TENTAIKHOAN.ToString();
+                kithi.Admin = nguoiDung.EMAIL.ToString();
                 kithi.ThoiGianBD = dateBD.Value;
                 kithi.ThoiGianKT = dateKT.Value;
                 frmThemChiTiet frmThemChiTiet = new frmThemChiTiet(txtMaKiThi.Text, txtTenKiThi.Text);

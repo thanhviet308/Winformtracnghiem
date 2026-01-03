@@ -4,8 +4,6 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
 
     [Table("MONTHI")]
     public partial class MONTHI
@@ -41,7 +39,11 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public void InsertUpdate()
         {
             DuLieuDAL context = new DuLieuDAL();
-            context.MONTHI.AddOrUpdate(this);
+            var existing = context.MONTHI.Find(this.MAMT);
+            if (existing == null)
+                context.MONTHI.Add(this);
+            else
+                context.Entry(existing).CurrentValues.SetValues(this);
             context.SaveChanges();
         }
     }

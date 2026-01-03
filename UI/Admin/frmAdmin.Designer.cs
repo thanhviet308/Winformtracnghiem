@@ -628,7 +628,6 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.btnCapNhapSV.TabIndex = 11;
             this.btnCapNhapSV.Text = "Cập nhập";
             this.btnCapNhapSV.Click += new System.EventHandler(this.btnCapNhapSV_Click);
-            // 
             // guna2Panel14
             // 
             this.guna2Panel14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -640,6 +639,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.guna2Panel14.Name = "guna2Panel14";
             this.guna2Panel14.Size = new System.Drawing.Size(403, 55);
             this.guna2Panel14.TabIndex = 9;
+            this.guna2Panel14.Visible = false;
             // 
             // dtNgaySinhSinhVien
             // 
@@ -666,7 +666,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(105, 25);
             this.label13.TabIndex = 11;
-            this.label13.Text = "Ngày sinh:";
+            this.label13.Text = "";
             // 
             // guna2Panel12
             // 
@@ -688,7 +688,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(135, 25);
             this.label16.TabIndex = 13;
-            this.label16.Text = "Tên sinh viên:";
+            this.label16.Text = "Họ tên:";
             // 
             // txtTenSinhVien
             // 
@@ -732,7 +732,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(128, 25);
             this.label17.TabIndex = 14;
-            this.label17.Text = "Mã sinh viên:";
+            this.label17.Text = "Email:";
             // 
             // txtMaSinhVien
             // 
@@ -767,6 +767,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.guna2Panel13.Name = "guna2Panel13";
             this.guna2Panel13.Size = new System.Drawing.Size(403, 55);
             this.guna2Panel13.TabIndex = 8;
+            this.guna2Panel13.Visible = false;
             // 
             // txtLopSinhVien
             // 
@@ -798,7 +799,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(51, 25);
             this.label15.TabIndex = 12;
-            this.label15.Text = "Lớp:";
+            this.label15.Text = "";
             // 
             // guna2Panel10
             // 
@@ -950,6 +951,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.guna2Panel4.Name = "guna2Panel4";
             this.guna2Panel4.Size = new System.Drawing.Size(419, 55);
             this.guna2Panel4.TabIndex = 3;
+            this.guna2Panel4.Visible = false;
             // 
             // dtNgaySinhGiangVien
             // 
@@ -976,7 +978,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 25);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Ngày sinh:";
+            this.label4.Text = "Mật khẩu mới:";
             // 
             // guna2Panel3
             // 
@@ -1020,7 +1022,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(136, 25);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Tên giáo viên:";
+            this.label3.Text = "Họ tên:";
             // 
             // guna2Panel5
             // 
@@ -1109,7 +1111,7 @@ namespace PhanMemThiTracNghiem.UI.Admin
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(129, 25);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Mã giáo viên:";
+            this.label2.Text = "Email:";
             // 
             // guna2Panel1
             // 

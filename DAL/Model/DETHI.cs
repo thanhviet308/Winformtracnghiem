@@ -4,8 +4,6 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
 
     [Table("DETHI")]
     public partial class DETHI
@@ -36,7 +34,11 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public void InsertUpdate()
         {
             DuLieuDAL context = new DuLieuDAL();
-            context.DETHI.AddOrUpdate(this);
+            var existing = context.DETHI.Find(this.MADETHI);
+            if (existing == null)
+                context.DETHI.Add(this);
+            else
+                context.Entry(existing).CurrentValues.SetValues(this);
             context.SaveChanges();
         }
     }

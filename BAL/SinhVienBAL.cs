@@ -1,3 +1,4 @@
+using PhanMemThiTracNghiem.DAL.DTO;
 using PhanMemThiTracNghiem.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -19,44 +20,64 @@ namespace PhanMemThiTracNghiem.BAL
             nguoiDungBAL = new NguoiDungBAL();
         }
 
-        // Lấy tất cả sinh viên
-        public List<NGUOIDUNG> GetSINHVIENs()
+        // Lấy tất cả sinh viên - trả về DTO
+        public List<NguoiDungDTO> GetSINHVIENs()
         {
-            return nguoiDungBAL.GetByRole(ROLE_SINHVIEN);
+            return nguoiDungBAL.GetByRole(ROLE_SINHVIEN)
+                .Select(x => new NguoiDungDTO
+                {
+                    ID = x.ID,
+                    Email = x.EMAIL,
+                    HoTen = x.HOTEN,
+                    VaiTro = x.ROLE?.TENROLE ?? "Sinh viên"
+                }).ToList();
         }
 
-        // Lấy sinh viên theo mã
-        public static NGUOIDUNG GETSinhVien(string masv)
+        // Lấy sinh viên theo email
+        public static NGUOIDUNG GETSinhVien(string email)
         {
             var nguoiDungBAL = new NguoiDungBAL();
-            return nguoiDungBAL.GetByMaNguoiDung(masv);
+            return nguoiDungBAL.GetByEmail(email);
+        }
+
+        // Lấy sinh viên theo ID
+        public NGUOIDUNG GetById(int id)
+        {
+            return nguoiDungBAL.GetById(id);
         }
 
         // Cập nhật sinh viên
-        public void CapNhapSinhVien(string masv, string lop, string tensv, DateTime ngaysinh)
+        public void CapNhapSinhVien(int id, string email, string hoten)
         {
-            var sv = nguoiDungBAL.GetByMaNguoiDung(masv);
+            var sv = nguoiDungBAL.GetById(id);
             if (sv != null)
             {
-                sv.HOTEN = tensv;
-                sv.NGAYSINH = ngaysinh;
-                // LOP không còn trong NGUOIDUNG, bỏ qua
+                sv.EMAIL = email;
+                sv.HOTEN = hoten;
                 nguoiDungBAL.Update(sv);
             }
         }
 
         // Xóa sinh viên
-        public static void Delete(string masv)
+        public static void Delete(int id)
         {
             var nguoiDungBAL = new NguoiDungBAL();
-            nguoiDungBAL.Delete(masv);
+            nguoiDungBAL.Delete(id);
         }
 
-        // Tìm theo tên
-        public List<NGUOIDUNG> FindName(string tensv)
+        // Tìm theo tên hoặc email
+        public List<NguoiDungDTO> FindName(string keyword)
         {
+            var search = keyword.ToLower();
             return nguoiDungBAL.GetByRole(ROLE_SINHVIEN)
-                .Where(x => x.HOTEN.Contains(tensv)).ToList();
+                .Where(x => x.HOTEN.ToLower().Contains(search) || x.EMAIL.ToLower().Contains(search))
+                .Select(x => new NguoiDungDTO
+                {
+                    ID = x.ID,
+                    Email = x.EMAIL,
+                    HoTen = x.HOTEN,
+                    VaiTro = x.ROLE?.TENROLE ?? "Sinh viên"
+                }).ToList();
         }
     }
 }

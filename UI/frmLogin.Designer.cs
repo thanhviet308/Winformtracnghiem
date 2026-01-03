@@ -161,7 +161,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 20);
             this.label2.TabIndex = 20;
-            this.label2.Text = "Tài khoản";
+            this.label2.Text = "Email";
             // 
             // panel6
             // 
@@ -191,7 +191,7 @@
             this.txtTaiKhoan.Name = "txtTaiKhoan";
             this.txtTaiKhoan.PasswordChar = '\0';
             this.txtTaiKhoan.PlaceholderForeColor = System.Drawing.Color.Silver;
-            this.txtTaiKhoan.PlaceholderText = "Nhập tài khoản...";
+            this.txtTaiKhoan.PlaceholderText = "Nhập email...";
             this.txtTaiKhoan.SelectedText = "";
             this.txtTaiKhoan.Size = new System.Drawing.Size(303, 42);
             this.txtTaiKhoan.TabIndex = 18;

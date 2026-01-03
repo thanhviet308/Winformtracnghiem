@@ -5,19 +5,13 @@ namespace PhanMemThiTracNghiem.DAL.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
 
     [Table("CHITIETDETHI")]
     public partial class CHITIETDETHI
     {
-        [Key]
-        [Column(Order = 0)]
         [StringLength(10)]
         public string MADETHI { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MACAUHOI { get; set; }
 
@@ -31,7 +25,11 @@ namespace PhanMemThiTracNghiem.DAL.Model
         public void InsertUpdate()
         {
             DuLieuDAL context = new DuLieuDAL();
-            context.CHITIETDETHI.AddOrUpdate(this);
+            var existing = context.CHITIETDETHI.Find(this.MADETHI, this.MACAUHOI);
+            if (existing == null)
+                context.CHITIETDETHI.Add(this);
+            else
+                context.Entry(existing).CurrentValues.SetValues(this);
             context.SaveChanges();
         }
     }

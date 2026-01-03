@@ -14,11 +14,10 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
     public partial class DoiMKGiangVien : Form
     {
         private readonly GiangVienBAL giangVienBAL;
-        frmGiangVien frmgv;
-        string magv1;
-        public DoiMKGiangVien(string magv)
+        int idGV;
+        public DoiMKGiangVien(int id)
         {
-            this.magv1 = magv;
+            this.idGV = id;
             InitializeComponent();
             giangVienBAL = new GiangVienBAL();
         }
@@ -30,23 +29,38 @@ namespace PhanMemThiTracNghiem.UI.GiangVien
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            string magv = magv1.ToString();
-            string matkhau = "";
-            if (txtMatkhauCu.Text != GiangVienBAL.GETGiangVien(magv).MATKHAU)
+            NguoiDungBAL nguoiDungBAL = new NguoiDungBAL();
+            var gv = nguoiDungBAL.GetById(idGV);
+            
+            if (gv == null)
+            {
+                MessageBox.Show("Không tìm thấy người dùng");
+                return;
+            }
+            
+            // So sánh mật khẩu cũ đã mã hóa
+            string hashedOldPassword = PasswordHelper.HashPassword(txtMatkhauCu.Text);
+            if (hashedOldPassword != gv.MATKHAU)
             {
                 MessageBox.Show("Mật khẩu cũ không đúng");
+                return;
             }
-            else if (txtMatKhauMoi.Text != txtNhapLai.Text)
+            
+            if (string.IsNullOrWhiteSpace(txtMatKhauMoi.Text))
             {
-                MessageBox.Show("Mật khẩu không khớp");
+                MessageBox.Show("Vui lòng nhập mật khẩu mới");
+                return;
             }
-            else
+            
+            if (txtMatKhauMoi.Text != txtNhapLai.Text)
             {
-                matkhau = txtMatKhauMoi.Text;
-                giangVienBAL.DoiMatKhau(magv,matkhau);
-                MessageBox.Show("Đổi thành công");
-                this.Close();   
+                MessageBox.Show("Mật khẩu mới không khớp");
+                return;
             }
+            
+            giangVienBAL.DoiMatKhau(idGV, txtMatKhauMoi.Text);
+            MessageBox.Show("Đổi mật khẩu thành công");
+            this.Close();
         }
     }
 }
