@@ -15,40 +15,40 @@ namespace PhanMemThiTracNghiem.Services
         }
 
         // Lấy tất cả người dùng
-        public List<NGUOIDUNG> GetAll()
+        public List<NguoiDung> GetAll()
         {
             return NguoiDungRepository.GetAll();
         }
 
         // Lấy người dùng theo ID
-        public NGUOIDUNG GetById(int id)
+        public NguoiDung GetById(long id)
         {
             return NguoiDungRepository.GetById(id);
         }
 
         // Lấy người dùng theo Email
-        public NGUOIDUNG GetByEmail(string email)
+        public NguoiDung GetByEmail(string email)
         {
             return NguoiDungRepository.GetByEmail(email);
         }
 
         // Đăng nhập
-        public NGUOIDUNG DangNhap(string email, string matKhau)
+        public NguoiDung DangNhap(string email, string matKhau)
         {
             return NguoiDungRepository.DangNhap(email, matKhau);
         }
 
-        // Lấy người dùng theo role
-        public List<NGUOIDUNG> GetByRole(int maRole)
+        // Lấy người dùng theo vai trò
+        public List<NguoiDung> GetByRole(long maVaiTro)
         {
-            return NguoiDungRepository.GetByRole(maRole);
+            return NguoiDungRepository.GetByRole(maVaiTro);
         }
 
         // Thêm người dùng mới
-        public bool Add(NGUOIDUNG nguoiDung)
+        public bool Add(NguoiDung nguoiDung)
         {
             // Kiểm tra email đã tồn tại chưa
-            if (NguoiDungRepository.IsEmailExist(nguoiDung.EMAIL))
+            if (NguoiDungRepository.IsEmailExist(nguoiDung.Email))
             {
                 return false;
             }
@@ -56,15 +56,26 @@ namespace PhanMemThiTracNghiem.Services
         }
 
         // Cập nhật người dùng
-        public bool Update(NGUOIDUNG nguoiDung)
+        public bool Update(NguoiDung nguoiDung)
         {
+            // Kiểm tra email đã tồn tại (trừ user hiện tại)
+            if (NguoiDungRepository.IsEmailExist(nguoiDung.Email, nguoiDung.Id))
+            {
+                return false;
+            }
             return NguoiDungRepository.Update(nguoiDung);
         }
 
-        // Xóa người dùng
-        public bool Delete(int id)
+        // Xóa người dùng (soft delete)
+        public bool Delete(long id)
         {
             return NguoiDungRepository.Delete(id);
+        }
+
+        // Xóa người dùng vĩnh viễn
+        public bool HardDelete(long id)
+        {
+            return NguoiDungRepository.HardDelete(id);
         }
 
         // Kiểm tra email tồn tại

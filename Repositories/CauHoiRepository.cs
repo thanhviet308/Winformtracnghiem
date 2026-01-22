@@ -1,68 +1,142 @@
 using PhanMemThiTracNghiem.Data;
-using PhanMemThiTracNghiem.DTOs;
 using PhanMemThiTracNghiem.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhanMemThiTracNghiem.Repositories
 {
-    internal class CauHoiRepository
+    public class CauHoiRepository
     {
-        private readonly AppDbContext cauHoi;
+        private readonly AppDbContext _context;
+
         public CauHoiRepository()
         {
-            cauHoi = new AppDbContext();
-        }
-        public List<CAUHOI> GetThongTinCauHoi()
-        {
-            return cauHoi.CAUHOI.ToList();
+            _context = new AppDbContext();
         }
 
-
-        public static void InsertUpdate(CauHoiDTO cauHoiDTO)
+        // Lấy tất cả câu hỏi
+        public List<CauHoiThi> GetAll()
         {
-            CAUHOI cAUHOI = new CAUHOI();
-            cAUHOI.STT = cauHoiDTO.STT;
-            cAUHOI.MACAUHOI = cauHoiDTO.MaCauHoi;
-            cAUHOI.NDCAUHOI = cauHoiDTO.NDCAUHOI;
-            cAUHOI.DAPAN1 = cauHoiDTO.DapAn1;
-            cAUHOI.DAPAN2 = cauHoiDTO.DapAn2;
-            cAUHOI.DAPAN3 = cauHoiDTO.DapAn3;
-            cAUHOI.DAPAN4 = cauHoiDTO.DapAn4;
-            cAUHOI.DAPANDUNG = cauHoiDTO.DapAnDung;
-            cAUHOI.MAGV = cauHoiDTO.MaGiaoVien;
-            cAUHOI.MAMT = cauHoiDTO.MaMT;   
-            cAUHOI.InsertUpdate();
+            return _context.CauHoiThi
+                .Include(c => c.MonHoc)
+                .Include(c => c.LuaChonTracNghiems)
+                .Where(c => c.TrangThai == true)
+                .ToList();
         }
 
-        public void CapNhapCauHoi(int macauhoi,string noidung, string dapan1,string dapan2, string dapan3,string dapan4, string dapandung,string magv)
+        // Lấy câu hỏi theo ID
+        public CauHoiThi GetById(long id)
         {
-            CAUHOI cauhoi = cauHoi.CAUHOI.Find(macauhoi);
-          //  cauhoi.MACAUHOI = macauhoi;
-            cauhoi.NDCAUHOI = noidung;
-            cauhoi.DAPAN1 = dapan1;
-            cauhoi.DAPAN2 = dapan2;
-            cauhoi.DAPAN3 = dapan3;
-            cauhoi.DAPAN4 = dapan4;
-            cauhoi.DAPANDUNG = dapandung;
-            cauhoi.MAGV = magv;
-            cauHoi.SaveChanges();
+            return _context.CauHoiThi
+                .Include(c => c.MonHoc)
+                .Include(c => c.LuaChonTracNghiems)
+                .FirstOrDefault(c => c.Id == id);
         }
 
-
-
-        public List<CAUHOI> GetCAUHOIs()
+        // Lấy câu hỏi theo môn học
+        public List<CauHoiThi> GetByMonHoc(long maMon)
         {
-            return cauHoi.CAUHOI.ToList();
+            return _context.CauHoiThi
+                .Include(c => c.LuaChonTracNghiems)
+                .Where(c => c.MaMon == maMon && c.TrangThai == true)
+                .ToList();
         }
 
-
-        public List<CAUHOI> FindName(string mamon)
+        // Lấy câu hỏi theo người tạo
+        public List<CauHoiThi> GetByNguoiTao(long nguoiTao)
         {
-            return cauHoi.CAUHOI.Where(p => p.MAMT.Contains(mamon.Trim())).ToList();
+            return _context.CauHoiThi
+                .Include(c => c.MonHoc)
+                .Include(c => c.LuaChonTracNghiems)
+                .Where(c => c.NguoiTao == nguoiTao && c.TrangThai == true)
+                .ToList();
+        }
+
+        // Thêm câu hỏi
+        public bool Add(CauHoiThi cauHoi)
+        {
+            try
+            {
+                _context.CauHoiThi.Add(cauHoi);
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Thêm câu hỏi với các lựa chọn
+        public bool AddWithOptions(CauHoiThi cauHoi, List<LuaChonTracNghiem> luaChons)
+        {
+            try
+            {
+                _context.CauHoiThi.Add(cauHoi);
+                _context.SaveChanges();
+
+                foreach (var luaChon in luaChons)
+                {
+                    luaChon.MaCauHoi = cauHoi.Id;
+                    _context.LuaChonTracNghiem.Add(luaChon);
+                }
+                _context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Cập nhật câu hỏi
+        public bool Update(CauHoiThi cauHoi)
+        {
+            try
+            {
+                var existing = _context.CauHoiThi.Find(cauHoi.Id);
+                if (existing != null)
+                {
+                    existing.NoiDung = cauHoi.NoiDung;
+                    existing.MaMon = cauHoi.MaMon;
+                    existing.TrangThai = cauHoi.TrangThai;
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Xóa câu hỏi (soft delete)
+        public bool Delete(long id)
+        {
+            try
+            {
+                var cauHoi = _context.CauHoiThi.Find(id);
+                if (cauHoi != null)
+                {
+                    cauHoi.TrangThai = false;
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ============ Legacy methods ============
+        public List<CauHoiThi> GetCAUHOIs()
+        {
+            return GetAll();
         }
     }
 }

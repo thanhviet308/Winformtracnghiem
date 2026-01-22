@@ -23,62 +23,64 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
 
         private void ucQuanLyDeThi_Load(object sender, EventArgs e)
         {
-            LoadMonThi();
-            LoadDeThi();
+            LoadMonHoc();
+            LoadNganHangDe();
         }
 
         #region Load Data
-        private void LoadMonThi()
+        private void LoadMonHoc()
         {
-            var listMonThi = AppDbContext.MONTHI.Select(m => new
+            var listMonHoc = AppDbContext.MonHoc.Select(m => new
             {
-                m.MAMT,
-                m.TENMT
+                m.Id,
+                m.TenMon
             }).ToList();
 
-            dgvMonThi.DataSource = listMonThi;
+            dgvMonThi.DataSource = listMonHoc;
 
             // Đặt tên cột
             if (dgvMonThi.Columns.Count > 0)
             {
-                dgvMonThi.Columns["MAMT"].HeaderText = "Mã môn thi";
-                dgvMonThi.Columns["TENMT"].HeaderText = "Tên môn thi";
+                dgvMonThi.Columns["Id"].HeaderText = "Mã môn";
+                dgvMonThi.Columns["TenMon"].HeaderText = "Tên môn học";
             }
         }
 
-        private void LoadDeThi()
+        private void LoadNganHangDe()
         {
-            var listDeThi = (from dt in AppDbContext.DETHI
-                             join kt in AppDbContext.KITHI on dt.MAKITHI equals kt.MAKITHI into ktJoin
+            var listNganHangDe = (from nhd in AppDbContext.NganHangDe
+                             join kt in AppDbContext.KyThi on nhd.Id equals kt.MaNganHangDe into ktJoin
                              from kt in ktJoin.DefaultIfEmpty()
-                             join mt in AppDbContext.MONTHI on dt.MAMT equals mt.MAMT into mtJoin
-                             from mt in mtJoin.DefaultIfEmpty()
+                             join mh in AppDbContext.MonHoc on nhd.MaMon equals mh.Id into mhJoin
+                             from mh in mhJoin.DefaultIfEmpty()
                              select new
                              {
-                                 dt.MADETHI,
-                                 TenKyThi = kt != null ? kt.TENKITHI : "",
-                                 TenMonThi = mt != null ? mt.TENMT : ""
+                                 nhd.Id,
+                                 nhd.TenDe,
+                                 TenKyThi = kt != null ? kt.TenKyThi : "",
+                                 TenMonHoc = mh != null ? mh.TenMon : ""
                              }).ToList();
 
-            dgvDeThi.DataSource = listDeThi;
+            dgvDeThi.DataSource = listNganHangDe;
 
             // Đặt tên cột
             if (dgvDeThi.Columns.Count > 0)
             {
-                dgvDeThi.Columns["MADETHI"].HeaderText = "Mã đề thi";
+                dgvDeThi.Columns["Id"].HeaderText = "Mã ngân hàng đề";
+                dgvDeThi.Columns["TenDe"].HeaderText = "Tên ngân hàng đề";
                 dgvDeThi.Columns["TenKyThi"].HeaderText = "Kỳ thi";
-                dgvDeThi.Columns["TenMonThi"].HeaderText = "Môn thi";
+                dgvDeThi.Columns["TenMonHoc"].HeaderText = "Môn học";
             }
         }
         #endregion
 
-        #region Môn Thi Events
+        #region Môn Học Events
         private void btnThemMonThi_Click(object sender, EventArgs e)
         {
             frmThemMonThi frm = new frmThemMonThi();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                LoadMonThi();
+                LoadMonHoc();
             }
         }
 
@@ -87,42 +89,44 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             string keyword = txtTimMonThi.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(keyword))
             {
-                LoadMonThi();
+                LoadMonHoc();
                 return;
             }
 
-            var listMonThi = AppDbContext.MONTHI
-                .Where(m => m.MAMT.ToLower().Contains(keyword) || m.TENMT.ToLower().Contains(keyword))
-                .Select(m => new { m.MAMT, m.TENMT })
+            var listMonHoc = AppDbContext.MonHoc
+                .Where(m => m.Id.ToString().Contains(keyword) || m.TenMon.ToLower().Contains(keyword))
+                .Select(m => new { m.Id, m.TenMon })
                 .ToList();
 
-            dgvMonThi.DataSource = listMonThi;
+            dgvMonThi.DataSource = listMonHoc;
         }
 
         private void dgvMonThi_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            string maMT = dgvMonThi.Rows[e.RowIndex].Cells["MAMT"].Value?.ToString();
+            var maMonObj = dgvMonThi.Rows[e.RowIndex].Cells["Id"].Value;
+            if (maMonObj == null) return;
+            long maMon = Convert.ToInt64(maMonObj);
 
             if (dgvMonThi.Columns[e.ColumnIndex].Name == "colSuaMonThi")
             {
-                // TODO: Mở form sửa môn thi
-                MessageBox.Show($"Sửa môn thi: {maMT}", "Thông báo");
+                // TODO: Mở form sửa môn học
+                MessageBox.Show($"Sửa môn học: {maMon}", "Thông báo");
             }
             else if (dgvMonThi.Columns[e.ColumnIndex].Name == "colXoaMonThi")
             {
-                if (MessageBox.Show($"Bạn có chắc muốn xóa môn thi này?", "Xác nhận",
+                if (MessageBox.Show($"Bạn có chắc muốn xóa môn học này?", "Xác nhận",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
-                        var monThi = AppDbContext.MONTHI.Find(maMT);
-                        if (monThi != null)
+                        var monHoc = AppDbContext.MonHoc.Find(maMon);
+                        if (monHoc != null)
                         {
-                            AppDbContext.MONTHI.Remove(monThi);
+                            AppDbContext.MonHoc.Remove(monHoc);
                             AppDbContext.SaveChanges();
-                            LoadMonThi();
+                            LoadMonHoc();
                             MessageBox.Show("Xóa thành công!", "Thông báo");
                         }
                     }
@@ -135,18 +139,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
         }
         #endregion
 
-        #region Đề Thi Events
+        #region Ngân Hàng Đề Events
         private void btnThemDeThi_Click(object sender, EventArgs e)
         {
             frmThemDeThi frm = new frmThemDeThi();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                LoadDeThi();
+                LoadNganHangDe();
 
-                // Mở chi tiết đề thi
+                // Mở chi tiết ngân hàng đề
                 ChiTietDeThi chiTietDeThi = new ChiTietDeThi(frm.MaDeThiMoi);
                 chiTietDeThi.ShowDialog();
-                LoadDeThi();
+                LoadNganHangDe();
             }
         }
 
@@ -155,54 +159,59 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             string keyword = txtTimDeThi.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(keyword))
             {
-                LoadDeThi();
+                LoadNganHangDe();
                 return;
             }
 
-            var listDeThi = (from dt in AppDbContext.DETHI
-                             join kt in AppDbContext.KITHI on dt.MAKITHI equals kt.MAKITHI into ktJoin
+            var listNganHangDe = (from nhd in AppDbContext.NganHangDe
+                             join kt in AppDbContext.KyThi on nhd.Id equals kt.MaNganHangDe into ktJoin
                              from kt in ktJoin.DefaultIfEmpty()
-                             join mt in AppDbContext.MONTHI on dt.MAMT equals mt.MAMT into mtJoin
-                             from mt in mtJoin.DefaultIfEmpty()
-                             where dt.MADETHI.ToLower().Contains(keyword) ||
-                                   (kt != null && kt.TENKITHI.ToLower().Contains(keyword)) ||
-                                   (mt != null && mt.TENMT.ToLower().Contains(keyword))
+                             join mh in AppDbContext.MonHoc on nhd.MaMon equals mh.Id into mhJoin
+                             from mh in mhJoin.DefaultIfEmpty()
+                             where nhd.Id.ToString().Contains(keyword) ||
+                                   (nhd.TenDe != null && nhd.TenDe.ToLower().Contains(keyword)) ||
+                                   (kt != null && kt.TenKyThi.ToLower().Contains(keyword)) ||
+                                   (mh != null && mh.TenMon.ToLower().Contains(keyword))
                              select new
                              {
-                                 dt.MADETHI,
-                                 TenKyThi = kt != null ? kt.TENKITHI : "",
-                                 TenMonThi = mt != null ? mt.TENMT : ""
+                                 nhd.Id,
+                                 nhd.TenDe,
+                                 TenKyThi = kt != null ? kt.TenKyThi : "",
+                                 TenMonHoc = mh != null ? mh.TenMon : ""
                              }).ToList();
 
-            dgvDeThi.DataSource = listDeThi;
+            dgvDeThi.DataSource = listNganHangDe;
         }
 
         private void dgvDeThi_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            string maDT = dgvDeThi.Rows[e.RowIndex].Cells["MADETHI"].Value?.ToString();
+            var maDeObj = dgvDeThi.Rows[e.RowIndex].Cells["Id"].Value;
+            if (maDeObj == null) return;
+            string maDe = maDeObj.ToString();
 
             if (dgvDeThi.Columns[e.ColumnIndex].Name == "colSuaDeThi")
             {
-                // Mở chi tiết đề thi để sửa
-                ChiTietDeThi chiTietDeThi = new ChiTietDeThi(maDT);
+                // Mở chi tiết ngân hàng đề để sửa
+                ChiTietDeThi chiTietDeThi = new ChiTietDeThi(maDe);
                 chiTietDeThi.ShowDialog();
-                LoadDeThi();
+                LoadNganHangDe();
             }
             else if (dgvDeThi.Columns[e.ColumnIndex].Name == "colXoaDeThi")
             {
-                if (MessageBox.Show($"Bạn có chắc muốn xóa đề thi này?", "Xác nhận",
+                if (MessageBox.Show($"Bạn có chắc muốn xóa ngân hàng đề này?", "Xác nhận",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
-                        var deThi = AppDbContext.DETHI.Find(maDT);
-                        if (deThi != null)
+                        long maDeId = Convert.ToInt64(maDeObj);
+                        var nganHangDe = AppDbContext.NganHangDe.Find(maDeId);
+                        if (nganHangDe != null)
                         {
-                            AppDbContext.DETHI.Remove(deThi);
+                            AppDbContext.NganHangDe.Remove(nganHangDe);
                             AppDbContext.SaveChanges();
-                            LoadDeThi();
+                            LoadNganHangDe();
                             MessageBox.Show("Xóa thành công!", "Thông báo");
                         }
                     }
@@ -218,10 +227,13 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
         {
             if (e.RowIndex < 0) return;
 
-            string maDT = dgvDeThi.Rows[e.RowIndex].Cells["MADETHI"].Value?.ToString();
-            ChiTietDeThi chiTietDeThi = new ChiTietDeThi(maDT);
+            var maDeObj = dgvDeThi.Rows[e.RowIndex].Cells["Id"].Value;
+            if (maDeObj == null) return;
+            string maDe = maDeObj.ToString();
+            
+            ChiTietDeThi chiTietDeThi = new ChiTietDeThi(maDe);
             chiTietDeThi.ShowDialog();
-            LoadDeThi();
+            LoadNganHangDe();
         }
         #endregion
     }

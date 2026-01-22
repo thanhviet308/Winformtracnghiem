@@ -17,8 +17,8 @@ namespace PhanMemThiTracNghiem
 {
     public partial class ThiTracNghiem : Form
     {
-        private readonly NGUOIDUNG nguoiDung;
-        public ThiTracNghiem(NGUOIDUNG nd)
+        private readonly NguoiDung nguoiDung;
+        public ThiTracNghiem(NguoiDung nd)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
@@ -33,7 +33,7 @@ namespace PhanMemThiTracNghiem
             // Số điểm
             lblDiem.Text = diemThi.ToString();
 
-            // TẠO Ô ĐÚN GSAI & Tô màu cho ô có câu trả lời đúng
+            // TẠO Ô ĐÚNG SAI & Tô màu cho ô có câu trả lời đúng
             int x = 25, y = 25;
             for (int i = 0; i < luuBaiLam.Count(); i++)
             {
@@ -41,7 +41,6 @@ namespace PhanMemThiTracNghiem
                 btn.Location = new Point(x, y);
                 btn.Text = (i + 1).ToString();
                 btn.TextAlign = ContentAlignment.MiddleCenter;
-                //btn.Tag = item.MaSoBan;
                 btn.Name = i.ToString();
                 btn.Size = new Size(53, 46);
                 btn.BackColor = Color.FromArgb(255, 72, 81);
@@ -71,14 +70,11 @@ namespace PhanMemThiTracNghiem
             btn.Location = new Point(x, y);
             btn.Font = new Font("Be Vietnam Pro", 10);
             btn.Text = i.ToString();
-            //btn.Tag = item.MaSoBan;
             btn.Name = i.ToString();
             btn.TextAlign = ContentAlignment.MiddleCenter;
             btn.Size = new Size(53, 46);
             btn.BackColor = Color.Red;
             btn.Focus();
-            //btn.Click += Btn_Click;
-            //btn.Click += Btn_Oder;
 
             pnlHienThiODungSai.Controls.Add(btn);
 

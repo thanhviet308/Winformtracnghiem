@@ -16,13 +16,16 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
     public partial class DoiMKGiangVien : Form
     {
         private readonly GiangVienService GiangVienService;
+        private readonly NguoiDungService NguoiDungService;
         int idGV;
+        
         public DoiMKGiangVien(int id)
         {
             this.idGV = id;
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             GiangVienService = new GiangVienService();
+            NguoiDungService = new NguoiDungService();
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
@@ -32,7 +35,6 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            NguoiDungService NguoiDungService = new NguoiDungService();
             var gv = NguoiDungService.GetById(idGV);
             
             if (gv == null)
@@ -43,7 +45,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             
             // So sánh mật khẩu cũ đã mã hóa
             string hashedOldPassword = PasswordHelper.HashPassword(txtMatkhauCu.Text);
-            if (hashedOldPassword != gv.MATKHAU)
+            if (hashedOldPassword != gv.MatKhau)
             {
                 MessageBox.Show("Mật khẩu cũ không đúng");
                 return;
@@ -61,7 +63,9 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 return;
             }
             
-            GiangVienService.DoiMatKhau(idGV, txtMatKhauMoi.Text);
+            // Cập nhật mật khẩu
+            gv.MatKhau = PasswordHelper.HashPassword(txtMatKhauMoi.Text);
+            NguoiDungService.Update(gv);
             MessageBox.Show("Đổi mật khẩu thành công");
             this.Close();
         }

@@ -68,9 +68,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 return;
             }
 
-            var list = AppDbContext.NGUOIDUNG
-                .Where(n => n.MAROLE == 3 && 
-                    (n.EMAIL.ToLower().Contains(keyword) || n.HOTEN.ToLower().Contains(keyword)))
+            var list = AppDbContext.NguoiDung
+                .Where(n => n.MaVaiTro == 3 && 
+                    (n.Email.ToLower().Contains(keyword) || n.HoTen.ToLower().Contains(keyword)))
                 .ToList();
 
             dgvSinhVien.DataSource = list;
@@ -108,7 +108,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
             if (dgvSinhVien.Columns[e.ColumnIndex].Name == "colSua")
             {
-                var sinhVien = AppDbContext.NGUOIDUNG.FirstOrDefault(n => n.EMAIL == email);
+                var sinhVien = AppDbContext.NguoiDung.FirstOrDefault(n => n.Email == email);
                 if (sinhVien != null)
                 {
                     frmSuaSinhVien frm = new frmSuaSinhVien(sinhVien);
@@ -125,10 +125,10 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 {
                     try
                     {
-                        var sv = AppDbContext.NGUOIDUNG.FirstOrDefault(n => n.EMAIL == email);
+                        var sv = AppDbContext.NguoiDung.FirstOrDefault(n => n.Email == email);
                         if (sv != null)
                         {
-                            AppDbContext.NGUOIDUNG.Remove(sv);
+                            AppDbContext.NguoiDung.Remove(sv);
                             AppDbContext.SaveChanges();
                             LoadSinhVien();
                             MessageBox.Show("Xóa thành công!", "Thông báo");

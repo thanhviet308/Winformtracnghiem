@@ -17,46 +17,46 @@ namespace PhanMemThiTracNghiem.Repositories
         }
 
         // Lấy tất cả người dùng
-        public List<NGUOIDUNG> GetAll()
+        public List<NguoiDung> GetAll()
         {
-            return AppDbContext.NGUOIDUNG.Include(x => x.ROLE).ToList();
+            return AppDbContext.NguoiDung.Include(x => x.VaiTro).ToList();
         }
 
         // Lấy người dùng theo ID
-        public NGUOIDUNG GetById(int id)
+        public NguoiDung GetById(long id)
         {
-            return AppDbContext.NGUOIDUNG.Include(x => x.ROLE)
-                .FirstOrDefault(x => x.ID == id);
+            return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         // Lấy người dùng theo Email
-        public NGUOIDUNG GetByEmail(string email)
+        public NguoiDung GetByEmail(string email)
         {
-            return AppDbContext.NGUOIDUNG.Include(x => x.ROLE)
-                .FirstOrDefault(x => x.EMAIL == email);
+            return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .FirstOrDefault(x => x.Email == email);
         }
 
         // Đăng nhập - kiểm tra email và mật khẩu
-        public NGUOIDUNG DangNhap(string email, string matKhau)
+        public NguoiDung DangNhap(string email, string matKhau)
         {
             string hashedPassword = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(matKhau);
-            return AppDbContext.NGUOIDUNG.Include(x => x.ROLE)
-                .FirstOrDefault(x => x.EMAIL == email && x.MATKHAU == hashedPassword);
+            return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .FirstOrDefault(x => x.Email == email && x.MatKhau == hashedPassword && x.TrangThai == true);
         }
 
-        // Lấy người dùng theo role
-        public List<NGUOIDUNG> GetByRole(int maRole)
+        // Lấy người dùng theo vai trò
+        public List<NguoiDung> GetByRole(long maVaiTro)
         {
-            return AppDbContext.NGUOIDUNG.Include(x => x.ROLE)
-                .Where(x => x.MAROLE == maRole).ToList();
+            return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .Where(x => x.MaVaiTro == maVaiTro && x.TrangThai == true).ToList();
         }
 
         // Thêm người dùng mới
-        public bool Add(NGUOIDUNG nguoiDung)
+        public bool Add(NguoiDung nguoiDung)
         {
             try
             {
-                AppDbContext.NGUOIDUNG.Add(nguoiDung);
+                AppDbContext.NguoiDung.Add(nguoiDung);
                 AppDbContext.SaveChanges();
                 return true;
             }
@@ -67,17 +67,18 @@ namespace PhanMemThiTracNghiem.Repositories
         }
 
         // Cập nhật người dùng
-        public bool Update(NGUOIDUNG nguoiDung)
+        public bool Update(NguoiDung nguoiDung)
         {
             try
             {
-                var existing = AppDbContext.NGUOIDUNG.Find(nguoiDung.ID);
+                var existing = AppDbContext.NguoiDung.Find(nguoiDung.Id);
                 if (existing != null)
                 {
-                    existing.MATKHAU = nguoiDung.MATKHAU;
-                    existing.EMAIL = nguoiDung.EMAIL;
-                    existing.HOTEN = nguoiDung.HOTEN;
-                    existing.MAROLE = nguoiDung.MAROLE;
+                    existing.MatKhau = nguoiDung.MatKhau;
+                    existing.Email = nguoiDung.Email;
+                    existing.HoTen = nguoiDung.HoTen;
+                    existing.MaVaiTro = nguoiDung.MaVaiTro;
+                    existing.TrangThai = nguoiDung.TrangThai;
                     AppDbContext.SaveChanges();
                     return true;
                 }
@@ -89,15 +90,35 @@ namespace PhanMemThiTracNghiem.Repositories
             }
         }
 
-        // Xóa người dùng
-        public bool Delete(int id)
+        // Xóa người dùng (soft delete)
+        public bool Delete(long id)
         {
             try
             {
-                var nguoiDung = AppDbContext.NGUOIDUNG.Find(id);
+                var nguoiDung = AppDbContext.NguoiDung.Find(id);
                 if (nguoiDung != null)
                 {
-                    AppDbContext.NGUOIDUNG.Remove(nguoiDung);
+                    nguoiDung.TrangThai = false; // Soft delete
+                    AppDbContext.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Xóa người dùng vĩnh viễn
+        public bool HardDelete(long id)
+        {
+            try
+            {
+                var nguoiDung = AppDbContext.NguoiDung.Find(id);
+                if (nguoiDung != null)
+                {
+                    AppDbContext.NguoiDung.Remove(nguoiDung);
                     AppDbContext.SaveChanges();
                     return true;
                 }
@@ -112,7 +133,13 @@ namespace PhanMemThiTracNghiem.Repositories
         // Kiểm tra email tồn tại
         public bool IsEmailExist(string email)
         {
-            return AppDbContext.NGUOIDUNG.Any(x => x.EMAIL == email);
+            return AppDbContext.NguoiDung.Any(x => x.Email == email);
+        }
+
+        // Kiểm tra email tồn tại (trừ user hiện tại)
+        public bool IsEmailExist(string email, long excludeId)
+        {
+            return AppDbContext.NguoiDung.Any(x => x.Email == email && x.Id != excludeId);
         }
     }
 }

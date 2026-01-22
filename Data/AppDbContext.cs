@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PhanMemThiTracNghiem.Models;
@@ -9,17 +8,17 @@ namespace PhanMemThiTracNghiem.Data
     public partial class AppDbContext : DbContext
     {
         private static string _connectionString;
-        
+
         static AppDbContext()
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
-            
+
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
-        
+
         public AppDbContext()
         {
         }
@@ -29,15 +28,22 @@ namespace PhanMemThiTracNghiem.Data
         {
         }
 
-        public virtual DbSet<BANGDIEM> BANGDIEM { get; set; }
-        public virtual DbSet<CAUHOI> CAUHOI { get; set; }
-        public virtual DbSet<CHITIETDETHI> CHITIETDETHI { get; set; }
-        public virtual DbSet<CHITIETKYTHI> CHITIETKYTHI { get; set; }
-        public virtual DbSet<DETHI> DETHI { get; set; }
-        public virtual DbSet<KITHI> KITHI { get; set; }
-        public virtual DbSet<MONTHI> MONTHI { get; set; }
-        public virtual DbSet<ROLE> ROLE { get; set; }
-        public virtual DbSet<NGUOIDUNG> NGUOIDUNG { get; set; }
+        // DbSets theo thiết kế mới
+        public virtual DbSet<VaiTro> VaiTro { get; set; }
+        public virtual DbSet<NguoiDung> NguoiDung { get; set; }
+        public virtual DbSet<MonHoc> MonHoc { get; set; }
+        public virtual DbSet<LopHoc> LopHoc { get; set; }
+        public virtual DbSet<LopHocSinhVien> LopHocSinhVien { get; set; }
+        public virtual DbSet<CauHoiThi> CauHoiThi { get; set; }
+        public virtual DbSet<LuaChonTracNghiem> LuaChonTracNghiem { get; set; }
+        public virtual DbSet<NganHangDe> NganHangDe { get; set; }
+        public virtual DbSet<CauTrucDe> CauTrucDe { get; set; }
+        public virtual DbSet<KyThi> KyThi { get; set; }
+        public virtual DbSet<PhanCongGiangDay> PhanCongGiangDay { get; set; }
+        public virtual DbSet<PhanCongGiamSat> PhanCongGiamSat { get; set; }
+        public virtual DbSet<BaiThi> BaiThi { get; set; }
+        public virtual DbSet<TraLoiBaiThi> TraLoiBaiThi { get; set; }
+        public virtual DbSet<NhatKyViPham> NhatKyViPham { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,86 +55,189 @@ namespace PhanMemThiTracNghiem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Composite keys
-            modelBuilder.Entity<BANGDIEM>(entity =>
+            // ===== Composite Keys =====
+
+            // lop_hoc_sinh_vien: ma_lop + ma_sinh_vien
+            modelBuilder.Entity<LopHocSinhVien>(entity =>
             {
-                entity.HasKey(e => new { e.MASV, e.MAKITHI, e.MAMT });
-                entity.Property(e => e.MASV).IsUnicode(false);
-                entity.Property(e => e.MAKITHI).IsUnicode(false);
-                entity.Property(e => e.MAMT).IsUnicode(false);
+                entity.HasKey(e => new { e.MaLop, e.MaSinhVien });
+
+                entity.HasOne(e => e.LopHoc)
+                    .WithMany(l => l.LopHocSinhViens)
+                    .HasForeignKey(e => e.MaLop)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.SinhVien)
+                    .WithMany(n => n.LopHocSinhViens)
+                    .HasForeignKey(e => e.MaSinhVien)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<CHITIETDETHI>(entity =>
+            // phan_cong_giang_day: ma_lop + ma_mon
+            modelBuilder.Entity<PhanCongGiangDay>(entity =>
             {
-                entity.HasKey(e => new { e.MADETHI, e.MACAUHOI });
-                entity.Property(e => e.MADETHI).IsUnicode(false);
+                entity.HasKey(e => new { e.MaLop, e.MaMon });
+
+                entity.HasOne(e => e.LopHoc)
+                    .WithMany(l => l.PhanCongGiangDays)
+                    .HasForeignKey(e => e.MaLop)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.MonHoc)
+                    .WithMany(m => m.PhanCongGiangDays)
+                    .HasForeignKey(e => e.MaMon)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.GiangVien)
+                    .WithMany(n => n.PhanCongGiangDays)
+                    .HasForeignKey(e => e.MaGiangVien)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
-            modelBuilder.Entity<CHITIETKYTHI>(entity =>
+            // ===== VaiTro =====
+            modelBuilder.Entity<VaiTro>(entity =>
             {
-                entity.HasKey(e => new { e.MAKITHI, e.MAMT, e.MASV });
-                entity.Property(e => e.MAKITHI).IsUnicode(false);
-                entity.Property(e => e.MAMT).IsUnicode(false);
-                entity.Property(e => e.MASV).IsUnicode(false);
+                entity.HasMany(e => e.NguoiDungs)
+                    .WithOne(e => e.VaiTro)
+                    .HasForeignKey(e => e.MaVaiTro)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
-            modelBuilder.Entity<CAUHOI>(entity =>
+            // ===== NguoiDung =====
+            modelBuilder.Entity<NguoiDung>(entity =>
             {
-                entity.Property(e => e.MAGV).IsUnicode(false);
-                entity.Property(e => e.MAMT).IsUnicode(false);
+                entity.HasIndex(e => e.Email).IsUnique();
             });
 
-            modelBuilder.Entity<DETHI>(entity =>
+            // ===== MonHoc =====
+            modelBuilder.Entity<MonHoc>(entity =>
             {
-                entity.Property(e => e.MADETHI).IsUnicode(false);
-                entity.Property(e => e.MAKITHI).IsUnicode(false);
-                entity.Property(e => e.MAMT).IsUnicode(false);
+                entity.HasMany(e => e.CauHoiThis)
+                    .WithOne(e => e.MonHoc)
+                    .HasForeignKey(e => e.MaMon)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasMany(e => e.NganHangDes)
+                    .WithOne(e => e.MonHoc)
+                    .HasForeignKey(e => e.MaMon)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
-            modelBuilder.Entity<KITHI>(entity =>
+            // ===== CauHoiThi =====
+            modelBuilder.Entity<CauHoiThi>(entity =>
             {
-                entity.Property(e => e.MAKITHI).IsUnicode(false);
-                entity.Property(e => e.ADMIN).IsUnicode(false);
+                entity.HasMany(e => e.LuaChonTracNghiems)
+                    .WithOne(e => e.CauHoiThi)
+                    .HasForeignKey(e => e.MaCauHoi)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.NguoiDung)
+                    .WithMany(n => n.CauHoiThis)
+                    .HasForeignKey(e => e.NguoiTao)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
-            modelBuilder.Entity<MONTHI>(entity =>
+            // ===== NganHangDe =====
+            modelBuilder.Entity<NganHangDe>(entity =>
             {
-                entity.Property(e => e.MAMT).IsUnicode(false);
+                entity.HasMany(e => e.CauTrucDes)
+                    .WithOne(e => e.NganHangDe)
+                    .HasForeignKey(e => e.MaNganHangDe)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(e => e.KyThis)
+                    .WithOne(e => e.NganHangDe)
+                    .HasForeignKey(e => e.MaNganHangDe)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.NguoiDung)
+                    .WithMany(n => n.NganHangDes)
+                    .HasForeignKey(e => e.NguoiTao)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
-            // ROLE configuration
-            modelBuilder.Entity<ROLE>(entity =>
+            // ===== KyThi =====
+            modelBuilder.Entity<KyThi>(entity =>
             {
-                entity.HasMany(e => e.NGUOIDUNG)
-                    .WithOne(e => e.ROLE)
-                    .HasForeignKey(e => e.MAROLE);
+                entity.HasOne(e => e.LopHoc)
+                    .WithMany(l => l.KyThis)
+                    .HasForeignKey(e => e.MaLop)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasMany(e => e.PhanCongGiamSats)
+                    .WithOne(e => e.KyThi)
+                    .HasForeignKey(e => e.MaKyThi)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(e => e.BaiThis)
+                    .WithOne(e => e.KyThi)
+                    .HasForeignKey(e => e.MaKyThi)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // NGUOIDUNG configuration
-            modelBuilder.Entity<NGUOIDUNG>(entity =>
+            // ===== PhanCongGiamSat =====
+            modelBuilder.Entity<PhanCongGiamSat>(entity =>
             {
-                entity.Property(e => e.MATKHAU).IsUnicode(false);
-                entity.Property(e => e.EMAIL).IsUnicode(false);
-                entity.HasIndex(e => e.EMAIL).IsUnique(); // Email là duy nhất
+                entity.HasOne(e => e.GiamThi)
+                    .WithMany(n => n.PhanCongGiamSats)
+                    .HasForeignKey(e => e.MaGiamThi)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
-            // Seed data - tạo các role mặc định
-            modelBuilder.Entity<ROLE>().HasData(
-                new ROLE { MAROLE = 1, TENROLE = "Admin" },
-                new ROLE { MAROLE = 2, TENROLE = "Giảng viên" },
-                new ROLE { MAROLE = 3, TENROLE = "Sinh viên" }
+            // ===== BaiThi =====
+            modelBuilder.Entity<BaiThi>(entity =>
+            {
+                entity.HasOne(e => e.SinhVien)
+                    .WithMany(n => n.BaiThis)
+                    .HasForeignKey(e => e.MaSinhVien)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasMany(e => e.TraLoiBaiThis)
+                    .WithOne(e => e.BaiThi)
+                    .HasForeignKey(e => e.MaBaiThi)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(e => e.NhatKyViPhams)
+                    .WithOne(e => e.BaiThi)
+                    .HasForeignKey(e => e.MaBaiThi)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ===== TraLoiBaiThi =====
+            modelBuilder.Entity<TraLoiBaiThi>(entity =>
+            {
+                entity.HasOne(e => e.CauHoiThi)
+                    .WithMany(c => c.TraLoiBaiThis)
+                    .HasForeignKey(e => e.MaCauHoi)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(e => e.LuaChonTracNghiem)
+                    .WithMany(l => l.TraLoiBaiThis)
+                    .HasForeignKey(e => e.MaLuaChon)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            // ===== Seed Data =====
+
+            // Seed vai trò mặc định
+            modelBuilder.Entity<VaiTro>().HasData(
+                new VaiTro { Id = 1, TenVaiTro = "Admin", MoTa = "Quản trị viên hệ thống" },
+                new VaiTro { Id = 2, TenVaiTro = "Giảng viên", MoTa = "Giảng viên quản lý câu hỏi và đề thi" },
+                new VaiTro { Id = 3, TenVaiTro = "Sinh viên", MoTa = "Sinh viên tham gia thi" }
             );
 
-            // Seed data - tạo tài khoản admin mặc định
+            // Seed tài khoản admin mặc định
             // Mật khẩu: 123456 (đã được hash bằng SHA256)
-            modelBuilder.Entity<NGUOIDUNG>().HasData(
-                new NGUOIDUNG
+            modelBuilder.Entity<NguoiDung>().HasData(
+                new NguoiDung
                 {
-                    ID = 1,
-                    MATKHAU = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", // SHA256 của "123456"
-                    HOTEN = "Quản trị viên",
-                    EMAIL = "admin@gmail.com",
-                    MAROLE = 1
+                    Id = 1,
+                    HoTen = "Quản trị viên",
+                    Email = "admin@gmail.com",
+                    MatKhau = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", // SHA256 của "123456"
+                    MaVaiTro = 1,
+                    NgayTao = new DateTime(2026, 1, 1),
+                    TrangThai = true
                 }
             );
         }

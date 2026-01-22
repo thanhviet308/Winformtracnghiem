@@ -70,18 +70,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
            
             if (dt != null)
             {
-                List<NGUOIDUNG> listsinhVien = new List<NGUOIDUNG>();
+                List<NguoiDung> listsinhVien = new List<NguoiDung>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    NGUOIDUNG sinhVien = new NGUOIDUNG();
-                    sinhVien.EMAIL = dt.Rows[i]["EMAIL"]?.ToString() ?? "";
-                    sinhVien.HOTEN = dt.Rows[i]["TENSV"]?.ToString() ?? "";
-                    sinhVien.MATKHAU = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456");
-                    sinhVien.MAROLE = 3; // Role SinhVien
+                    NguoiDung sinhVien = new NguoiDung();
+                    sinhVien.Email = dt.Rows[i]["EMAIL"]?.ToString() ?? "";
+                    sinhVien.HoTen = dt.Rows[i]["TENSV"]?.ToString() ?? "";
+                    sinhVien.MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456");
+                    sinhVien.MaVaiTro = 3; // Role SinhVien
                     listsinhVien.Add(sinhVien);  
                 }
                 // Chỉ hiển thị các cột cần thiết
-                var displayList = listsinhVien.Select(x => new { Email = x.EMAIL, HoTen = x.HOTEN }).ToList();
+                var displayList = listsinhVien.Select(x => new { Email = x.Email, HoTen = x.HoTen }).ToList();
                 dgvThemExcelSinhVien.DataSource = null;
                 dgvThemExcelSinhVien.DataSource = displayList;
             }
@@ -96,19 +96,19 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             }
             
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-            List<NGUOIDUNG> list = new List<NGUOIDUNG>();
+            List<NguoiDung> list = new List<NguoiDung>();
 
             try
             {
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    NGUOIDUNG sinhvien = new NGUOIDUNG()
+                    NguoiDung sinhvien = new NguoiDung()
                     {
-                        EMAIL = dt.Rows[i]["EMAIL"].ToString(),
-                        HOTEN = dt.Rows[i]["TENSV"].ToString(),
-                        MATKHAU = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"].ToString()),
-                        MAROLE = 3 // Role SinhVien
+                        Email = dt.Rows[i]["EMAIL"].ToString(),
+                        HoTen = dt.Rows[i]["TENSV"].ToString(),
+                        MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"].ToString()),
+                        MaVaiTro = 3 // Role SinhVien
                     };
                     list.Add(sinhvien);
                 }

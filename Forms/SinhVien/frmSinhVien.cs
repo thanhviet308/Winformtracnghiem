@@ -19,29 +19,29 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
     {
         AppDbContext AppDbContext = new AppDbContext();
 
-        ChiTietKyThiService ChiTietKyThiService;
-        MonThiService MonThiService;
         KyThiService KyThiService;
-        NGUOIDUNG nguoiDung;
-        MONTHI monThi;
+        MonHocService MonHocService;
+        BaiThiService BaiThiService;
+        NguoiDung nguoiDung;
+        MonHoc monHoc;
+        KyThi kyThiHienTai;
         DateTime thoiGianThiGanNhat = DateTime.Now;
         DateTime thoiGianThi ;
         DateTime thoiGianKetThuc;
 
-        public frmSinhVien(NGUOIDUNG nd)
+        public frmSinhVien(NguoiDung nd)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
-            ChiTietKyThiService = new ChiTietKyThiService();
             KyThiService = new KyThiService();
-            MonThiService = new MonThiService();
+            MonHocService = new MonHocService();
+            BaiThiService = new BaiThiService();
             nguoiDung = nd;
         }
-        public frmSinhVien(NGUOIDUNG nd, int i)
+        public frmSinhVien(NguoiDung nd, int i)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
-            ChiTietKyThiService = new ChiTietKyThiService();
             KyThiService = new KyThiService();
             nguoiDung = nd;
             btnVaoThi.Enabled = false;
@@ -51,84 +51,47 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         {
             btnXemDiem.Hide();
             
-            // Ẩn trường Lớp (không còn trong NGUOIDUNG)
+            // Ẩn trường Lớp (không còn trong NguoiDung)
             label2.Visible = false;
             lblLop.Visible = false;
+
+            lblHoTen.Text = nguoiDung.HoTen;
             
-           // Tìm kỳ thi trong thời gian hiện tại
-            foreach (var item in KyThiService.GetThongTinKyThi())
+            // Tìm kỳ thi đang diễn ra
+            var kyThiDangDienRa = KyThiService.GetActiveExams();
+            
+            if (kyThiDangDienRa.Count > 0)
             {
-                if(item.THOIGIANBDKITHI < thoiGianThiGanNhat && item.THOIGIANKTKITHI > thoiGianThiGanNhat)
+                kyThiHienTai = kyThiDangDienRa.First();
+                lblTenKyThi.Text = kyThiHienTai.TenKyThi.ToUpper();
+                thoiGianThi = kyThiHienTai.ThoiGianBatDau;
+                thoiGianKetThuc = kyThiHienTai.ThoiGianKetThuc;
+                
+                lblNgayThi.Text = kyThiHienTai.ThoiGianBatDau.ToString("dd/MM/yyyy");
+                lblThoiGianBatDau.Text = kyThiHienTai.ThoiGianBatDau.ToString("HH:mm");
+                lblThoiGianKetThuc.Text = kyThiHienTai.ThoiGianKetThuc.ToString("HH:mm");
+
+                // Lấy môn học từ ngân hàng đề
+                if (kyThiHienTai.NganHangDe != null && kyThiHienTai.NganHangDe.MonHoc != null)
                 {
-                    lblTenKyThi.Text = item.TENKITHI + " : " + item.MAKITHI;
-                    lblTenKyThi.Text = lblTenKyThi.Text.ToUpper();
-                    lblTenKyThi.Name = item.MAKITHI;
+                    monHoc = kyThiHienTai.NganHangDe.MonHoc;
+                    lblMonThi.Text = monHoc.TenMon;
                 }
             }
-
-            // Lấy thời gian so sánh tìm thông tin gần nhất 
-            thoiGianThiGanNhat = new DateTime(1 / 1 / 2000);
-            foreach (var item in ChiTietKyThiService.GetThongTinChiTietKyThi())
+            else
             {
-                if (lblTenKyThi.Name == item.MAKITHI && item.MASV == nguoiDung.ID.ToString())
-                {
-                    
-                    lblHoTen.Text = nguoiDung.HOTEN;
-                    if (thoiGianThiGanNhat < item.THOIGIANBD)
-                    {
-                        thoiGianThiGanNhat = (DateTime)item.THOIGIANBD;
-                        foreach (var i in MonThiService.GetThongTinMonThi())
-                        {
-                            if (i.MAMT == item.MAMT)
-                            {
-                                lblMonThi.Text = i.TENMT;
-                                lblMonThi.Name = item.MAMT;
-                                monThi = i;
-                                break;
-                            }
-                        }
-                        
-                        lblNgayThi.Text = item.THOIGIANTHI.ToString();
-                        lblThoiGianBatDau.Text = item.THOIGIANBD.ToString();
-                        lblThoiGianKetThuc.Text = item.THOIGIANKT.ToString();
-                        thoiGianThi = (DateTime)item.THOIGIANBD;
-                        thoiGianKetThuc = (DateTime)item.THOIGIANKT;
-                    }
-                }
+                lblTenKyThi.Text = "Không có kỳ thi nào đang diễn ra";
+                btnVaoThi.Enabled = false;
             }
         }
 
         // Bỏ kiểm tra trường hợp ngày thay đổi "Thi đêm"
         private bool KiemTraThoiGianVaoThi()
         {
+            if (kyThiHienTai == null) return false;
 
-            if (DateTime.Now.Year == thoiGianThi.Year && DateTime.Now.Month == thoiGianThi.Month && DateTime.Now.Day == thoiGianThi.Day 
-                && (DateTime.Now.Hour <= thoiGianThi.Hour || DateTime.Now.Hour <= thoiGianKetThuc.Hour))
-            {
-                if (DateTime.Now.Hour == thoiGianThi.Hour -1 && DateTime.Now.Minute == 59 && DateTime.Now.Second >= 30 
-                    || (DateTime.Now.Hour < thoiGianKetThuc.Hour && DateTime.Now.Hour > thoiGianThi.Hour) 
-                    || (DateTime.Now.Hour == thoiGianKetThuc.Hour && DateTime.Now.Minute < thoiGianKetThuc.Minute))
-                {
-                    return true;                  
-                }
-                else
-                {
-                    if (DateTime.Now.Hour == thoiGianThi.Hour && DateTime.Now.Minute < thoiGianThi.Minute - 1 && DateTime.Now.Second >= 30 || DateTime.Now < thoiGianKetThuc
-                        || (DateTime.Now.Hour == thoiGianKetThuc.Hour && DateTime.Now.Minute < thoiGianKetThuc.Minute) )
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                
-            }
-            else
-            {
-                return false;
-            }
+            var now = DateTime.Now;
+            return now >= thoiGianThi && now <= thoiGianKetThuc;
         }
 
         private void btnXemDiem_Click(object sender, EventArgs e)
@@ -145,7 +108,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         {
             if (KiemTraThoiGianVaoThi() == true)
             {
-                frmThi frmThi = new frmThi(nguoiDung, monThi, DateTime.Now,thoiGianKetThuc);
+                frmThi frmThi = new frmThi(nguoiDung, monHoc, DateTime.Now, thoiGianKetThuc);
                 this.Hide();
                 frmThi.WindowState = FormWindowState.Maximized;
                 frmThi.ShowDialog();

@@ -39,19 +39,19 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                 }
 
                 // Kiểm tra email đã tồn tại
-                if (AppDbContext.NGUOIDUNG.Any(n => n.EMAIL == txtEmail.Text.Trim()))
+                if (AppDbContext.NguoiDung.Any(n => n.Email == txtEmail.Text.Trim()))
                 {
                     MessageBox.Show("Email đã tồn tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                NGUOIDUNG gv = new NGUOIDUNG();
-                gv.EMAIL = txtEmail.Text.Trim();
-                gv.HOTEN = txtHoTen.Text.Trim();
-                gv.MATKHAU = PasswordHelper.HashPassword(txtMatKhau.Text);
-                gv.MAROLE = 2; // Giảng viên
+                NguoiDung gv = new NguoiDung();
+                gv.Email = txtEmail.Text.Trim();
+                gv.HoTen = txtHoTen.Text.Trim();
+                gv.MatKhau = PasswordHelper.HashPassword(txtMatKhau.Text);
+                gv.MaVaiTro = 2; // Giảng viên
 
-                AppDbContext.NGUOIDUNG.Add(gv);
+                AppDbContext.NguoiDung.Add(gv);
                 AppDbContext.SaveChanges();
 
                 MessageBox.Show("Thêm giảng viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);

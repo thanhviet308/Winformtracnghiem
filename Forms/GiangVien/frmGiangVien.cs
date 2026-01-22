@@ -24,18 +24,18 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 {
     public partial class frmGiangVien : Form
     {
-        private readonly MonThiService MonThiService;
+        private readonly MonHocService MonHocService;
         private readonly CauHoiService CauHoiService;
         AppDbContext context = new AppDbContext();
-        private NGUOIDUNG nguoiDung;
+        private NguoiDung nguoiDung;
         
-        public frmGiangVien(NGUOIDUNG nd)
+        public frmGiangVien(NguoiDung nd)
         {
             nguoiDung = nd;
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             CauHoiService = new CauHoiService();
-            MonThiService = new MonThiService();        
+            MonHocService = new MonHocService();        
         }
 
      
@@ -48,18 +48,19 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private void frmGiangVien_Load(object sender, EventArgs e)
         {
             dgvCauHoi.DataSource = CauHoiService.GetCAUHOIs();
-            txtMaGV.Text = nguoiDung.EMAIL;
-            txtTenGV.Text = nguoiDung.HOTEN;
+            txtMaGV.Text = nguoiDung.Email;
+            txtTenGV.Text = nguoiDung.HoTen;
             txtPassword.Text = "********"; // Không hiển thị mật khẩu thật
             
-            // Ẩn panel ngày sinh (không còn trong NGUOIDUNG)
+            // Ẩn panel ngày sinh (không còn trong NguoiDung)
             panel3.Visible = false;
             // Di chuyển panel mật khẩu lên
             panel4.Location = panel3.Location;
 
-            foreach (var item in MonThiService.GetThongTinMonThi())
+            cbDanhMucMT.Items.Clear();
+            foreach (var item in MonHocService.GetThongTinMonThi())
             {
-                cbDanhMucMT.Items.Add(item.TENMT);
+                cbDanhMucMT.Items.Add(item.TenMon);
             }
             cbDanhMucMT.SelectedIndex = -1;
 
@@ -123,47 +124,13 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         {
             try
             {
-
+                if (e.RowIndex < 0) return;
                 dgvCauHoi.CurrentRow.Selected = true;
-                txtMaCauHoi.Text = dgvCauHoi.Rows[e.RowIndex].Cells["MACAUHOI"].FormattedValue.ToString();
-                txtNoiDungCauHoi.Text = dgvCauHoi.Rows[e.RowIndex].Cells["NDCAUHOI"].FormattedValue.ToString();
-                txtDapAnA.Text = dgvCauHoi.Rows[e.RowIndex].Cells["DAPAN1"].FormattedValue.ToString();
-                txtDapAnB.Text = dgvCauHoi.Rows[e.RowIndex].Cells["DAPAN2"].FormattedValue.ToString();
-                txtDapAnC.Text = dgvCauHoi.Rows[e.RowIndex].Cells["DAPAN3"].FormattedValue.ToString();
-                txtDapAnD.Text = dgvCauHoi.Rows[e.RowIndex].Cells["DAPAN4"].FormattedValue.ToString();
-                string dapandung = dgvCauHoi.Rows[e.RowIndex].Cells["DAPANDUNG"].FormattedValue.ToString();
-                if (txtDapAnA.Text.Equals(dapandung + "" ))
-                {
-                    checkBoxA.Checked = true;
-                    checkBoxB.Checked = false;
-                    checkBoxC.Checked = false;
-                    checkBoxD.Checked = false;
-                }
-                else if (txtDapAnB.Text.Equals(dapandung+""))
-                {
-                    checkBoxB.Checked = true;
-                    checkBoxC.Checked = false;
-                    checkBoxD.Checked = false;
-                    checkBoxA.Checked = false;
-                }
-                else if (txtDapAnC.Text.Equals(dapandung + ""))
-                {
-                    checkBoxA.Checked = false;
-                    checkBoxB.Checked = false;
-                    checkBoxC.Checked = true;
-                    checkBoxD.Checked = false;
-                }
-                else if (txtDapAnD.Text.Equals(dapandung + ""))
-                {
-                    checkBoxA.Checked = false;
-                    checkBoxB.Checked = false;
-                    checkBoxC.Checked = false;
-                    checkBoxD.Checked = true;
-                }
-                else
-                {
-                    MessageBox.Show("Chưa có đáp án đúng");
-                }
+                txtMaCauHoi.Text = dgvCauHoi.Rows[e.RowIndex].Cells["Id"].FormattedValue.ToString();
+                txtNoiDungCauHoi.Text = dgvCauHoi.Rows[e.RowIndex].Cells["NoiDung"].FormattedValue.ToString();
+                
+                // TODO: Cập nhật logic hiển thị đáp án cho model mới
+                // Với model mới, đáp án nằm trong bảng LuaChonTracNghiem riêng
             }
             catch (Exception ex)
             {
@@ -173,50 +140,59 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-            var database = new AppDbContext();
-            List<CAUHOI> list = new List<CAUHOI>();
-            string tenmt = cbDanhMucMT.Text;
-            string mamt = "";
-            List<MONTHI> monthis = database.MONTHI.Where(p => p.TENMT == tenmt).ToList();
-            foreach (var item in monthis)
-            {
-                mamt = item.MAMT.ToString();    
-            }
             try
             {
-               
+                if (tableCollection == null || cboSheet.SelectedItem == null)
+                {
+                    MessageBox.Show("Vui lòng chọn file Excel và sheet trước!");
+                    return;
+                }
+
+                DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
+                string tenMon = cbDanhMucMT.Text;
+
+                if (string.IsNullOrEmpty(tenMon))
+                {
+                    MessageBox.Show("Vui lòng chọn môn học!");
+                    return;
+                }
+
+                // Tìm môn học
+                var monHoc = context.MonHoc.FirstOrDefault(m => m.TenMon == tenMon);
+                if (monHoc == null)
+                {
+                    MessageBox.Show("Không tìm thấy môn học!");
+                    return;
+                }
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (cbDanhMucMT is null)
+                    // Tạo câu hỏi mới
+                    var cauHoi = new CauHoiThi
                     {
-                        MessageBox.Show("Vui lòng chọn môn thi");
-                    }
-
-                    CAUHOI cauhoi = new CAUHOI()
-                    {
-                        STT = Convert.ToInt32(dt.Rows[i]["STT"].ToString()),
-                        MACAUHOI = Convert.ToInt32(dt.Rows[i]["IDCAUHOI"].ToString()),
-                        NDCAUHOI = dt.Rows[i]["NDCAUHOI"].ToString(),
-                        DAPAN1 = dt.Rows[i]["DAPAN1"].ToString(),
-                        DAPAN2 = dt.Rows[i]["DAPAN2"].ToString(),
-                        DAPAN3 = dt.Rows[i]["DAPAN3"].ToString(),
-                        DAPAN4 = dt.Rows[i]["DAPAN4"].ToString(),
-                        DAPANDUNG = dt.Rows[i]["DAPANDUNG"].ToString(),
-                        MAGV = nguoiDung.ID.ToString(),
-                        MAMT = mamt.ToString()
-                            
+                        NoiDung = dt.Rows[i]["NDCAUHOI"].ToString(),
+                        MaMon = monHoc.Id,
+                        NguoiTao = nguoiDung.Id,
+                        NgayTao = DateTime.Now,
+                        TrangThai = true
                     };
-                    list.Add(cauhoi);
+                    context.CauHoiThi.Add(cauHoi);
+                    context.SaveChanges();
+
+                    // Tạo các lựa chọn
+                    var luaChons = new List<LuaChonTracNghiem>
+                    {
+                        new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = dt.Rows[i]["DAPAN1"].ToString(), ThuTu = 1, LaDapAnDung = dt.Rows[i]["DAPANDUNG"].ToString() == dt.Rows[i]["DAPAN1"].ToString() },
+                        new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = dt.Rows[i]["DAPAN2"].ToString(), ThuTu = 2, LaDapAnDung = dt.Rows[i]["DAPANDUNG"].ToString() == dt.Rows[i]["DAPAN2"].ToString() },
+                        new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = dt.Rows[i]["DAPAN3"].ToString(), ThuTu = 3, LaDapAnDung = dt.Rows[i]["DAPANDUNG"].ToString() == dt.Rows[i]["DAPAN3"].ToString() },
+                        new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = dt.Rows[i]["DAPAN4"].ToString(), ThuTu = 4, LaDapAnDung = dt.Rows[i]["DAPANDUNG"].ToString() == dt.Rows[i]["DAPAN4"].ToString() }
+                    };
+                    context.LuaChonTracNghiem.AddRange(luaChons);
+                    context.SaveChanges();
                 }
-                foreach (var cauhoi in list)
-                {
-                    database.CAUHOI.Add(cauhoi);
-                    database.SaveChanges();
-                    frmGiangVien_Load(sender, e);
-                }
-                MessageBox.Show("Lưu thành công");
+
+                MessageBox.Show("Lưu thành công!");
+                frmGiangVien_Load(sender, e);
             }
             catch (Exception ex)
             {
@@ -228,105 +204,84 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         {
             try
             {
-                
-                int macauh = int.Parse(txtMaCauHoi.Text);
-                string noidung = txtNoiDungCauHoi.Text;
-                string dapan1 = txtDapAnA.Text;
-                string dapan2 = txtDapAnB.Text;
-                string dapan3 = txtDapAnC.Text;
-                string dapan4 = txtDapAnD.Text;
-                string dapandung="";
-                string magv1 = nguoiDung.ID.ToString();
-                if (checkBoxA.Checked == true)
+                long maCauHoi = long.Parse(txtMaCauHoi.Text);
+                var cauHoi = CauHoiService.GetById(maCauHoi);
+                if (cauHoi != null)
                 {
-                    dapandung = txtDapAnA.Text;
+                    cauHoi.NoiDung = txtNoiDungCauHoi.Text;
+                    CauHoiService.Update(cauHoi);
+                    MessageBox.Show("Cập nhật thành công!");
+                    frmGiangVien_Load(sender, e);
                 }
-                else if (checkBoxB.Checked == true)
-                {
-                    dapandung=txtDapAnB.Text;       
-                }
-                else if (checkBoxC.Checked == true)
-                {
-                    dapandung=txtDapAnC.Text;   
-                }
-                else if (checkBoxD.Checked == true)
-                {
-                    dapandung=txtDapAnD.Text;   
-                }
-                CauHoiService.CapNhapCauHoi(macauh, noidung, dapan1, dapan2, dapan3, dapan4,dapandung,magv1);
-                MessageBox.Show("Cập nhật thành công");
-                frmGiangVien_Load(sender, e);
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-
             try
             {
-                string mamt = "";
-                string tenmt = cbDanhMucMT.Text;
-                List<MONTHI> list = context.MONTHI.Where(p => p.TENMT == tenmt).ToList();
-                foreach (var item in list)
+                string tenMon = cbDanhMucMT.Text;
+                var monHoc = context.MonHoc.FirstOrDefault(m => m.TenMon == tenMon);
+
+                if (monHoc == null)
                 {
-                    mamt = item.MAMT;
+                    MessageBox.Show("Vui lòng chọn môn học!");
+                    return;
                 }
 
-                CauHoiDTO cauHoiDTO = new CauHoiDTO();
-                cauHoiDTO.STT++;
-                cauHoiDTO.MaCauHoi = int.Parse(txtMaCauHoi.Text);
-                cauHoiDTO.NDCAUHOI = txtNoiDungCauHoi.Text;
-                cauHoiDTO.DapAn1 = txtDapAnA.Text;
-                cauHoiDTO.DapAn2 = txtDapAnB.Text;
-                cauHoiDTO.DapAn3 = txtDapAnC.Text;
-                cauHoiDTO.DapAn4 = txtDapAnD.Text;
-                if (checkBoxA.Checked == true)
+                var cauHoi = new CauHoiThi
                 {
-                    cauHoiDTO.DapAnDung = txtDapAnA.Text;
-                }
-                else if (checkBoxB.Checked == true)
+                    NoiDung = txtNoiDungCauHoi.Text,
+                    MaMon = monHoc.Id,
+                    NguoiTao = nguoiDung.Id,
+                    NgayTao = DateTime.Now,
+                    TrangThai = true
+                };
+                context.CauHoiThi.Add(cauHoi);
+                context.SaveChanges();
+
+                // Tạo các lựa chọn
+                var dapAnDung = "";
+                if (checkBoxA.Checked) dapAnDung = txtDapAnA.Text;
+                else if (checkBoxB.Checked) dapAnDung = txtDapAnB.Text;
+                else if (checkBoxC.Checked) dapAnDung = txtDapAnC.Text;
+                else if (checkBoxD.Checked) dapAnDung = txtDapAnD.Text;
+
+                var luaChons = new List<LuaChonTracNghiem>
                 {
-                    cauHoiDTO.DapAnDung = txtDapAnB.Text;
-                }
-                else if (checkBoxC.Checked == true)
-                {
-                    cauHoiDTO.DapAnDung = txtDapAnC.Text;
-                }
-                else if (checkBoxD.Checked == true)
-                {
-                    cauHoiDTO.DapAnDung = txtDapAnD.Text;
-                }
-                cauHoiDTO.MaGiaoVien = nguoiDung.ID.ToString();
-                cauHoiDTO.MaMT = mamt;
-                CauHoiService.InsertUpdate(cauHoiDTO);
-                frmGiangVien_Load(sender, e);
+                    new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = txtDapAnA.Text, ThuTu = 1, LaDapAnDung = checkBoxA.Checked },
+                    new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = txtDapAnB.Text, ThuTu = 2, LaDapAnDung = checkBoxB.Checked },
+                    new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = txtDapAnC.Text, ThuTu = 3, LaDapAnDung = checkBoxC.Checked },
+                    new LuaChonTracNghiem { MaCauHoi = cauHoi.Id, NoiDung = txtDapAnD.Text, ThuTu = 4, LaDapAnDung = checkBoxD.Checked }
+                };
+                context.LuaChonTracNghiem.AddRange(luaChons);
+                context.SaveChanges();
+
                 MessageBox.Show("Thêm thành công!");
+                frmGiangVien_Load(sender, e);
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            dgvCauHoi.CurrentRow.Selected = true;
-            int r = int.Parse(dgvCauHoi.SelectedRows[0].Cells[1].Value.ToString());
             try
             {
-                CauHoiService.Delete(r);
+                dgvCauHoi.CurrentRow.Selected = true;
+                long id = long.Parse(dgvCauHoi.SelectedRows[0].Cells["Id"].Value.ToString());
+                CauHoiService.Delete(id);
                 MessageBox.Show("Xóa thành công!!!");
                 dgvCauHoi.DataSource = CauHoiService.GetCAUHOIs();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
@@ -342,7 +297,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            DoiMKGiangVien doiMK = new DoiMKGiangVien(nguoiDung.ID);
+            DoiMKGiangVien doiMK = new DoiMKGiangVien((int)nguoiDung.Id);
             doiMK.ShowDialog();
         }
 

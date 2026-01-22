@@ -22,7 +22,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
     public partial class NhapExcelGiangVien : Form
     {
         AppDbContext AppDbContext = new AppDbContext();
-        List<NGUOIDUNG> listGV = new List<NGUOIDUNG>();
+        List<NguoiDung> listGV = new List<NguoiDung>();
         frmAdmin frmAdmin = new frmAdmin();
         private readonly GiangVienService GiangVienService;
         private readonly NguoiDungService NguoiDungService;
@@ -73,16 +73,16 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                 listGV.Clear(); // Clear danh sách cũ trước khi thêm mới
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    NGUOIDUNG giangvien = new NGUOIDUNG();
-                    giangvien.EMAIL = dt.Rows[i]["EMAIL"]?.ToString() ?? "";
-                    giangvien.HOTEN = dt.Rows[i]["TENGV"]?.ToString() ?? "";
-                    giangvien.MATKHAU = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456");
-                    giangvien.MAROLE = 2; // Role GiangVien
+                    NguoiDung giangvien = new NguoiDung();
+                    giangvien.Email = dt.Rows[i]["EMAIL"]?.ToString() ?? "";
+                    giangvien.HoTen = dt.Rows[i]["TENGV"]?.ToString() ?? "";
+                    giangvien.MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456");
+                    giangvien.MaVaiTro = 2; // Role GiangVien
                     listGV.Add(giangvien);
                 }
             }
             // Chỉ hiển thị các cột cần thiết
-            var displayList = listGV.Select(x => new { Email = x.EMAIL, HoTen = x.HOTEN }).ToList();
+            var displayList = listGV.Select(x => new { Email = x.Email, HoTen = x.HoTen }).ToList();
             dgvThemExcelSinhVien.DataSource = null;
             dgvThemExcelSinhVien.DataSource = displayList;
         }
@@ -96,19 +96,19 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             }
             
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-            List<NGUOIDUNG> list = new List<NGUOIDUNG>();   
+            List<NguoiDung> list = new List<NguoiDung>();   
          
             try
             {
                
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        NGUOIDUNG giangvien = new NGUOIDUNG()
+                        NguoiDung giangvien = new NguoiDung()
                         {
-                            EMAIL = dt.Rows[i]["EMAIL"].ToString(),
-                            HOTEN = dt.Rows[i]["TENGV"].ToString(),
-                            MATKHAU = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"].ToString()),
-                            MAROLE = 2 // Role GiangVien
+                            Email = dt.Rows[i]["EMAIL"].ToString(),
+                            HoTen = dt.Rows[i]["TENGV"].ToString(),
+                            MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"].ToString()),
+                            MaVaiTro = 2 // Role GiangVien
                         };
                         list.Add(giangvien);
                     }

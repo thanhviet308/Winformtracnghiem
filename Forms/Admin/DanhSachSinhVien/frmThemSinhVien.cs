@@ -59,12 +59,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                     return;
                 }
 
-                var sinhVien = new NGUOIDUNG
+                var sinhVien = new NguoiDung
                 {
-                    EMAIL = txtEmail.Text.Trim(),
-                    HOTEN = txtHoTen.Text.Trim(),
-                    MATKHAU = PasswordHelper.HashPassword(txtMatKhau.Text),
-                    MAROLE = 3 // 3 = Sinh viên
+                    Email = txtEmail.Text.Trim(),
+                    HoTen = txtHoTen.Text.Trim(),
+                    MatKhau = PasswordHelper.HashPassword(txtMatKhau.Text),
+                    MaVaiTro = 3 // 3 = Sinh viên
                 };
 
                 _nguoiDungService.Add(sinhVien);

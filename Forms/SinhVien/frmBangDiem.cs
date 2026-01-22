@@ -17,8 +17,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 {
     public partial class frmBangDiem : Form
     {
-        private readonly NGUOIDUNG nguoiDung;
-        public frmBangDiem(NGUOIDUNG nd)
+        private readonly NguoiDung nguoiDung;
+        
+        public frmBangDiem(NguoiDung nd)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
@@ -27,28 +28,30 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 
         private void frmBangDiem_Load(object sender, EventArgs e)
         {
-            var db  = new AppDbContext();
-            List<BANGDIEM> listBangDiem = new List<BANGDIEM>();
-            List<BANGDIEMreport> listReportBangDiem = new List<BANGDIEMreport>();
-            listBangDiem = db.BANGDIEM.ToList();
+            var db = new AppDbContext();
+            
+            // Lấy danh sách bài thi của sinh viên này
+            var listBaiThi = db.BaiThi
+                .Where(bt => bt.MaSinhVien == nguoiDung.Id)
+                .ToList();
 
             // Mã số sinh viên label
-            lblMaSoSinhVien.Text = nguoiDung.HOTEN +" | "+ nguoiDung.EMAIL;
+            lblMaSoSinhVien.Text = nguoiDung.HoTen + " | " + nguoiDung.Email;
 
-            foreach (BANGDIEM item in listBangDiem)
+            // Tạo list report
+            List<BANGDIEMreport> listReportBangDiem = new List<BANGDIEMreport>();
+            
+            foreach (var item in listBaiThi)
             {
-                if (nguoiDung.ID.ToString() == item.MASV)
-                {
-                    BANGDIEMreport diem = new BANGDIEMreport();
-                    diem.ID = item.ID;
-                    diem.MAKITHI = item.MAKITHI;
-                    diem.MASV = item.MASV;
-                    diem.DIEM = item.DIEM;
-                    diem.MAMT = item.MAMT;
-                    listReportBangDiem.Add(diem);
-                }                                                                              
+                BANGDIEMreport diem = new BANGDIEMreport();
+                diem.ID = (int)item.Id;
+                diem.MAKITHI = item.MaKyThi?.ToString() ?? "";
+                diem.MASV = item.MaSinhVien?.ToString() ?? "";
+                diem.DIEM = item.DiemSo;
+                listReportBangDiem.Add(diem);
             }
-            if(listReportBangDiem.Count == 0)
+            
+            if (listReportBangDiem.Count == 0)
             {
                 MessageBox.Show("Chưa có dữ liệu điểm! Vui lòng chờ cập nhật");
             }
@@ -65,8 +68,6 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                     dgvBangDiem.Columns["MASV"].HeaderText = "ID Sinh Viên";
                 if (dgvBangDiem.Columns["DIEM"] != null)
                     dgvBangDiem.Columns["DIEM"].HeaderText = "Điểm";
-                if (dgvBangDiem.Columns["MAMT"] != null)
-                    dgvBangDiem.Columns["MAMT"].HeaderText = "Mã Môn Thi";
             }           
         }
 
@@ -76,7 +77,6 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.Hide();
             frmSinhVien.ShowDialog();
             this.Close();
-            
         }
     }
 }

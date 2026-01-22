@@ -1,4 +1,4 @@
-using PhanMemThiTracNghiem.DTOs;
+using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.Models;
 using System;
 using System.Collections.Generic;
@@ -6,78 +6,80 @@ using System.Linq;
 
 namespace PhanMemThiTracNghiem.Services
 {
-    /// <summary>
-    /// SinhVienService - Wrapper class để tương thích ngược với code cũ
-    /// Sử dụng NGUOIDUNG với MAROLE = 3 (SinhVien)
-    /// </summary>
     public class SinhVienService
     {
-        private readonly NguoiDungService NguoiDungService;
-        private const int ROLE_SINHVIEN = 3;
+        private readonly NguoiDungRepository _nguoiDungRepository;
+        private const long ROLE_SINH_VIEN = 3;
 
         public SinhVienService()
         {
-            NguoiDungService = new NguoiDungService();
+            _nguoiDungRepository = new NguoiDungRepository();
         }
 
-        // Lấy tất cả sinh viên - trả về DTO
-        public List<NguoiDungDTO> GetSINHVIENs()
+        // Lấy tất cả sinh viên
+        public List<NguoiDung> GetAll()
         {
-            return NguoiDungService.GetByRole(ROLE_SINHVIEN)
-                .Select(x => new NguoiDungDTO
-                {
-                    ID = x.ID,
-                    Email = x.EMAIL,
-                    HoTen = x.HOTEN,
-                    VaiTro = x.ROLE?.TENROLE ?? "Sinh viên"
-                }).ToList();
-        }
-
-        // Lấy sinh viên theo email
-        public static NGUOIDUNG GETSinhVien(string email)
-        {
-            var NguoiDungService = new NguoiDungService();
-            return NguoiDungService.GetByEmail(email);
+            return _nguoiDungRepository.GetByRole(ROLE_SINH_VIEN);
         }
 
         // Lấy sinh viên theo ID
-        public NGUOIDUNG GetById(int id)
+        public NguoiDung GetById(long id)
         {
-            return NguoiDungService.GetById(id);
+            var nguoiDung = _nguoiDungRepository.GetById(id);
+            return nguoiDung?.MaVaiTro == ROLE_SINH_VIEN ? nguoiDung : null;
+        }
+
+        // Thêm sinh viên
+        public bool Add(NguoiDung sinhVien)
+        {
+            sinhVien.MaVaiTro = ROLE_SINH_VIEN;
+            sinhVien.TrangThai = true;
+            sinhVien.NgayTao = DateTime.Now;
+            // Hash password - mặc định là 123456
+            if (string.IsNullOrEmpty(sinhVien.MatKhau))
+            {
+                sinhVien.MatKhau = Helpers.PasswordHelper.HashPassword("123456");
+            }
+            else
+            {
+                sinhVien.MatKhau = Helpers.PasswordHelper.HashPassword(sinhVien.MatKhau);
+            }
+            return _nguoiDungRepository.Add(sinhVien);
         }
 
         // Cập nhật sinh viên
-        public void CapNhapSinhVien(int id, string email, string hoten)
+        public bool Update(NguoiDung sinhVien)
         {
-            var sv = NguoiDungService.GetById(id);
-            if (sv != null)
-            {
-                sv.EMAIL = email;
-                sv.HOTEN = hoten;
-                NguoiDungService.Update(sv);
-            }
+            return _nguoiDungRepository.Update(sinhVien);
         }
 
         // Xóa sinh viên
-        public static void Delete(int id)
+        public bool Delete(long id)
         {
-            var NguoiDungService = new NguoiDungService();
-            NguoiDungService.Delete(id);
+            return _nguoiDungRepository.Delete(id);
         }
 
-        // Tìm theo tên hoặc email
-        public List<NguoiDungDTO> FindName(string keyword)
+        // Tìm kiếm theo tên
+        public List<NguoiDung> FindName(string hoTen)
         {
-            var search = keyword.ToLower();
-            return NguoiDungService.GetByRole(ROLE_SINHVIEN)
-                .Where(x => x.HOTEN.ToLower().Contains(search) || x.EMAIL.ToLower().Contains(search))
-                .Select(x => new NguoiDungDTO
-                {
-                    ID = x.ID,
-                    Email = x.EMAIL,
-                    HoTen = x.HOTEN,
-                    VaiTro = x.ROLE?.TENROLE ?? "Sinh viên"
-                }).ToList();
+            return GetAll().Where(s => s.HoTen.Contains(hoTen, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        // ============ Legacy methods ============
+        public List<NguoiDung> GetSINHVIENs()
+        {
+            return GetAll();
+        }
+
+        public void CapNhapSinhVien(int id, string email, string hoten)
+        {
+            var sinhVien = _nguoiDungRepository.GetById(id);
+            if (sinhVien != null)
+            {
+                sinhVien.Email = email;
+                sinhVien.HoTen = hoten;
+                _nguoiDungRepository.Update(sinhVien);
+            }
         }
     }
 }

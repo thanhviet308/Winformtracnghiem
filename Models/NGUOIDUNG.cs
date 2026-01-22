@@ -5,45 +5,66 @@ namespace PhanMemThiTracNghiem.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("NGUOIDUNG")]
-    public partial class NGUOIDUNG
+    /// <summary>
+    /// Bảng người dùng (Admin, Giảng viên, Sinh viên)
+    /// </summary>
+    [Table("nguoi_dung")]
+    public class NguoiDung
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public NGUOIDUNG()
+        public NguoiDung()
         {
-            CAUHOI = new HashSet<CAUHOI>();
-            CHITIETKYTHI = new HashSet<CHITIETKYTHI>();
-            KITHI = new HashSet<KITHI>();
+            // Câu hỏi được tạo bởi người dùng này
+            CauHoiThis = new HashSet<CauHoiThi>();
+            // Ngân hàng đề được tạo bởi người dùng này
+            NganHangDes = new HashSet<NganHangDe>();
+            // Lớp học sinh viên tham gia
+            LopHocSinhViens = new HashSet<LopHocSinhVien>();
+            // Phân công giảng dạy
+            PhanCongGiangDays = new HashSet<PhanCongGiangDay>();
+            // Phân công giám sát
+            PhanCongGiamSats = new HashSet<PhanCongGiamSat>();
+            // Bài thi của sinh viên
+            BaiThis = new HashSet<BaiThi>();
         }
 
         [Key]
+        [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public long Id { get; set; }
 
         [Required]
+        [Column("ho_ten")]
         [StringLength(100)]
-        public string MATKHAU { get; set; }
+        public string HoTen { get; set; }
 
         [Required]
+        [Column("email")]
         [StringLength(100)]
-        public string EMAIL { get; set; }
+        public string Email { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string HOTEN { get; set; }
+        [Column("mat_khau")]
+        [StringLength(255)]
+        public string MatKhau { get; set; }
 
-        public int? MAROLE { get; set; }
+        [Column("ma_vai_tro")]
+        public long? MaVaiTro { get; set; }
 
-        [ForeignKey("MAROLE")]
-        public virtual ROLE ROLE { get; set; }
+        [Column("ngay_tao")]
+        public DateTime NgayTao { get; set; } = DateTime.Now;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CAUHOI> CAUHOI { get; set; }
+        [Column("trang_thai")]
+        public bool TrangThai { get; set; } = true;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CHITIETKYTHI> CHITIETKYTHI { get; set; }
+        // Navigation properties
+        [ForeignKey("MaVaiTro")]
+        public virtual VaiTro VaiTro { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<KITHI> KITHI { get; set; }
+        public virtual ICollection<CauHoiThi> CauHoiThis { get; set; }
+        public virtual ICollection<NganHangDe> NganHangDes { get; set; }
+        public virtual ICollection<LopHocSinhVien> LopHocSinhViens { get; set; }
+        public virtual ICollection<PhanCongGiangDay> PhanCongGiangDays { get; set; }
+        public virtual ICollection<PhanCongGiamSat> PhanCongGiamSats { get; set; }
+        public virtual ICollection<BaiThi> BaiThis { get; set; }
     }
 }

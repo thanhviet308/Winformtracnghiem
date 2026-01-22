@@ -29,12 +29,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
         {
             try
             {
-                NGUOIDUNG sinhVien = new NGUOIDUNG();
+                NguoiDung sinhVien = new NguoiDung();
 
-                sinhVien.EMAIL = txtMaSinhVien.Text;
-                sinhVien.HOTEN = txtTenSinhVien.Text;
-                sinhVien.MATKHAU = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(txtMatKhau.Text);
-                sinhVien.MAROLE = 3; // Role SinhVien
+                sinhVien.Email = txtMaSinhVien.Text;
+                sinhVien.HoTen = txtTenSinhVien.Text;
+                sinhVien.MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(txtMatKhau.Text);
+                sinhVien.MaVaiTro = 3; // Role SinhVien
                 NguoiDungService.Add(sinhVien);
                 frmAdmin.frmAdmin_Load(sender, e);
                 MessageBox.Show("Thêm thành công!");

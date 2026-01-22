@@ -24,13 +24,13 @@ namespace PhanMemThiTracNghiem.Forms.Admin
     {
         private readonly GiangVienService GiangVienService;
         private readonly SinhVienService SinhVienService;
-        private readonly NGUOIDUNG nguoiDung;
+        private readonly NguoiDung nguoiDung;
         private readonly KyThiService KyThiService;
         private readonly AppDbContext AppDbContext;
-        private readonly MonThiService MonThiService;
+        private readonly MonHocService MonHocService;
      
         
-        public frmAdmin(NGUOIDUNG nd)
+        public frmAdmin(NguoiDung nd)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
@@ -38,7 +38,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             SinhVienService = new SinhVienService();
             KyThiService = new KyThiService();
             AppDbContext = new AppDbContext();
-            MonThiService = new MonThiService();
+            MonHocService = new MonHocService();
             nguoiDung = nd;
         }
 
@@ -57,7 +57,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
         public void frmAdmin_Load(object sender, EventArgs e)
         {
-            labelAdmin.Text = nguoiDung.HOTEN.ToString();
+            labelAdmin.Text = nguoiDung.HoTen.ToString();
             
             // Khởi tạo các tab với UserControl mới
             InitializeGiangVienTab();
@@ -70,12 +70,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin
            
             foreach (var item in KyThiService.GetKITHIs())
             {
-                cbTenKiThi1.Items.Add(item.TENKITHI);
+                cbTenKiThi1.Items.Add(item.TenKyThi);
             }
             cbTenKiThi1.SelectedIndex = -1;
-            foreach (var item in MonThiService.GetThongTinMonThi())
+            foreach (var item in MonHocService.GetThongTinMonThi())
             {
-                cbTenMonThi.Items.Add(item.TENMT);
+                cbTenMonThi.Items.Add(item.TenMon);
             }
             cbTenMonThi.SelectedIndex = -1;
             
@@ -151,17 +151,17 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             ucQuanLyKyThi.BringToFront();
         }
 
-        private void LoadDGVKiThi(List<KITHI> listkithi)
+        private void LoadDGVKiThi(List<Models.KyThi> listkithi)
         {
             dgvKiThi.Rows.Clear();
             foreach (var item in listkithi)
             {
                 int index = dgvKiThi.Rows.Add();
-                dgvKiThi.Rows[index].Cells["colSTT"].Value = item.ID;
-                dgvKiThi.Rows[index].Cells["colMaKiThi"].Value = item.MAKITHI;
-                dgvKiThi.Rows[index].Cells["colTenKiThi"].Value = item.TENKITHI;
-                dgvKiThi.Rows[index].Cells["colThoiGianBD"].Value = item.THOIGIANBDKITHI;
-                dgvKiThi.Rows[index].Cells["colThoiGianKT"].Value = item.THOIGIANKTKITHI;
+                dgvKiThi.Rows[index].Cells["colSTT"].Value = item.Id;
+                dgvKiThi.Rows[index].Cells["colMaKiThi"].Value = item.Id;
+                dgvKiThi.Rows[index].Cells["colTenKiThi"].Value = item.TenKyThi;
+                dgvKiThi.Rows[index].Cells["colThoiGianBD"].Value = item.ThoiGianBatDau;
+                dgvKiThi.Rows[index].Cells["colThoiGianKT"].Value = item.ThoiGianKetThuc;
             }
         }
 
@@ -325,7 +325,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 kithi.ID++;
                 kithi.MaKiThi = txtMaKiThi.Text;
                 kithi.TenKiThi = txtTenKiThi.Text;
-                kithi.Admin = nguoiDung.EMAIL.ToString();
+                kithi.Admin = nguoiDung.Email.ToString();
                 kithi.ThoiGianBD = dateBD.Value;
                 kithi.ThoiGianKT = dateKT.Value;
                 frmThemChiTiet frmThemChiTiet = new frmThemChiTiet(txtMaKiThi.Text, txtTenKiThi.Text);
@@ -371,9 +371,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
         private void dgvKiThi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            string makithi = dgvKiThi.Rows[e.RowIndex].Cells["colMaKiThi"].FormattedValue.ToString();
+            long makithi = Convert.ToInt64(dgvKiThi.Rows[e.RowIndex].Cells["colMaKiThi"].Value);
             string tenkithi = dgvKiThi.Rows[e.RowIndex].Cells["colTenKiThi"].FormattedValue.ToString();
-            frmChiTietKiThi frmChiTietKiThi = new frmChiTietKiThi(makithi,tenkithi);
+            frmChiTietKiThi frmChiTietKiThi = new frmChiTietKiThi(makithi, tenkithi);
             frmChiTietKiThi.ShowDialog();   
         }
 

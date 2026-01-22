@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhanMemThiTracNghiem.DTOs
 {
-    internal class CauHoiDTO
+    public class CauHoiDTO
     {
-
-
         public CauHoiDTO()
         {
             
@@ -28,7 +22,6 @@ namespace PhanMemThiTracNghiem.DTOs
         }
 
         public int STT { get; set; }
-
         public int MaCauHoi { get; set; }
         public string NDCAUHOI { get; set; }
         public string DapAn1 { get; set; }
@@ -38,6 +31,5 @@ namespace PhanMemThiTracNghiem.DTOs
         public string DapAnDung { get; set; }
         public string MaGiaoVien { get; set; }
         public string MaMT { get; set; }
-
     }
 }

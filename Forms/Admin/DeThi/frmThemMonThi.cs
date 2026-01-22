@@ -1,6 +1,7 @@
 using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.DTOs;
-using PhanMemThiTracNghiem.Repositories;
+using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Services;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,26 +11,14 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
     public partial class frmThemMonThi : Form
     {
         private readonly AppDbContext AppDbContext;
-        private readonly MonThiService MonThiService;
+        private readonly MonHocService MonHocService;
 
         public frmThemMonThi()
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             AppDbContext = new AppDbContext();
-            MonThiService = new MonThiService();
-        }
-
-        private string GenerateMaMonThi()
-        {
-            int count = AppDbContext.MONTHI.Count();
-            string newCode;
-            do
-            {
-                count++;
-                newCode = "MT" + count.ToString("D3");
-            } while (AppDbContext.MONTHI.Any(m => m.MAMT == newCode));
-            return newCode;
+            MonHocService = new MonHocService();
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -42,12 +31,16 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
                     return;
                 }
 
-                MonThiDTO monthi = new MonThiDTO();
-                monthi.MaMT = GenerateMaMonThi();
-                monthi.TenMT = txtTenMonThi.Text.Trim();
-                MonThiService.InsertUpdate(monthi);
+                var monHoc = new MonHoc
+                {
+                    TenMon = txtTenMonThi.Text.Trim(),
+                    MoTa = "",
+                    TrangThai = true,
+                    NgayTao = DateTime.Now
+                };
+                MonHocService.Add(monHoc);
 
-                MessageBox.Show("Thêm môn thi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Thêm môn học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

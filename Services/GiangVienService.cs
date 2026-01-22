@@ -1,5 +1,4 @@
-using PhanMemThiTracNghiem.DTOs;
-using PhanMemThiTracNghiem.Helpers;
+using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.Models;
 using System;
 using System.Collections.Generic;
@@ -7,93 +6,77 @@ using System.Linq;
 
 namespace PhanMemThiTracNghiem.Services
 {
-    /// <summary>
-    /// GiangVienService - Wrapper class để tương thích ngược với code cũ
-    /// Sử dụng NGUOIDUNG với MAROLE = 2 (GiangVien)
-    /// </summary>
     public class GiangVienService
     {
-        private readonly NguoiDungService NguoiDungService;
-        private const int ROLE_GIANGVIEN = 2;
+        private readonly NguoiDungRepository _nguoiDungRepository;
+        private const long ROLE_GIANG_VIEN = 2;
 
         public GiangVienService()
         {
-            NguoiDungService = new NguoiDungService();
+            _nguoiDungRepository = new NguoiDungRepository();
         }
 
-        // Lấy tất cả giảng viên - trả về DTO để hiển thị
-        public List<NguoiDungDTO> GetGIANGVIENs()
+        // Lấy tất cả giảng viên
+        public List<NguoiDung> GetAll()
         {
-            return NguoiDungService.GetByRole(ROLE_GIANGVIEN)
-                .Select(x => new NguoiDungDTO
-                {
-                    ID = x.ID,
-                    Email = x.EMAIL,
-                    HoTen = x.HOTEN,
-                    VaiTro = x.ROLE?.TENROLE ?? "Giảng viên"
-                }).ToList();
-        }
-
-        // Lấy giảng viên theo email
-        public static NGUOIDUNG GETGiangVien(string email)
-        {
-            var NguoiDungService = new NguoiDungService();
-            return NguoiDungService.GetByEmail(email);
+            return _nguoiDungRepository.GetByRole(ROLE_GIANG_VIEN);
         }
 
         // Lấy giảng viên theo ID
-        public NGUOIDUNG GetById(int id)
+        public NguoiDung GetById(long id)
         {
-            return NguoiDungService.GetById(id);
+            var nguoiDung = _nguoiDungRepository.GetById(id);
+            return nguoiDung?.MaVaiTro == ROLE_GIANG_VIEN ? nguoiDung : null;
+        }
+
+        // Thêm giảng viên
+        public bool Add(NguoiDung giangVien)
+        {
+            giangVien.MaVaiTro = ROLE_GIANG_VIEN;
+            giangVien.TrangThai = true;
+            giangVien.NgayTao = DateTime.Now;
+            // Hash password
+            giangVien.MatKhau = Helpers.PasswordHelper.HashPassword(giangVien.MatKhau);
+            return _nguoiDungRepository.Add(giangVien);
         }
 
         // Cập nhật giảng viên
-        public void CapNhapGiangVien(int id, string email, string hoten, string matkhau)
+        public bool Update(NguoiDung giangVien)
         {
-            var gv = NguoiDungService.GetById(id);
-            if (gv != null)
-            {
-                gv.EMAIL = email;
-                gv.HOTEN = hoten;
-                if (!string.IsNullOrEmpty(matkhau))
-                {
-                    gv.MATKHAU = PasswordHelper.HashPassword(matkhau);
-                }
-                NguoiDungService.Update(gv);
-            }
-        }
-
-        // Đổi mật khẩu
-        public void DoiMatKhau(int id, string matkhau)
-        {
-            var gv = NguoiDungService.GetById(id);
-            if (gv != null)
-            {
-                gv.MATKHAU = PasswordHelper.HashPassword(matkhau);
-                NguoiDungService.Update(gv);
-            }
+            return _nguoiDungRepository.Update(giangVien);
         }
 
         // Xóa giảng viên
-        public static void Delete(int id)
+        public bool Delete(long id)
         {
-            var NguoiDungService = new NguoiDungService();
-            NguoiDungService.Delete(id);
+            return _nguoiDungRepository.Delete(id);
         }
 
-        // Tìm theo tên hoặc email
-        public List<NguoiDungDTO> FindName(string keyword)
+        // Tìm kiếm theo tên
+        public List<NguoiDung> FindName(string hoTen)
         {
-            var search = keyword.ToLower();
-            return NguoiDungService.GetByRole(ROLE_GIANGVIEN)
-                .Where(x => x.HOTEN.ToLower().Contains(search) || x.EMAIL.ToLower().Contains(search))
-                .Select(x => new NguoiDungDTO
+            return GetAll().Where(g => g.HoTen.Contains(hoTen, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        // ============ Legacy methods ============
+        public List<NguoiDung> GetGIANGVIENs()
+        {
+            return GetAll();
+        }
+
+        public void CapNhapGiangVien(int id, string email, string hoten, string matkhau)
+        {
+            var giangVien = _nguoiDungRepository.GetById(id);
+            if (giangVien != null)
+            {
+                giangVien.Email = email;
+                giangVien.HoTen = hoten;
+                if (!string.IsNullOrEmpty(matkhau) && matkhau != "********")
                 {
-                    ID = x.ID,
-                    Email = x.EMAIL,
-                    HoTen = x.HOTEN,
-                    VaiTro = x.ROLE?.TENROLE ?? "Giảng viên"
-                }).ToList();
+                    giangVien.MatKhau = Helpers.PasswordHelper.HashPassword(matkhau);
+                }
+                _nguoiDungRepository.Update(giangVien);
+            }
         }
     }
 }

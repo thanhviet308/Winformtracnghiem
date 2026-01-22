@@ -55,8 +55,8 @@ namespace PhanMemThiTracNghiem
                 return;
             }
 
-            // Đăng nhập với bảng NGUOIDUNG
-            NGUOIDUNG nguoiDung = NguoiDungService.DangNhap(txtTaiKhoan.Text.Trim(), txtMatKhau.Text);
+            // Đăng nhập với bảng nguoi_dung
+            NguoiDung nguoiDung = NguoiDungService.DangNhap(txtTaiKhoan.Text.Trim(), txtMatKhau.Text);
 
             if (nguoiDung == null)
             {
@@ -64,9 +64,9 @@ namespace PhanMemThiTracNghiem
                 return;
             }
 
-            // Điều hướng theo Role
-            // MAROLE: 1 = Admin, 2 = GiangVien, 3 = SinhVien
-            switch (nguoiDung.MAROLE)
+            // Điều hướng theo VaiTro
+            // MaVaiTro: 1 = Admin, 2 = GiangVien, 3 = SinhVien
+            switch (nguoiDung.MaVaiTro)
             {
                 case 1: // Admin
                     frmAdmin frmAdmin = new frmAdmin(nguoiDung);

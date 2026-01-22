@@ -25,30 +25,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
         private void LoadData()
         {
             // Load danh sách kỳ thi
-            List<KITHI> listKiThi = AppDbContext.KITHI.ToList();
-            cbKyThi.DataSource = listKiThi;
-            cbKyThi.DisplayMember = "TENKITHI";
-            cbKyThi.ValueMember = "MAKITHI";
+            var listKyThi = AppDbContext.KyThi.ToList();
+            cbKyThi.DataSource = listKyThi;
+            cbKyThi.DisplayMember = "TenKyThi";
+            cbKyThi.ValueMember = "Id";
             cbKyThi.SelectedIndex = -1;
 
-            // Load danh sách môn thi
-            List<MONTHI> listMonThi = AppDbContext.MONTHI.ToList();
-            cbMonThi.DataSource = listMonThi;
-            cbMonThi.DisplayMember = "TENMT";
-            cbMonThi.ValueMember = "MAMT";
+            // Load danh sách môn học
+            var listMonHoc = AppDbContext.MonHoc.ToList();
+            cbMonThi.DataSource = listMonHoc;
+            cbMonThi.DisplayMember = "TenMon";
+            cbMonThi.ValueMember = "Id";
             cbMonThi.SelectedIndex = -1;
-        }
-
-        private string GenerateMaDeThi()
-        {
-            int count = AppDbContext.DETHI.Count();
-            string newCode;
-            do
-            {
-                count++;
-                newCode = "DT" + count.ToString("D3");
-            } while (AppDbContext.DETHI.Any(d => d.MADETHI == newCode));
-            return newCode;
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -62,19 +50,33 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
                 }
                 if (cbMonThi.SelectedIndex < 0)
                 {
-                    MessageBox.Show("Vui lòng chọn môn thi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Vui lòng chọn môn học!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                MaDeThiMoi = GenerateMaDeThi();
+                // Tạo ngân hàng đề mới
+                var nganHangDe = new NganHangDe
+                {
+                    TenDe = $"Ngân hàng đề - {cbMonThi.Text}",
+                    MaMon = Convert.ToInt64(cbMonThi.SelectedValue),
+                    NgayTao = DateTime.Now
+                };
 
-                DeThiDTO dethi = new DeThiDTO();
-                dethi.MaDeThi = MaDeThiMoi;
-                dethi.MaKiThi = cbKyThi.SelectedValue.ToString();
-                dethi.MaMonThi = cbMonThi.SelectedValue.ToString();
-                DeThiService.InsertUpdate(dethi);
+                AppDbContext.NganHangDe.Add(nganHangDe);
+                AppDbContext.SaveChanges();
 
-                MessageBox.Show("Thêm đề thi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MaDeThiMoi = nganHangDe.Id.ToString();
+
+                // Cập nhật kỳ thi để liên kết với ngân hàng đề
+                long maKyThi = Convert.ToInt64(cbKyThi.SelectedValue);
+                var kyThi = AppDbContext.KyThi.Find(maKyThi);
+                if (kyThi != null)
+                {
+                    kyThi.MaNganHangDe = nganHangDe.Id;
+                    AppDbContext.SaveChanges();
+                }
+
+                MessageBox.Show("Thêm ngân hàng đề thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

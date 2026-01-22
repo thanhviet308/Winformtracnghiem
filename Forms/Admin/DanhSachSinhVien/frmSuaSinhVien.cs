@@ -9,9 +9,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
     public partial class frmSuaSinhVien : Form
     {
         private readonly NguoiDungService _nguoiDungService;
-        private NGUOIDUNG _sinhVien;
+        private NguoiDung _sinhVien;
 
-        public frmSuaSinhVien(NGUOIDUNG sinhVien)
+        public frmSuaSinhVien(NguoiDung sinhVien)
         {
             InitializeComponent();
             _nguoiDungService = new NguoiDungService();
@@ -28,8 +28,8 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         {
             if (_sinhVien != null)
             {
-                txtEmail.Text = _sinhVien.EMAIL;
-                txtHoTen.Text = _sinhVien.HOTEN;
+                txtEmail.Text = _sinhVien.Email;
+                txtHoTen.Text = _sinhVien.HoTen;
                 // Không hiển thị mật khẩu cũ
             }
         }
@@ -55,7 +55,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 }
 
                 // Kiểm tra email đã tồn tại chưa (nếu thay đổi email)
-                if (txtEmail.Text.Trim() != _sinhVien.EMAIL)
+                if (txtEmail.Text.Trim() != _sinhVien.Email)
                 {
                     var existingUser = _nguoiDungService.GetByEmail(txtEmail.Text.Trim());
                     if (existingUser != null)
@@ -67,13 +67,13 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                     }
                 }
 
-                _sinhVien.EMAIL = txtEmail.Text.Trim();
-                _sinhVien.HOTEN = txtHoTen.Text.Trim();
+                _sinhVien.Email = txtEmail.Text.Trim();
+                _sinhVien.HoTen = txtHoTen.Text.Trim();
 
                 // Chỉ cập nhật mật khẩu nếu nhập mới
                 if (!string.IsNullOrWhiteSpace(txtMatKhau.Text))
                 {
-                    _sinhVien.MATKHAU = PasswordHelper.HashPassword(txtMatKhau.Text);
+                    _sinhVien.MatKhau = PasswordHelper.HashPassword(txtMatKhau.Text);
                 }
 
                 _nguoiDungService.Update(_sinhVien);

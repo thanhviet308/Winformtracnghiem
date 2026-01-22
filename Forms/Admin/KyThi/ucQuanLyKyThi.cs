@@ -10,7 +10,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
     public partial class ucQuanLyKyThi : UserControl
     {
         private readonly KyThiRepository _kyThiRepository;
-        private List<KITHI> _allKyThi;
+        private List<Models.KyThi> _allKyThi;
 
         public ucQuanLyKyThi()
         {
@@ -33,7 +33,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // Thêm các cột dữ liệu
             dgvKyThi.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "MAKITHI",
+                DataPropertyName = "Id",
                 HeaderText = "Mã kỳ thi",
                 Name = "colMaKyThi",
                 Width = 120
@@ -41,7 +41,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
             dgvKyThi.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "TENKITHI",
+                DataPropertyName = "TenKyThi",
                 HeaderText = "Tên kỳ thi",
                 Name = "colTenKyThi",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -49,7 +49,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
             dgvKyThi.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "THOIGIANBDKITHI",
+                DataPropertyName = "ThoiGianBatDau",
                 HeaderText = "Thời gian bắt đầu",
                 Name = "colThoiGianBD",
                 Width = 180
@@ -57,7 +57,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
             dgvKyThi.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "THOIGIANKTKITHI",
+                DataPropertyName = "ThoiGianKetThuc",
                 HeaderText = "Thời gian kết thúc",
                 Name = "colThoiGianKT",
                 Width = 180
@@ -91,7 +91,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         {
             try
             {
-                _allKyThi = _kyThiRepository.GetKITHIs();
+                _allKyThi = _kyThiRepository.GetAll();
                 dgvKyThi.DataSource = null;
                 dgvKyThi.DataSource = _allKyThi;
             }
@@ -113,8 +113,8 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             else
             {
                 var filtered = _allKyThi.Where(k =>
-                    (k.MAKITHI != null && k.MAKITHI.ToLower().Contains(keyword)) ||
-                    (k.TENKITHI != null && k.TENKITHI.ToLower().Contains(keyword))
+                    k.Id.ToString().Contains(keyword) ||
+                    (k.TenKyThi != null && k.TenKyThi.ToLower().Contains(keyword))
                 ).ToList();
                 dgvKyThi.DataSource = null;
                 dgvKyThi.DataSource = filtered;
@@ -134,7 +134,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         {
             if (e.RowIndex < 0) return;
 
-            var kyThi = dgvKyThi.Rows[e.RowIndex].DataBoundItem as KITHI;
+            var kyThi = dgvKyThi.Rows[e.RowIndex].DataBoundItem as Models.KyThi;
             if (kyThi == null) return;
 
             if (e.ColumnIndex == dgvKyThi.Columns["colSua"].Index)
@@ -148,7 +148,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             else if (e.ColumnIndex == dgvKyThi.Columns["colXoa"].Index)
             {
                 var result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn xóa kỳ thi '{kyThi.TENKITHI}'?",
+                    $"Bạn có chắc chắn muốn xóa kỳ thi '{kyThi.TenKyThi}'?",
                     "Xác nhận xóa",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
@@ -157,7 +157,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 {
                     try
                     {
-                        _kyThiRepository.Delete(kyThi.MAKITHI);
+                        _kyThiRepository.Delete(kyThi.Id);
                         MessageBox.Show("Xóa kỳ thi thành công!", "Thông báo",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadKyThi();
@@ -169,32 +169,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                     }
                 }
             }
-        }
-
-        private string GenerateMaKyThi()
-        {
-            var allKyThi = _kyThiRepository.GetKITHIs();
-            if (allKyThi == null || allKyThi.Count == 0)
-            {
-                return "KT001";
-            }
-
-            // Lấy số lớn nhất từ các mã hiện có
-            int maxNumber = 0;
-            foreach (var kt in allKyThi)
-            {
-                if (!string.IsNullOrEmpty(kt.MAKITHI) && kt.MAKITHI.StartsWith("KT"))
-                {
-                    string numberPart = kt.MAKITHI.Substring(2);
-                    if (int.TryParse(numberPart, out int number))
-                    {
-                        if (number > maxNumber)
-                            maxNumber = number;
-                    }
-                }
-            }
-
-            return $"KT{(maxNumber + 1).ToString("D3")}";
         }
     }
 }

@@ -8,9 +8,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
     public partial class frmSuaKyThi : Form
     {
         private readonly KyThiRepository _kyThiRepository;
-        private KITHI _kyThi;
+        private Models.KyThi _kyThi;
 
-        public frmSuaKyThi(KITHI kyThi)
+        public frmSuaKyThi(Models.KyThi kyThi)
         {
             InitializeComponent();
             _kyThiRepository = new KyThiRepository();
@@ -27,15 +27,11 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         {
             if (_kyThi != null)
             {
-                txtMaKyThi.Text = _kyThi.MAKITHI;
+                txtMaKyThi.Text = _kyThi.Id.ToString();
                 txtMaKyThi.Enabled = false; // Không cho sửa mã
-                txtTenKyThi.Text = _kyThi.TENKITHI;
-                
-                if (_kyThi.THOIGIANBDKITHI.HasValue)
-                    dtpBatDau.Value = _kyThi.THOIGIANBDKITHI.Value;
-                    
-                if (_kyThi.THOIGIANKTKITHI.HasValue)
-                    dtpKetThuc.Value = _kyThi.THOIGIANKTKITHI.Value;
+                txtTenKyThi.Text = _kyThi.TenKyThi;
+                dtpBatDau.Value = _kyThi.ThoiGianBatDau;
+                dtpKetThuc.Value = _kyThi.ThoiGianKetThuc;
             }
         }
 
@@ -59,9 +55,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                     return;
                 }
 
-                _kyThi.TENKITHI = txtTenKyThi.Text.Trim();
-                _kyThi.THOIGIANBDKITHI = dtpBatDau.Value;
-                _kyThi.THOIGIANKTKITHI = dtpKetThuc.Value;
+                _kyThi.TenKyThi = txtTenKyThi.Text.Trim();
+                _kyThi.ThoiGianBatDau = dtpBatDau.Value;
+                _kyThi.ThoiGianKetThuc = dtpKetThuc.Value;
 
                 _kyThiRepository.Update(_kyThi);
                 MessageBox.Show("Cập nhật kỳ thi thành công!", "Thông báo",

@@ -23,12 +23,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
 
         private void LoadData()
         {
-            var gv = AppDbContext.NGUOIDUNG.FirstOrDefault(n => n.EMAIL == _email);
+            var gv = AppDbContext.NguoiDung.FirstOrDefault(n => n.Email == _email);
             if (gv != null)
             {
-                txtEmail.Text = gv.EMAIL;
+                txtEmail.Text = gv.Email;
                 txtEmail.Enabled = false; // Không cho sửa email
-                txtHoTen.Text = gv.HOTEN;
+                txtHoTen.Text = gv.HoTen;
             }
         }
 
@@ -42,15 +42,15 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                     return;
                 }
 
-                var gv = AppDbContext.NGUOIDUNG.FirstOrDefault(n => n.EMAIL == _email);
+                var gv = AppDbContext.NguoiDung.FirstOrDefault(n => n.Email == _email);
                 if (gv != null)
                 {
-                    gv.HOTEN = txtHoTen.Text.Trim();
+                    gv.HoTen = txtHoTen.Text.Trim();
                     
                     // Nếu nhập mật khẩu mới thì cập nhật
                     if (!string.IsNullOrWhiteSpace(txtMatKhauMoi.Text))
                     {
-                        gv.MATKHAU = PasswordHelper.HashPassword(txtMatKhauMoi.Text);
+                        gv.MatKhau = PasswordHelper.HashPassword(txtMatKhauMoi.Text);
                     }
 
                     AppDbContext.SaveChanges();

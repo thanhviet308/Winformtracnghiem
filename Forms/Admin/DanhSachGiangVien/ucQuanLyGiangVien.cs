@@ -44,18 +44,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             if (dgvGiangVien.Columns.Count > 0)
             {
                 // Ẩn các cột không cần thiết
-                if (dgvGiangVien.Columns.Contains("PASSWORD"))
-                    dgvGiangVien.Columns["PASSWORD"].Visible = false;
-                if (dgvGiangVien.Columns.Contains("MAROLE"))
-                    dgvGiangVien.Columns["MAROLE"].Visible = false;
-                if (dgvGiangVien.Columns.Contains("ROLE"))
-                    dgvGiangVien.Columns["ROLE"].Visible = false;
+                if (dgvGiangVien.Columns.Contains("MatKhau"))
+                    dgvGiangVien.Columns["MatKhau"].Visible = false;
+                if (dgvGiangVien.Columns.Contains("MaVaiTro"))
+                    dgvGiangVien.Columns["MaVaiTro"].Visible = false;
+                if (dgvGiangVien.Columns.Contains("VaiTro"))
+                    dgvGiangVien.Columns["VaiTro"].Visible = false;
 
                 // Đặt tên cột
-                if (dgvGiangVien.Columns.Contains("EMAIL"))
-                    dgvGiangVien.Columns["EMAIL"].HeaderText = "Email";
-                if (dgvGiangVien.Columns.Contains("HOTEN"))
-                    dgvGiangVien.Columns["HOTEN"].HeaderText = "Họ tên";
+                if (dgvGiangVien.Columns.Contains("Email"))
+                    dgvGiangVien.Columns["Email"].HeaderText = "Email";
+                if (dgvGiangVien.Columns.Contains("HoTen"))
+                    dgvGiangVien.Columns["HoTen"].HeaderText = "Họ tên";
             }
         }
 
@@ -68,9 +68,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 return;
             }
 
-            var list = AppDbContext.NGUOIDUNG
-                .Where(n => n.MAROLE == 2 && 
-                    (n.EMAIL.ToLower().Contains(keyword) || n.HOTEN.ToLower().Contains(keyword)))
+            var list = AppDbContext.NguoiDung
+                .Where(n => n.MaVaiTro == 2 && 
+                    (n.Email.ToLower().Contains(keyword) || n.HoTen.ToLower().Contains(keyword)))
                 .ToList();
 
             dgvGiangVien.DataSource = list;
@@ -104,7 +104,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         {
             if (e.RowIndex < 0) return;
 
-            string email = dgvGiangVien.Rows[e.RowIndex].Cells["EMAIL"].Value?.ToString();
+            string email = dgvGiangVien.Rows[e.RowIndex].Cells["Email"].Value?.ToString();
 
             if (dgvGiangVien.Columns[e.ColumnIndex].Name == "colSua")
             {
@@ -121,10 +121,10 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                 {
                     try
                     {
-                        var gv = AppDbContext.NGUOIDUNG.FirstOrDefault(n => n.EMAIL == email);
+                        var gv = AppDbContext.NguoiDung.FirstOrDefault(n => n.Email == email);
                         if (gv != null)
                         {
-                            AppDbContext.NGUOIDUNG.Remove(gv);
+                            AppDbContext.NguoiDung.Remove(gv);
                             AppDbContext.SaveChanges();
                             LoadGiangVien();
                             MessageBox.Show("Xóa thành công!", "Thông báo");

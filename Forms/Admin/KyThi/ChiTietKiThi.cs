@@ -14,65 +14,65 @@ using System.Windows.Forms;
 
 namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
 {
-    public partial class frmChiTietKiThi: Form
+    public partial class frmChiTietKiThi : Form
     {
         private readonly AppDbContext AppDbContext;
-        private string makithi;
-        private string tenkithi;
-        public frmChiTietKiThi(string makithi, string tenkithi)
+        private long maKyThi;
+        private string tenKyThi;
+
+        public frmChiTietKiThi(long maKyThi, string tenKyThi)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
-            this.makithi = makithi;
-            this.tenkithi = tenkithi;  
-            AppDbContext = new AppDbContext();    
+            this.maKyThi = maKyThi;
+            this.tenKyThi = tenKyThi;
+            AppDbContext = new AppDbContext();
         }
 
         private void frmChiTietKiThi_Load(object sender, EventArgs e)
         {
-            cbMaKiThi.Items.Add(makithi);
+            cbMaKiThi.Items.Add(maKyThi.ToString());
             cbMaKiThi.SelectedIndex = 0;
-            cbTenKiThi.Items.Add(tenkithi);
+            cbTenKiThi.Items.Add(tenKyThi);
             cbTenKiThi.SelectedIndex = 0;
-            List<CHITIETKYTHI> list = AppDbContext.CHITIETKYTHI.Where(p => p.MAKITHI == makithi).ToList();
-            LoadDGVchitKiThi(list); 
-
+            
+            // Lấy danh sách bài thi của kỳ thi này
+            var list = AppDbContext.BaiThi.Where(p => p.MaKyThi == maKyThi).ToList();
+            LoadDGVchitKiThi(list);
         }
 
-
-        private void LoadDGVchitKiThi(List<CHITIETKYTHI> list)
+        private void LoadDGVchitKiThi(List<BaiThi> list)
         {
-             
-            
             dgvChiTietKiThi.Rows.Clear();
             foreach (var item in list)
             {
                 int index = dgvChiTietKiThi.Rows.Add();
-                dgvChiTietKiThi.Rows[index].Cells["colMaKiThi"].Value = item.MAKITHI;
-                dgvChiTietKiThi.Rows[index].Cells["colMaMonThi"].Value = item.MAMT;
-                dgvChiTietKiThi.Rows[index].Cells["colMaSV"].Value = item.MASV;
-                dgvChiTietKiThi.Rows[index].Cells["colDiem"].Value = item.DIEM;
-                dgvChiTietKiThi.Rows[index].Cells["colThoiGianThi"].Value = (int)(item.THOIGIANTHI)/360 + " phút";
-                dgvChiTietKiThi.Rows[index].Cells["colThoiGianBD"].Value = item.THOIGIANBD;
-                dgvChiTietKiThi.Rows[index].Cells["colThoiGianKT"].Value = item.THOIGIANKT;
+                dgvChiTietKiThi.Rows[index].Cells["colMaKiThi"].Value = item.MaKyThi;
+                dgvChiTietKiThi.Rows[index].Cells["colMaSV"].Value = item.MaSinhVien;
+                dgvChiTietKiThi.Rows[index].Cells["colDiem"].Value = item.DiemSo;
+                
+                // Tính thời gian thi
+                if (item.ThoiGianBatDau.HasValue && item.ThoiGianNopBai.HasValue)
+                {
+                    var thoiGianThi = (item.ThoiGianNopBai.Value - item.ThoiGianBatDau.Value).TotalMinutes;
+                    dgvChiTietKiThi.Rows[index].Cells["colThoiGianThi"].Value = $"{(int)thoiGianThi} phút";
+                }
+                
+                dgvChiTietKiThi.Rows[index].Cells["colThoiGianBD"].Value = item.ThoiGianBatDau;
+                dgvChiTietKiThi.Rows[index].Cells["colThoiGianKT"].Value = item.ThoiGianNopBai;
             }
         }
 
         private void dgvChiTietKiThi_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
+            
             dgvChiTietKiThi.CurrentRow.Selected = true;
-            /*  txtMaGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["MAGV"].FormattedValue.ToString();
-              txtTenGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["TENGV"].FormattedValue.ToString();
-              dtNgaySinhGiangVien.Value = DateTime.Parse(dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["NGAYSINH"].FormattedValue.ToString());
-              txtMatKhauGiangVien.Text = dgvDanhSachGiangVien.Rows[e.RowIndex].Cells["MATKHAU"].FormattedValue.ToString();*/
-            float diem = float.Parse(dgvChiTietKiThi.Rows[e.RowIndex].Cells["colDiem"].FormattedValue.ToString());
-            if (diem.ToString() != null)
+            
+            var diemCell = dgvChiTietKiThi.Rows[e.RowIndex].Cells["colDiem"].Value;
+            if (diemCell != null && diemCell.ToString() != "")
             {
                 MessageBox.Show("Kỳ thi này đã hoàn thành không thể sửa !!!");
-            }
-            else
-            {
-                    
             }
         }
     }

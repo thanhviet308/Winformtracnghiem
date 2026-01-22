@@ -2,6 +2,7 @@ using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.DTOs;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
     public partial class frmThemChiTiet : Form
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ChiTietKyThiService _chiTietKyThiService;
         private string makithi;
         private string tenkithi;
 
@@ -27,29 +29,31 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
         }
-        public frmThemChiTiet(string makt,string tenkt)
+        public frmThemChiTiet(string makt, string tenkt)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             AppDbContext = new AppDbContext();
+            _chiTietKyThiService = new ChiTietKyThiService();
             this.makithi = makt;
             this.tenkithi = tenkt;
         }
 
         private void frmThemChiTiet_Load(object sender, EventArgs e)
         {
-             labelMaKiThi.Text = makithi.ToString();
-              labelTenKiThi.Text = tenkithi.ToString();
-            List<MONTHI> listmonthi = AppDbContext.MONTHI.ToList();
-            foreach (var item in listmonthi)
+            labelMaKiThi.Text = makithi.ToString();
+            labelTenKiThi.Text = tenkithi.ToString();
+            
+            // Load danh sách môn học
+            var listMonHoc = AppDbContext.MonHoc.ToList();
+            foreach (var item in listMonHoc)
             {
-                cbMonThi.Items.Add(item.TENMT);
+                cbMonThi.Items.Add(item.TenMon);
             }
-            List<CHITIETKYTHI> list = AppDbContext.CHITIETKYTHI.ToList();  
-            dgvdemo.DataSource = list;      
-
-
-
+            
+            // Load danh sách bài thi
+            var list = AppDbContext.BaiThi.ToList();
+            dgvdemo.DataSource = list;
         }
 
         private void guna2Button1_Click(object sender, EventArgs e)
@@ -58,41 +62,34 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             DateTime thoiGianKetThuc = datetimeKT.Value;
             int thoigianthi = (thoiGianKetThuc.Hour * 60 + thoiGianKetThuc.Minute) - (thoiGianBatDau.Hour * 60 + thoiGianBatDau.Minute);
             string tenmt = cbMonThi.Text;
-            string loaimt="";
-            List<MONTHI> listmonthi = AppDbContext.MONTHI.Where(p => p.TENMT == tenmt).ToList();
-            var users = AppDbContext.NGUOIDUNG.Where(x => x.MAROLE == 3).ToList(); // Lấy sinh viên (MAROLE = 3)
-            foreach (var item in listmonthi)
-            {
-                loaimt = item.MAMT;
-            }
+            
+            // Lấy môn học theo tên
+            var monHoc = AppDbContext.MonHoc.FirstOrDefault(p => p.TenMon == tenmt);
+            var users = AppDbContext.NguoiDung.Where(x => x.MaVaiTro == 3).ToList(); // Lấy sinh viên (MaVaiTro = 3)
+            
             try
             {
                 foreach (var user in users)
                 {
-                    ChiTietKiThiDTO chiTietKiThiDTO = new ChiTietKiThiDTO();
-                    chiTietKiThiDTO.MaKiThi = makithi.ToString();
-                    chiTietKiThiDTO.MaMonThi = loaimt.ToString();
-                    chiTietKiThiDTO.Diem = 0.0;
-                    chiTietKiThiDTO.ThoiGianBD = datetimeBD.Value;
-                    chiTietKiThiDTO.ThoiGianKT = datetimeKT.Value;
-                    chiTietKiThiDTO.ThoiGianThi = thoigianthi;
-                    chiTietKiThiDTO.MaSinhVien = user.ID.ToString();
-                    ChiTietKyThiService.InsertUpdate(chiTietKiThiDTO);
+                    // Tạo bài thi cho mỗi sinh viên
+                    var baiThi = new BaiThi
+                    {
+                        MaKyThi = long.TryParse(makithi, out long kyThiId) ? kyThiId : (long?)null,
+                        MaSinhVien = user.Id,
+                        ThoiGianBatDau = datetimeBD.Value,
+                        TrangThai = "chua_thi"
+                    };
+                    AppDbContext.BaiThi.Add(baiThi);
                 }
+                AppDbContext.SaveChanges();
                 MessageBox.Show("Cập nhật thành công");
                 this.Close();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-       
-
-     
 
         private void btnKiemTra_Click(object sender, EventArgs e)
         {

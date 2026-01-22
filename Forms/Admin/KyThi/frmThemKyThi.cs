@@ -28,27 +28,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
         private string GenerateMaKyThi()
         {
-            var allKyThi = _kyThiRepository.GetKITHIs();
-            if (allKyThi == null || allKyThi.Count == 0)
-            {
-                return "KT001";
-            }
-
-            int maxNumber = 0;
-            foreach (var kt in allKyThi)
-            {
-                if (!string.IsNullOrEmpty(kt.MAKITHI) && kt.MAKITHI.StartsWith("KT"))
-                {
-                    string numberPart = kt.MAKITHI.Substring(2);
-                    if (int.TryParse(numberPart, out int number))
-                    {
-                        if (number > maxNumber)
-                            maxNumber = number;
-                    }
-                }
-            }
-
-            return $"KT{(maxNumber + 1).ToString("D3")}";
+            // KyThi không còn có mã nữa, chỉ có Id tự động
+            // Return empty string hoặc null
+            return string.Empty;
         }
 
         private void btnLuu_Click(object sender, EventArgs e)
@@ -71,12 +53,11 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                     return;
                 }
 
-                var kyThi = new KITHI
+                var kyThi = new Models.KyThi
                 {
-                    MAKITHI = txtMaKyThi.Text.Trim(),
-                    TENKITHI = txtTenKyThi.Text.Trim(),
-                    THOIGIANBDKITHI = dtpBatDau.Value,
-                    THOIGIANKTKITHI = dtpKetThuc.Value
+                    TenKyThi = txtTenKyThi.Text.Trim(),
+                    ThoiGianBatDau = dtpBatDau.Value,
+                    ThoiGianKetThuc = dtpKetThuc.Value
                 };
 
                 _kyThiRepository.Add(kyThi);
