@@ -103,7 +103,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
             this.guna2HtmlLabel1.Size = new System.Drawing.Size(385, 52);
             this.guna2HtmlLabel1.TabIndex = 5;
-            this.guna2HtmlLabel1.Text = "B?NG –I?M SINH VI N";
+            this.guna2HtmlLabel1.Text = "B·∫¢NG ƒêI·ªÇM SINH VI√äN";
             // 
             // panel1
             // 
@@ -128,7 +128,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblMaSoSinhVien.Name = "lblMaSoSinhVien";
             this.lblMaSoSinhVien.Size = new System.Drawing.Size(233, 32);
             this.lblMaSoSinhVien.TabIndex = 5;
-            this.lblMaSoSinhVien.Text = "TÍn - M„ s? sinh viÍn";
+            this.lblMaSoSinhVien.Text = "T√™n - M√£ s·ªë sinh vi√™n";
             this.lblMaSoSinhVien.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // BANGDIEMreportBindingSource

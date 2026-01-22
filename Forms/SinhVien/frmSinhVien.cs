@@ -2,6 +2,7 @@ using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +31,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         public frmSinhVien(NGUOIDUNG nd)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             ChiTietKyThiService = new ChiTietKyThiService();
             KyThiService = new KyThiService();
             MonThiService = new MonThiService();
@@ -38,6 +40,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         public frmSinhVien(NGUOIDUNG nd, int i)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             ChiTietKyThiService = new ChiTietKyThiService();
             KyThiService = new KyThiService();
             nguoiDung = nd;
@@ -48,11 +51,11 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         {
             btnXemDiem.Hide();
             
-            // ?n tru?ng L?p (kh�ng c�n trong NGUOIDUNG)
+            // Ẩn trường Lớp (không còn trong NGUOIDUNG)
             label2.Visible = false;
             lblLop.Visible = false;
             
-           // T�m k? thi trong th?i gian hi?n t?i
+           // Tìm kỳ thi trong thời gian hiện tại
             foreach (var item in KyThiService.GetThongTinKyThi())
             {
                 if(item.THOIGIANBDKITHI < thoiGianThiGanNhat && item.THOIGIANKTKITHI > thoiGianThiGanNhat)
@@ -63,7 +66,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                 }
             }
 
-            // L?y th?i gian so s�nh t�m th�ng tin g?n nh?t 
+            // Lấy thời gian so sánh tìm thông tin gần nhất 
             thoiGianThiGanNhat = new DateTime(1 / 1 / 2000);
             foreach (var item in ChiTietKyThiService.GetThongTinChiTietKyThi())
             {
@@ -95,7 +98,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             }
         }
 
-        // B? ki?m tra tru?ng h?p ng�y thay d?i "Thi d�m"
+        // Bỏ kiểm tra trường hợp ngày thay đổi "Thi đêm"
         private bool KiemTraThoiGianVaoThi()
         {
 
@@ -150,7 +153,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             }
             else
             {
-                MessageBox.Show("Chua d?n th?i gian b?t d?u thi \nHi?n t?i l�: " + DateTime.Now.ToString());
+                MessageBox.Show("Chưa đến thời gian bắt đầu thi \nHiện tại là: " + DateTime.Now.ToString());
             }
         }
 

@@ -5,6 +5,7 @@ using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.DTOs;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using PhanMemThiTracNghiem.Forms.Admin;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         {
             nguoiDung = nd;
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             CauHoiService = new CauHoiService();
             MonThiService = new MonThiService();        
         }
@@ -48,11 +50,11 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             dgvCauHoi.DataSource = CauHoiService.GetCAUHOIs();
             txtMaGV.Text = nguoiDung.EMAIL;
             txtTenGV.Text = nguoiDung.HOTEN;
-            txtPassword.Text = "********"; // KhÙng hi?n th? m?t kh?u th?t
+            txtPassword.Text = "********"; // Kh√¥ng hi·ªÉn th·ªã m·∫≠t kh·∫©u th·∫≠t
             
-            // ?n panel ng‡y sinh (khÙng cÚn trong NGUOIDUNG)
+            // ·∫®n panel ng√†y sinh (kh√¥ng c√≤n trong NGUOIDUNG)
             panel3.Visible = false;
-            // Di chuy?n panel m?t kh?u lÍn
+            // Di chuy·ªÉn panel m·∫≠t kh·∫©u l√™n
             panel4.Location = panel3.Location;
 
             foreach (var item in MonThiService.GetThongTinMonThi())
@@ -160,7 +162,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 }
                 else
                 {
-                    MessageBox.Show("Chua cÛ d·p ·n d˙ng");
+                    MessageBox.Show("Ch∆∞a c√≥ ƒë√°p √°n ƒë√∫ng");
                 }
             }
             catch (Exception ex)
@@ -189,7 +191,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 {
                     if (cbDanhMucMT is null)
                     {
-                        MessageBox.Show("Vui lÚng ch?n mÙn thi");
+                        MessageBox.Show("Vui l√≤ng ch·ªçn m√¥n thi");
                     }
 
                     CAUHOI cauhoi = new CAUHOI()
@@ -214,7 +216,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     database.SaveChanges();
                     frmGiangVien_Load(sender, e);
                 }
-                MessageBox.Show("Luu th‡nh cÙng");
+                MessageBox.Show("L∆∞u th√†nh c√¥ng");
             }
             catch (Exception ex)
             {
@@ -252,7 +254,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     dapandung=txtDapAnD.Text;   
                 }
                 CauHoiService.CapNhapCauHoi(macauh, noidung, dapan1, dapan2, dapan3, dapan4,dapandung,magv1);
-                MessageBox.Show("C?p nh?p th‡nh cÙng");
+                MessageBox.Show("C·∫≠p nh·∫≠t th√†nh c√¥ng");
                 frmGiangVien_Load(sender, e);
             }
             catch (Exception ex)
@@ -303,7 +305,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 cauHoiDTO.MaMT = mamt;
                 CauHoiService.InsertUpdate(cauHoiDTO);
                 frmGiangVien_Load(sender, e);
-                MessageBox.Show("ThÍm th‡nh cÙng!");
+                MessageBox.Show("Th√™m th√†nh c√¥ng!");
             }
             catch (Exception ex)
             {
@@ -319,7 +321,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             try
             {
                 CauHoiService.Delete(r);
-                MessageBox.Show("XÛa th‡nh cÙng !!!");
+                MessageBox.Show("X√≥a th√†nh c√¥ng!!!");
                 dgvCauHoi.DataSource = CauHoiService.GetCAUHOIs();
             }
             catch (Exception ex)

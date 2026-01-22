@@ -2,6 +2,7 @@ using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.DTOs;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +25,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
         {
             this.madethi = madethi;
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             AppDbContext = new AppDbContext();
             CauHoiService = new CauHoiService();
         }
@@ -104,7 +106,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
                     AppDbContext.SaveChanges();
                  //   ChiTietDeThi_Load(sender, e);
                 }
-                MessageBox.Show("Luu th�nh c�ng");
+                MessageBox.Show("Lưu thành công");
             }
             catch (Exception ex)
             {
@@ -156,7 +158,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
                         // int mach = int.Parse(dgvChiTDeThi.Rows[i].Cells["colMaCauHoi"].ToString());
                             if (dgvChiTDeThi.Rows[i].Cells["colMaCauHoi"].Value.ToString() == dgvCauHoiDeThi.Rows[e.RowIndex].Cells["colMaCH"].Value.ToString())
                             {
-                                MessageBox.Show("M� c�u h?i d� t?n t?i trong d? thi");
+                                MessageBox.Show("Mã câu hỏi đã tồn tại trong đề thi");
                                 return;
                             }
                     }

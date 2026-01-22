@@ -229,7 +229,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Size = new System.Drawing.Size(1494, 782);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "QU?N L� �? THI";
+            this.tabPage3.Text = "QUẢN LÝ ĐỀ THI";
             // 
             // guna2Panel16
             // 
@@ -255,12 +255,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemDeThi.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(99)))), ((int)(((byte)(222)))));
             this.btnThemDeThi.Font = new System.Drawing.Font("Sitka Subheading", 16.2F);
             this.btnThemDeThi.ForeColor = System.Drawing.Color.White;
-            this.btnThemDeThi.Location = new System.Drawing.Point(209, 279);
+            this.btnThemDeThi.Location = new System.Drawing.Point(209, 148);
             this.btnThemDeThi.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnThemDeThi.Name = "btnThemDeThi";
             this.btnThemDeThi.Size = new System.Drawing.Size(173, 62);
             this.btnThemDeThi.TabIndex = 2;
-            this.btnThemDeThi.Text = "Th�m";
+            this.btnThemDeThi.Text = "Thêm";
             this.btnThemDeThi.Click += new System.EventHandler(this.btnThemDeThi_Click);
             // 
             // guna2Panel17
@@ -280,7 +280,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(185, 43);
             this.label11.TabIndex = 1;
-            this.label11.Text = "Th�m d? thi";
+            this.label11.Text = "Thêm đề thi";
             // 
             // guna2Panel9
             // 
@@ -291,6 +291,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.guna2Panel9.Name = "guna2Panel9";
             this.guna2Panel9.Size = new System.Drawing.Size(547, 65);
             this.guna2Panel9.TabIndex = 1;
+            this.guna2Panel9.Visible = false;
             // 
             // txtMaDeThi
             // 
@@ -320,17 +321,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(141, 40);
             this.label8.TabIndex = 0;
-            this.label8.Text = "M� d? thi:";
+            this.label8.Text = "Mã đề thi:";
             // 
             // guna2Panel19
             // 
             this.guna2Panel19.Controls.Add(this.cbTenMonThi);
             this.guna2Panel19.Controls.Add(this.label18);
-            this.guna2Panel19.Location = new System.Drawing.Point(3, 210);
+            this.guna2Panel19.Location = new System.Drawing.Point(3, 140);
             this.guna2Panel19.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2Panel19.Name = "guna2Panel19";
             this.guna2Panel19.Size = new System.Drawing.Size(547, 65);
             this.guna2Panel19.TabIndex = 1;
+            this.guna2Panel19.Visible = false;
             // 
             // cbTenMonThi
             // 
@@ -356,17 +358,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(174, 40);
             this.label18.TabIndex = 0;
-            this.label18.Text = "T�n m�n thi:";
+            this.label18.Text = "Tên môn thi:";
             // 
             // guna2Panel15
             // 
             this.guna2Panel15.Controls.Add(this.cbTenKiThi1);
             this.guna2Panel15.Controls.Add(this.label9);
-            this.guna2Panel15.Location = new System.Drawing.Point(3, 140);
+            this.guna2Panel15.Location = new System.Drawing.Point(3, 69);
             this.guna2Panel15.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2Panel15.Name = "guna2Panel15";
             this.guna2Panel15.Size = new System.Drawing.Size(547, 65);
             this.guna2Panel15.TabIndex = 1;
+            this.guna2Panel15.Visible = false;
             // 
             // cbTenKiThi1
             // 
@@ -392,7 +395,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(142, 40);
             this.label9.TabIndex = 0;
-            this.label9.Text = "T�n k� thi:";
+            this.label9.Text = "Tên kỳ thi:";
             // 
             // guna2Panel20
             // 
@@ -417,12 +420,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemMonThi.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(99)))), ((int)(((byte)(222)))));
             this.btnThemMonThi.Font = new System.Drawing.Font("Sitka Subheading", 16.2F);
             this.btnThemMonThi.ForeColor = System.Drawing.Color.White;
-            this.btnThemMonThi.Location = new System.Drawing.Point(182, 268);
+            this.btnThemMonThi.Location = new System.Drawing.Point(182, 148);
             this.btnThemMonThi.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnThemMonThi.Name = "btnThemMonThi";
             this.btnThemMonThi.Size = new System.Drawing.Size(173, 62);
             this.btnThemMonThi.TabIndex = 2;
-            this.btnThemMonThi.Text = "Th�m";
+            this.btnThemMonThi.Text = "Thêm";
             this.btnThemMonThi.Click += new System.EventHandler(this.btnThemMonThi_Click);
             // 
             // guna2Panel21
@@ -434,6 +437,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.guna2Panel21.Name = "guna2Panel21";
             this.guna2Panel21.Size = new System.Drawing.Size(547, 65);
             this.guna2Panel21.TabIndex = 1;
+            this.guna2Panel21.Visible = false;
             // 
             // txtMaMonThi
             // 
@@ -463,17 +467,18 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(167, 40);
             this.label19.TabIndex = 0;
-            this.label19.Text = "M� m�n thi:";
+            this.label19.Text = "Mã môn thi:";
             // 
             // guna2Panel22
             // 
             this.guna2Panel22.Controls.Add(this.txtTenMonThi);
             this.guna2Panel22.Controls.Add(this.label20);
-            this.guna2Panel22.Location = new System.Drawing.Point(3, 181);
+            this.guna2Panel22.Location = new System.Drawing.Point(3, 110);
             this.guna2Panel22.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2Panel22.Name = "guna2Panel22";
             this.guna2Panel22.Size = new System.Drawing.Size(547, 65);
             this.guna2Panel22.TabIndex = 1;
+            this.guna2Panel22.Visible = false;
             // 
             // txtTenMonThi
             // 
@@ -503,7 +508,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(174, 40);
             this.label20.TabIndex = 0;
-            this.label20.Text = "T�n m�n thi:";
+            this.label20.Text = "Tên môn thi:";
             // 
             // guna2Panel23
             // 
@@ -522,7 +527,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(215, 43);
             this.label21.TabIndex = 1;
-            this.label21.Text = "Th�m m�n thi";
+            this.label21.Text = "Thêm môn thi";
             // 
             // tabPage2
             // 
@@ -545,7 +550,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Size = new System.Drawing.Size(1494, 782);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "QU?N L� SINH VI�N";
+            this.tabPage2.Text = "QUẢN LÝ SINH VIÊN";
             // 
             // dgvDanhSachSinhVien
             // 
@@ -626,7 +631,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnCapNhapSV.Name = "btnCapNhapSV";
             this.btnCapNhapSV.Size = new System.Drawing.Size(121, 35);
             this.btnCapNhapSV.TabIndex = 11;
-            this.btnCapNhapSV.Text = "C?p nh?p";
+            this.btnCapNhapSV.Text = "Cập nhật";
             this.btnCapNhapSV.Click += new System.EventHandler(this.btnCapNhapSV_Click);
             // guna2Panel14
             // 
@@ -688,7 +693,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(135, 25);
             this.label16.TabIndex = 13;
-            this.label16.Text = "H? t�n:";
+            this.label16.Text = "Họ tên:";
             // 
             // txtTenSinhVien
             // 
@@ -844,7 +849,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(97, 25);
             this.label14.TabIndex = 10;
-            this.label14.Text = "T�m ki?m:";
+            this.label14.Text = "Tìm kiếm:";
             // 
             // btnThemMotSinhVien
             // 
@@ -863,7 +868,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemMotSinhVien.Name = "btnThemMotSinhVien";
             this.btnThemMotSinhVien.Size = new System.Drawing.Size(227, 42);
             this.btnThemMotSinhVien.TabIndex = 6;
-            this.btnThemMotSinhVien.Text = "Th�m m?t sinh vi�n";
+            this.btnThemMotSinhVien.Text = "Thêm một sinh viên";
             this.btnThemMotSinhVien.Click += new System.EventHandler(this.btnThemMotSinhVien_Click);
             // 
             // btnXoaMotSinhVien
@@ -883,7 +888,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnXoaMotSinhVien.Name = "btnXoaMotSinhVien";
             this.btnXoaMotSinhVien.Size = new System.Drawing.Size(229, 42);
             this.btnXoaMotSinhVien.TabIndex = 5;
-            this.btnXoaMotSinhVien.Text = "X�a m?t sinh vi�n";
+            this.btnXoaMotSinhVien.Text = "Xóa một sinh viên";
             this.btnXoaMotSinhVien.Click += new System.EventHandler(this.btnXoaMotSinhVien_Click);
             // 
             // btnNhapExcelSinhVien
@@ -904,7 +909,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnNhapExcelSinhVien.Name = "btnNhapExcelSinhVien";
             this.btnNhapExcelSinhVien.Size = new System.Drawing.Size(227, 42);
             this.btnNhapExcelSinhVien.TabIndex = 4;
-            this.btnNhapExcelSinhVien.Text = "Nh?p t? Excel";
+            this.btnNhapExcelSinhVien.Text = "Nhập từ Excel";
             this.btnNhapExcelSinhVien.Click += new System.EventHandler(this.btnNhapExcelSinhVien_Click);
             // 
             // panel1
@@ -938,7 +943,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Size = new System.Drawing.Size(1494, 782);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "QU?N L� GI�O VI�N";
+            this.tabPage1.Text = "QUẢN LÝ GIÁO VIÊN";
             // 
             // guna2Panel4
             // 
@@ -978,7 +983,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 25);
             this.label4.TabIndex = 0;
-            this.label4.Text = "M?t kh?u m?i:";
+            this.label4.Text = "Mật khẩu mới:";
             // 
             // guna2Panel3
             // 
@@ -1022,7 +1027,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(136, 25);
             this.label3.TabIndex = 0;
-            this.label3.Text = "H? t�n:";
+            this.label3.Text = "Họ tên:";
             // 
             // guna2Panel5
             // 
@@ -1066,7 +1071,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(99, 25);
             this.label5.TabIndex = 0;
-            this.label5.Text = "M?t kh?u:";
+            this.label5.Text = "Mật khẩu:";
             // 
             // guna2Panel2
             // 
@@ -1169,7 +1174,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(97, 25);
             this.label1.TabIndex = 0;
-            this.label1.Text = "T�m ki?m:";
+            this.label1.Text = "Tìm kiếm:";
             // 
             // dgvDanhSachGiangVien
             // 
@@ -1251,7 +1256,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnNhapMotGiangVien.Name = "btnNhapMotGiangVien";
             this.btnNhapMotGiangVien.Size = new System.Drawing.Size(253, 38);
             this.btnNhapMotGiangVien.TabIndex = 1;
-            this.btnNhapMotGiangVien.Text = "Nh?p m?t gi?ng vi�n";
+            this.btnNhapMotGiangVien.Text = "Nhập một giảng viên";
             this.btnNhapMotGiangVien.Click += new System.EventHandler(this.btnNhapMotGiangVien_Click);
             // 
             // btnCapNhapGiangVien
@@ -1272,7 +1277,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnCapNhapGiangVien.Name = "btnCapNhapGiangVien";
             this.btnCapNhapGiangVien.Size = new System.Drawing.Size(121, 35);
             this.btnCapNhapGiangVien.TabIndex = 1;
-            this.btnCapNhapGiangVien.Text = "C?p nh?p";
+            this.btnCapNhapGiangVien.Text = "Cập nhật";
             this.btnCapNhapGiangVien.Click += new System.EventHandler(this.btnCapNhapGiangVien_Click);
             // 
             // btnXoaMotGiangVien
@@ -1292,7 +1297,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnXoaMotGiangVien.Name = "btnXoaMotGiangVien";
             this.btnXoaMotGiangVien.Size = new System.Drawing.Size(253, 38);
             this.btnXoaMotGiangVien.TabIndex = 1;
-            this.btnXoaMotGiangVien.Text = "X�a m?t gi?ng vi�n";
+            this.btnXoaMotGiangVien.Text = "Xóa một giảng viên";
             this.btnXoaMotGiangVien.Click += new System.EventHandler(this.btnXoaMotGiangVien_Click);
             // 
             // btnNhapExcelGiangVien
@@ -1313,7 +1318,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnNhapExcelGiangVien.Name = "btnNhapExcelGiangVien";
             this.btnNhapExcelGiangVien.Size = new System.Drawing.Size(253, 38);
             this.btnNhapExcelGiangVien.TabIndex = 1;
-            this.btnNhapExcelGiangVien.Text = "Nh?p t? Excel";
+            this.btnNhapExcelGiangVien.Text = "Nhập từ Excel";
             this.btnNhapExcelGiangVien.Click += new System.EventHandler(this.btnNhapExcelGiangVien_Click);
             // 
             // panel2
@@ -1373,7 +1378,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.tabPage4.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage4.Size = new System.Drawing.Size(1494, 782);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "QU?N L� K� THI";
+            this.tabPage4.Text = "QUẢN LÝ KỲ THI";
             // 
             // guna2Panel26
             // 
@@ -1408,7 +1413,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnCapNhap.Name = "btnCapNhap";
             this.btnCapNhap.Size = new System.Drawing.Size(173, 62);
             this.btnCapNhap.TabIndex = 2;
-            this.btnCapNhap.Text = "C?p nh?p";
+            this.btnCapNhap.Text = "Cập nhật";
             this.btnCapNhap.Click += new System.EventHandler(this.btnThemKiThi_Click_1);
             // 
             // btnThemKiThi
@@ -1427,7 +1432,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemKiThi.Name = "btnThemKiThi";
             this.btnThemKiThi.Size = new System.Drawing.Size(173, 62);
             this.btnThemKiThi.TabIndex = 2;
-            this.btnThemKiThi.Text = "Th�m";
+            this.btnThemKiThi.Text = "Thêm";
             this.btnThemKiThi.Click += new System.EventHandler(this.btnThemKiThi_Click_1);
             // 
             // guna2Panel27
@@ -1468,7 +1473,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(116, 35);
             this.label24.TabIndex = 0;
-            this.label24.Text = "M� k� thi:";
+            this.label24.Text = "Mã kỳ thi:";
             // 
             // guna2Panel28
             // 
@@ -1503,7 +1508,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(215, 35);
             this.label25.TabIndex = 0;
-            this.label25.Text = "Th?i gian k?t th�c:";
+            this.label25.Text = "Thời gian kết thúc:";
             // 
             // guna2Panel29
             // 
@@ -1538,7 +1543,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(207, 35);
             this.label26.TabIndex = 0;
-            this.label26.Text = "Th?i gian b?t d?u:";
+            this.label26.Text = "Thời gian bắt đầu:";
             // 
             // guna2Panel30
             // 
@@ -1578,7 +1583,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(122, 35);
             this.label27.TabIndex = 0;
-            this.label27.Text = "T�n k� thi:";
+            this.label27.Text = "Tên kỳ thi:";
             // 
             // guna2Panel31
             // 
@@ -1667,7 +1672,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // colMaKiThi
             // 
             this.colMaKiThi.FillWeight = 111.631F;
-            this.colMaKiThi.HeaderText = "M� k� thi";
+            this.colMaKiThi.HeaderText = "Mã kỳ thi";
             this.colMaKiThi.MinimumWidth = 6;
             this.colMaKiThi.Name = "colMaKiThi";
             this.colMaKiThi.ReadOnly = true;
@@ -1675,7 +1680,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // colTenKiThi
             // 
             this.colTenKiThi.FillWeight = 111.631F;
-            this.colTenKiThi.HeaderText = "T�n k� thi";
+            this.colTenKiThi.HeaderText = "Tên kỳ thi";
             this.colTenKiThi.MinimumWidth = 6;
             this.colTenKiThi.Name = "colTenKiThi";
             this.colTenKiThi.ReadOnly = true;
@@ -1683,7 +1688,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // colThoiGianBD
             // 
             this.colThoiGianBD.FillWeight = 111.631F;
-            this.colThoiGianBD.HeaderText = "Th?i gian b?t d?u";
+            this.colThoiGianBD.HeaderText = "Thời gian bắt đầu";
             this.colThoiGianBD.MinimumWidth = 6;
             this.colThoiGianBD.Name = "colThoiGianBD";
             this.colThoiGianBD.ReadOnly = true;
@@ -1691,7 +1696,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // colThoiGianKT
             // 
             this.colThoiGianKT.FillWeight = 111.631F;
-            this.colThoiGianKT.HeaderText = "Th?i gian k?t th�c";
+            this.colThoiGianKT.HeaderText = "Thời gian kết thúc";
             this.colThoiGianKT.MinimumWidth = 6;
             this.colThoiGianKT.Name = "colThoiGianKT";
             this.colThoiGianKT.ReadOnly = true;
@@ -1739,7 +1744,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(107, 33);
             this.label10.TabIndex = 6;
-            this.label10.Text = "Qu?n tr?:";
+            this.label10.Text = "Quản trị:";
             // 
             // labelAdmin
             // 
@@ -1761,7 +1766,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.linkLabel1.Size = new System.Drawing.Size(115, 30);
             this.linkLabel1.TabIndex = 7;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "�ang xu?t";
+            this.linkLabel1.Text = "Đăng xuất";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // frmAdmin

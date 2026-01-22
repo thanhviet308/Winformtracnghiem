@@ -46,6 +46,40 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             return kyThi.KITHI.ToList();
         }
+
+        public KITHI GetByMaKyThi(string maKyThi)
+        {
+            return kyThi.KITHI.FirstOrDefault(k => k.MAKITHI == maKyThi);
+        }
+
+        public void Add(KITHI entity)
+        {
+            kyThi.KITHI.Add(entity);
+            kyThi.SaveChanges();
+        }
+
+        public void Update(KITHI entity)
+        {
+            var existing = kyThi.KITHI.Find(entity.MAKITHI);
+            if (existing != null)
+            {
+                existing.TENKITHI = entity.TENKITHI;
+                existing.THOIGIANBDKITHI = entity.THOIGIANBDKITHI;
+                existing.THOIGIANKTKITHI = entity.THOIGIANKTKITHI;
+                existing.ADMIN = entity.ADMIN;
+                kyThi.SaveChanges();
+            }
+        }
+
+        public void Delete(string maKyThi)
+        {
+            var entity = kyThi.KITHI.Find(maKyThi);
+            if (entity != null)
+            {
+                kyThi.KITHI.Remove(entity);
+                kyThi.SaveChanges();
+            }
+        }
     }
 }
 

@@ -61,7 +61,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(168, 28);
             this.label1.TabIndex = 0;
-            this.label1.Text = "M?t kh?u hi?n t?i:";
+            this.label1.Text = "Mật khẩu hiện tại:";
             // 
             // txtMatkhauCu
             // 
@@ -118,7 +118,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(137, 28);
             this.label2.TabIndex = 0;
-            this.label2.Text = "M?t kh?u m?i:";
+            this.label2.Text = "Mật khẩu mới:";
             // 
             // guna2Panel3
             // 
@@ -156,7 +156,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(174, 28);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Nh?p l?i m?t kh?u:";
+            this.label3.Text = "Nhập lại mật khẩu:";
             // 
             // guna2Button1
             // 
@@ -187,7 +187,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.Size = new System.Drawing.Size(93, 45);
             this.guna2Button2.TabIndex = 1;
-            this.guna2Button2.Text = "H?y";
+            this.guna2Button2.Text = "Hủy";
             this.guna2Button2.Click += new System.EventHandler(this.guna2Button2_Click);
             // 
             // DoiMKGiangVien

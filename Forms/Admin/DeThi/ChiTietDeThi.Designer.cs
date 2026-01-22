@@ -132,47 +132,47 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             // 
             // colMaCH
             // 
-            this.colMaCH.HeaderText = "M„ c‚u h?i";
+            this.colMaCH.HeaderText = "M√£ c√¢u h·ªèi";
             this.colMaCH.Name = "colMaCH";
             // 
             // colNoiDung
             // 
-            this.colNoiDung.HeaderText = "N?i dung ";
+            this.colNoiDung.HeaderText = "N·ªôi dung";
             this.colNoiDung.Name = "colNoiDung";
             // 
             // coldapan1
             // 
-            this.coldapan1.HeaderText = "–·p ·n 1";
+            this.coldapan1.HeaderText = "ƒê√°p √°n 1";
             this.coldapan1.Name = "coldapan1";
             // 
             // coldapan2
             // 
-            this.coldapan2.HeaderText = "–·p ·n 2";
+            this.coldapan2.HeaderText = "ƒê√°p √°n 2";
             this.coldapan2.Name = "coldapan2";
             // 
             // coldapan3
             // 
-            this.coldapan3.HeaderText = "–·p ·n 3";
+            this.coldapan3.HeaderText = "ƒê√°p √°n 3";
             this.coldapan3.Name = "coldapan3";
             // 
             // coldapan4
             // 
-            this.coldapan4.HeaderText = "–·p ·n 4";
+            this.coldapan4.HeaderText = "ƒê√°p √°n 4";
             this.coldapan4.Name = "coldapan4";
             // 
             // coldapandung
             // 
-            this.coldapandung.HeaderText = "–·p ·n d˙ng";
+            this.coldapandung.HeaderText = "ƒê√°p √°n ƒë√∫ng";
             this.coldapandung.Name = "coldapandung";
             // 
             // colMaGV
             // 
-            this.colMaGV.HeaderText = "M„ gi·o viÍn";
+            this.colMaGV.HeaderText = "M√£ gi√°o vi√™n";
             this.colMaGV.Name = "colMaGV";
             // 
             // colMaMT
             // 
-            this.colMaMT.HeaderText = "M„ mÙn thi";
+            this.colMaMT.HeaderText = "M√£ m√¥n thi";
             this.colMaMT.Name = "colMaMT";
             // 
             // guna2Panel1
@@ -220,7 +220,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 28);
             this.label2.TabIndex = 0;
-            this.label2.Text = "MÙn thi:";
+            this.label2.Text = "M√¥n thi:";
             // 
             // label1
             // 
@@ -230,7 +230,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(97, 28);
             this.label1.TabIndex = 0;
-            this.label1.Text = "M„ d? thi:";
+            this.label1.Text = "M√£ ƒë·ªÅ thi:";
             // 
             // dgvChiTDeThi
             // 
@@ -300,7 +300,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(180, 45);
             this.btnThem.TabIndex = 4;
-            this.btnThem.Text = "Luu d? thi ";
+            this.btnThem.Text = "L∆∞u ƒë·ªÅ thi";
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
             // guna2ControlBox1
@@ -326,12 +326,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DeThi
             // 
             // colMaDeThi
             // 
-            this.colMaDeThi.HeaderText = "M„ d? thi";
+            this.colMaDeThi.HeaderText = "M√£ ƒë·ªÅ thi";
             this.colMaDeThi.Name = "colMaDeThi";
             // 
             // colMaCauHoi
             // 
-            this.colMaCauHoi.HeaderText = "M„ c‚u h?i";
+            this.colMaCauHoi.HeaderText = "M√£ c√¢u h·ªèi";
             this.colMaCauHoi.Name = "colMaCauHoi";
             // 
             // ChiTietDeThi

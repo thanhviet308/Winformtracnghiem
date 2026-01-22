@@ -135,7 +135,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.btnXemDiem.Name = "btnXemDiem";
             this.btnXemDiem.Size = new System.Drawing.Size(148, 60);
             this.btnXemDiem.TabIndex = 2;
-            this.btnXemDiem.Text = "XEM –I?M";
+            this.btnXemDiem.Text = "XEM ƒêI·ªÇM";
             this.btnXemDiem.Click += new System.EventHandler(this.btnXemDiem_Click);
             // 
             // btnVaoThi
@@ -165,7 +165,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblThoiGianKetThuc.Name = "lblThoiGianKetThuc";
             this.lblThoiGianKetThuc.Size = new System.Drawing.Size(121, 25);
             this.lblThoiGianKetThuc.TabIndex = 0;
-            this.lblThoiGianKetThuc.Text = "TH‘NG TIN";
+            this.lblThoiGianKetThuc.Text = "TH√îNG TIN";
             // 
             // label6
             // 
@@ -177,7 +177,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(166, 25);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Th?i gian k?t th˙c";
+            this.label6.Text = "Th·ªùi gian k·∫øt th√∫c";
             // 
             // lblThoiGianBatDau
             // 
@@ -189,7 +189,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblThoiGianBatDau.Name = "lblThoiGianBatDau";
             this.lblThoiGianBatDau.Size = new System.Drawing.Size(121, 25);
             this.lblThoiGianBatDau.TabIndex = 0;
-            this.lblThoiGianBatDau.Text = "TH‘NG TIN";
+            this.lblThoiGianBatDau.Text = "TH√îNG TIN";
             // 
             // label5
             // 
@@ -201,7 +201,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(163, 25);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Th?i gian b?t d?u";
+            this.label5.Text = "Th·ªùi gian b·∫Øt ƒë·∫ßu";
             // 
             // lblNgayThi
             // 
@@ -213,7 +213,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblNgayThi.Name = "lblNgayThi";
             this.lblNgayThi.Size = new System.Drawing.Size(121, 25);
             this.lblNgayThi.TabIndex = 0;
-            this.lblNgayThi.Text = "TH‘NG TIN";
+            this.lblNgayThi.Text = "TH√îNG TIN";
             // 
             // lblMonThi
             // 
@@ -225,7 +225,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblMonThi.Name = "lblMonThi";
             this.lblMonThi.Size = new System.Drawing.Size(121, 25);
             this.lblMonThi.TabIndex = 0;
-            this.lblMonThi.Text = "TH‘NG TIN";
+            this.lblMonThi.Text = "TH√îNG TIN";
             // 
             // label4
             // 
@@ -237,7 +237,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(118, 25);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Th?i gian thi";
+            this.label4.Text = "Th·ªùi gian thi";
             // 
             // lblLop
             // 
@@ -249,7 +249,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblLop.Name = "lblLop";
             this.lblLop.Size = new System.Drawing.Size(121, 25);
             this.lblLop.TabIndex = 0;
-            this.lblLop.Text = "TH‘NG TIN";
+            this.lblLop.Text = "TH√îNG TIN";
             // 
             // label3
             // 
@@ -261,7 +261,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 25);
             this.label3.TabIndex = 0;
-            this.label3.Text = "MÙn thi";
+            this.label3.Text = "M√¥n thi";
             // 
             // lblHoTen
             // 
@@ -273,7 +273,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblHoTen.Name = "lblHoTen";
             this.lblHoTen.Size = new System.Drawing.Size(121, 25);
             this.lblHoTen.TabIndex = 0;
-            this.lblHoTen.Text = "TH‘NG TIN";
+            this.lblHoTen.Text = "TH√îNG TIN";
             // 
             // label2
             // 
@@ -285,7 +285,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 25);
             this.label2.TabIndex = 0;
-            this.label2.Text = "L?p";
+            this.label2.Text = "L·ªõp";
             // 
             // label1
             // 
@@ -297,7 +297,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(151, 25);
             this.label1.TabIndex = 0;
-            this.label1.Text = "H? tÍn sinh viÍn";
+            this.label1.Text = "H·ªç t√™n sinh vi√™n";
             // 
             // lblThongTinCaNhan
             // 
@@ -309,7 +309,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblThongTinCaNhan.Name = "lblThongTinCaNhan";
             this.lblThongTinCaNhan.Size = new System.Drawing.Size(224, 25);
             this.lblThongTinCaNhan.TabIndex = 0;
-            this.lblThongTinCaNhan.Text = "TH‘NG TIN SINH VI N";
+            this.lblThongTinCaNhan.Text = "TH√îNG TIN SINH VI√äN";
             // 
             // panel2
             // 
@@ -357,7 +357,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.linkLabel1.Size = new System.Drawing.Size(115, 30);
             this.linkLabel1.TabIndex = 3;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "–ang xu?t";
+            this.linkLabel1.Text = "ƒêƒÉng xu·∫•t";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // guna2Elipse1

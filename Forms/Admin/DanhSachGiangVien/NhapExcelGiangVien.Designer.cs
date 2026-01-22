@@ -140,7 +140,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             this.btnLuuDL.Name = "btnLuuDL";
             this.btnLuuDL.Size = new System.Drawing.Size(135, 37);
             this.btnLuuDL.TabIndex = 14;
-            this.btnLuuDL.Text = "Luu d? li?u";
+            this.btnLuuDL.Text = "Lưu dữ liệu";
             this.btnLuuDL.Click += new System.EventHandler(this.btnLuuDL_Click);
             // 
             // label1
@@ -249,7 +249,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             this.btnTaiFileMau.Name = "btnTaiFileMau";
             this.btnTaiFileMau.Size = new System.Drawing.Size(135, 37);
             this.btnTaiFileMau.TabIndex = 15;
-            this.btnTaiFileMau.Text = "?? T?i file m?u";
+            this.btnTaiFileMau.Text = "📥 Tải file mẫu";
             this.btnTaiFileMau.Click += new System.EventHandler(this.btnTaiFileMau_Click);
             // 
             // lblHuongDan
@@ -261,7 +261,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             this.lblHuongDan.Name = "lblHuongDan";
             this.lblHuongDan.Size = new System.Drawing.Size(500, 25);
             this.lblHuongDan.TabIndex = 16;
-            this.lblHuongDan.Text = "Hu?ng d?n: File Excel c?n c� c�c c?t: EMAIL, TENGV, MATKHAU.";
+            this.lblHuongDan.Text = "Hướng dẫn: File Excel cần có các cột: EMAIL, TENGV, MATKHAU.";
             // 
             // NhapExcelGiangVien
             // 

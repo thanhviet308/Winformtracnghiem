@@ -21,18 +21,19 @@ namespace PhanMemThiTracNghiem
         public ThiTracNghiem(NGUOIDUNG nd)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             nguoiDung = nd;
         }
 
         internal void HienThi(float diemThi, int demSoCauDung, List<int> luuBaiLam)
         {
-            // S? c‚u d˙ng
+            // S·ªë c√¢u ƒë√∫ng
             lblSoCauDung.Text = demSoCauDung.ToString() + "/" + luuBaiLam.Count().ToString();
 
-            // S? di?m
+            // S·ªë ƒëi·ªÉm
             lblDiem.Text = diemThi.ToString();
 
-            // T?O ‘ –⁄NG SAI & TÙ m‡u cho Ù cÛ c‚u tr? l?i d˙ng
+            // T·∫†O √î ƒê√öN GSAI & T√¥ m√†u cho √¥ c√≥ c√¢u tr·∫£ l·ªùi ƒë√∫ng
             int x = 25, y = 25;
             for (int i = 0; i < luuBaiLam.Count(); i++)
             {

@@ -211,14 +211,14 @@ namespace PhanMemThiTracNghiem.Migrations
                 values: new object[,]
                 {
                     { 1, "Admin" },
-                    { 2, "Gi?ng vi�n" },
-                    { 3, "Sinh vi�n" }
+                    { 2, "Giảng viên" },
+                    { 3, "Sinh viên" }
                 });
 
             migrationBuilder.InsertData(
                 table: "NGUOIDUNG",
                 columns: new[] { "ID", "EMAIL", "HOTEN", "MAROLE", "MATKHAU" },
-                values: new object[] { 1, "admin@gmail.com", "Qu?n tr? vi�n", 1, "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92" });
+                values: new object[] { 1, "admin@gmail.com", "Quản trị viên", 1, "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BANGDIEM_CHITIETKYTHIMAKITHI_CHITIETKYTHIMAMT_CHITIETKYTHIMASV",

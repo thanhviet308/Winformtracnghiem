@@ -1,5 +1,6 @@
 using PhanMemThiTracNghiem.Helpers;
 using PhanMemThiTracNghiem.Services;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         {
             this.idGV = id;
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             GiangVienService = new GiangVienService();
         }
 
@@ -35,32 +37,32 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             
             if (gv == null)
             {
-                MessageBox.Show("Kh�ng t�m th?y ngu?i d�ng");
+                MessageBox.Show("Không tìm thấy người dùng");
                 return;
             }
             
-            // So s�nh m?t kh?u cu d� m� h�a
+            // So sánh mật khẩu cũ đã mã hóa
             string hashedOldPassword = PasswordHelper.HashPassword(txtMatkhauCu.Text);
             if (hashedOldPassword != gv.MATKHAU)
             {
-                MessageBox.Show("M?t kh?u cu kh�ng d�ng");
+                MessageBox.Show("Mật khẩu cũ không đúng");
                 return;
             }
             
             if (string.IsNullOrWhiteSpace(txtMatKhauMoi.Text))
             {
-                MessageBox.Show("Vui l�ng nh?p m?t kh?u m?i");
+                MessageBox.Show("Vui lòng nhập mật khẩu mới");
                 return;
             }
             
             if (txtMatKhauMoi.Text != txtNhapLai.Text)
             {
-                MessageBox.Show("M?t kh?u m?i kh�ng kh?p");
+                MessageBox.Show("Mật khẩu mới không khớp");
                 return;
             }
             
             GiangVienService.DoiMatKhau(idGV, txtMatKhauMoi.Text);
-            MessageBox.Show("�?i m?t kh?u th�nh c�ng");
+            MessageBox.Show("Đổi mật khẩu thành công");
             this.Close();
         }
     }

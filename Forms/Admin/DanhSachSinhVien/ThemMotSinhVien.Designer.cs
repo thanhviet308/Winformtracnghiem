@@ -74,7 +74,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(203, 25);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Nh?p m?t sinh vi�n";
+            this.label5.Text = "Nhập một sinh viên";
             // 
             // guna2Panel2
             // 
@@ -96,7 +96,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(107, 26);
             this.label2.TabIndex = 4;
-            this.label2.Text = "H? v� t�n:";
+            this.label2.Text = "Họ và tên:";
             // 
             // txtTenSinhVien
             // 
@@ -185,7 +185,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(55, 26);
             this.label4.TabIndex = 4;
-            this.label4.Text = "L?p:";
+            this.label4.Text = "Lớp:";
             // 
             // txtLop
             // 
@@ -227,7 +227,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.bntHuy.Name = "bntHuy";
             this.bntHuy.Size = new System.Drawing.Size(141, 43);
             this.bntHuy.TabIndex = 16;
-            this.bntHuy.Text = "H?y";
+            this.bntHuy.Text = "Hủy";
             this.bntHuy.Click += new System.EventHandler(this.bntHuy_Click);
             // 
             // btnXacNhan
@@ -248,7 +248,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.btnXacNhan.Name = "btnXacNhan";
             this.btnXacNhan.Size = new System.Drawing.Size(141, 43);
             this.btnXacNhan.TabIndex = 15;
-            this.btnXacNhan.Text = "X�c nh?n";
+            this.btnXacNhan.Text = "Xác nhận";
             this.btnXacNhan.Click += new System.EventHandler(this.btnXacNhan_Click);
             // 
             // guna2Panel3
@@ -289,7 +289,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(111, 26);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Ng�y sinh:";
+            this.label3.Text = "Ngày sinh:";
             // 
             // guna2Panel6
             // 
@@ -311,7 +311,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(131, 33);
             this.label6.TabIndex = 4;
-            this.label6.Text = "M?t kh?u:";
+            this.label6.Text = "Mật khẩu:";
             // 
             // txtMatKhau
             // 

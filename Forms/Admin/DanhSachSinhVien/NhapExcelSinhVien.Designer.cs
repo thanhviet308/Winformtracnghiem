@@ -61,7 +61,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.btnLuuDL.Name = "btnLuuDL";
             this.btnLuuDL.Size = new System.Drawing.Size(180, 46);
             this.btnLuuDL.TabIndex = 23;
-            this.btnLuuDL.Text = "Luu d? li?u";
+            this.btnLuuDL.Text = "Lưu dữ liệu";
             this.btnLuuDL.Click += new System.EventHandler(this.btnLuuDL_Click);
             // 
             // label1
@@ -247,7 +247,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.btnTaiFileMau.Name = "btnTaiFileMau";
             this.btnTaiFileMau.Size = new System.Drawing.Size(180, 46);
             this.btnTaiFileMau.TabIndex = 24;
-            this.btnTaiFileMau.Text = "?? T?i file m?u";
+            this.btnTaiFileMau.Text = "📥 Tải file mẫu";
             this.btnTaiFileMau.Click += new System.EventHandler(this.btnTaiFileMau_Click);
             // 
             // lblHuongDan
@@ -259,7 +259,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
             this.lblHuongDan.Name = "lblHuongDan";
             this.lblHuongDan.Size = new System.Drawing.Size(600, 30);
             this.lblHuongDan.TabIndex = 25;
-            this.lblHuongDan.Text = "Hu?ng d?n: File Excel c?n c� c�c c?t: EMAIL, TENSV, MATKHAU. Nh?n \"T?i file m?u\" d? t?i file Excel m?u.";
+            this.lblHuongDan.Text = "Hướng dẫn: File Excel cần có các cột: EMAIL, TENSV, MATKHAU. Nhấn \"Tải file mẫu\" để tải file Excel mẫu.";
             // 
             // NhapExcelSinhVien
             // 

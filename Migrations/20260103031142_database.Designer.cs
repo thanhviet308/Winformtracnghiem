@@ -321,7 +321,7 @@ namespace PhanMemThiTracNghiem.Migrations
                         {
                             ID = 1,
                             EMAIL = "admin@gmail.com",
-                            HOTEN = "Qu?n tr? vi�n",
+                            HOTEN = "Quản trị viên",
                             MAROLE = 1,
                             MATKHAU = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
                         });
@@ -353,12 +353,12 @@ namespace PhanMemThiTracNghiem.Migrations
                         new
                         {
                             MAROLE = 2,
-                            TENROLE = "Gi?ng vi�n"
+                            TENROLE = "Giảng viên"
                         },
                         new
                         {
                             MAROLE = 3,
-                            TENROLE = "Sinh vi�n"
+                            TENROLE = "Sinh viên"
                         });
                 });
 

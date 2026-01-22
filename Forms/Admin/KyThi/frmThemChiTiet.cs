@@ -2,6 +2,7 @@ using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.DTOs;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,11 +25,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
         public frmThemChiTiet()
         {
             InitializeComponent();
-           
+            ThemeHelper.ApplyVietnameseFont(this);
         }
         public frmThemChiTiet(string makt,string tenkt)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             AppDbContext = new AppDbContext();
             this.makithi = makt;
             this.tenkithi = tenkt;
@@ -58,7 +60,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             string tenmt = cbMonThi.Text;
             string loaimt="";
             List<MONTHI> listmonthi = AppDbContext.MONTHI.Where(p => p.TENMT == tenmt).ToList();
-            var users = AppDbContext.NGUOIDUNG.Where(x => x.MAROLE == 3).ToList(); // L?y sinh vi�n (MAROLE = 3)
+            var users = AppDbContext.NGUOIDUNG.Where(x => x.MAROLE == 3).ToList(); // Lấy sinh viên (MAROLE = 3)
             foreach (var item in listmonthi)
             {
                 loaimt = item.MAMT;
@@ -77,7 +79,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
                     chiTietKiThiDTO.MaSinhVien = user.ID.ToString();
                     ChiTietKyThiService.InsertUpdate(chiTietKiThiDTO);
                 }
-                MessageBox.Show("C?p nh?p th�nh c�ng");
+                MessageBox.Show("Cập nhật thành công");
                 this.Close();
             }
             catch (Exception ex)
@@ -99,11 +101,11 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             int thoigianthi = (thoiGianKetThuc.Hour * 60 + thoiGianKetThuc.Minute) - (thoiGianBatDau.Hour * 60 + thoiGianBatDau.Minute);
             if (datetimeBD.Value == null && datetimeKT.Value == null)
             {
-                MessageBox.Show("Chua nh?p th?i gian b?t d?u ho?c k?t th�c");
+                MessageBox.Show("Chưa nhập thời gian bắt đầu hoặc kết thúc");
             }
             else if (datetimeBD.Value > datetimeKT.Value)
             {
-                MessageBox.Show("Th?i gian b?t d?u kh�ng du?c l?n hon th?i gian k?t th�c");
+                MessageBox.Show("Thời gian bắt đầu không được lớn hơn thời gian kết thúc");
             }
             else
             {

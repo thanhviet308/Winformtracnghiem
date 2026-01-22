@@ -1,6 +1,7 @@
 using PhanMemThiTracNghiem.Data;
 using ExcelDataReader;
 using OfficeOpenXml;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
         public NhapExcelGiangVien(frmAdmin _frmAdmin)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             GiangVienService = new GiangVienService();
             NguoiDungService = new NguoiDungService();
             frmAdmin = _frmAdmin;
@@ -68,7 +70,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             
             if (dt != null)
             {
-                listGV.Clear(); // Clear danh s�ch cu tru?c khi th�m m?i
+                listGV.Clear(); // Clear danh sách cũ trước khi thêm mới
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     NGUOIDUNG giangvien = new NGUOIDUNG();
@@ -79,7 +81,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                     listGV.Add(giangvien);
                 }
             }
-            // Ch? hi?n th? c�c c?t c?n thi?t
+            // Chỉ hiển thị các cột cần thiết
             var displayList = listGV.Select(x => new { Email = x.EMAIL, HoTen = x.HOTEN }).ToList();
             dgvThemExcelSinhVien.DataSource = null;
             dgvThemExcelSinhVien.DataSource = displayList;
@@ -89,7 +91,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
         {
             if (tableCollection == null || cboSheet.SelectedItem == null)
             {
-                MessageBox.Show("Vui l�ng ch?n file Excel v� sheet tru?c!");
+                MessageBox.Show("Vui lòng chọn file Excel và sheet trước!");
                 return;
             }
             
@@ -115,7 +117,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                         NguoiDungService.Add(giangvien);
                     frmAdmin.frmAdmin_Load(sender, e);
                     }
-                MessageBox.Show("Luu th�nh c�ng");
+                MessageBox.Show("Lưu thành công");
             }
             catch (Exception ex)
             {
@@ -129,7 +131,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             {
                 saveFileDialog.Filter = "Excel Workbook|*.xlsx";
                 saveFileDialog.FileName = "MauNhapGiangVien.xlsx";
-                saveFileDialog.Title = "Luu file m?u";
+                saveFileDialog.Title = "Lưu file mẫu";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -153,13 +155,13 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                                 range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
                             }
                             
-                            // D? li?u m?u
+                            // Dữ liệu mẫu
                             worksheet.Cells[2, 1].Value = "giangvien1@gmail.com";
-                            worksheet.Cells[2, 2].Value = "Nguy?n Van Gi?ng";
+                            worksheet.Cells[2, 2].Value = "Nguyễn Văn Giảng";
                             worksheet.Cells[2, 3].Value = "123456";
                             
                             worksheet.Cells[3, 1].Value = "giangvien2@gmail.com";
-                            worksheet.Cells[3, 2].Value = "Tr?n Th? Vi�n";
+                            worksheet.Cells[3, 2].Value = "Trần Thị Viên";
                             worksheet.Cells[3, 3].Value = "123456";
                             
                             // Auto fit columns
@@ -169,12 +171,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                             FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
                             package.SaveAs(fileInfo);
                             
-                            MessageBox.Show("�� t?i file m?u th�nh c�ng!\n\nHu?ng d?n:\n- EMAIL: Email dang nh?p\n- TENGV: H? v� t�n gi?ng vi�n\n- MATKHAU: M?t kh?u dang nh?p", "Th�nh c�ng", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Đã tải file mẫu thành công!\n\nHướng dẫn:\n- EMAIL: Email đăng nhập\n- TENGV: Họ và tên giảng viên\n- MATKHAU: Mật khẩu đăng nhập", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("L?i: " + ex.Message);
+                        MessageBox.Show("Lỗi: " + ex.Message);
                     }
                 }
             }

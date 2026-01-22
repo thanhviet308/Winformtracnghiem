@@ -1,0 +1,141 @@
+using PhanMemThiTracNghiem.Data;
+using PhanMemThiTracNghiem.DTOs;
+using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Repositories;
+using PhanMemThiTracNghiem.Services;
+using PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace PhanMemThiTracNghiem.Forms.Admin
+{
+    public partial class ucQuanLyGiangVien : UserControl
+    {
+        private readonly AppDbContext AppDbContext;
+        private readonly GiangVienService GiangVienService;
+        private Form parentForm;
+
+        public ucQuanLyGiangVien()
+        {
+            InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
+            AppDbContext = new AppDbContext();
+            GiangVienService = new GiangVienService();
+        }
+
+        public void SetParentForm(Form form)
+        {
+            parentForm = form;
+        }
+
+        private void ucQuanLyGiangVien_Load(object sender, EventArgs e)
+        {
+            LoadGiangVien();
+        }
+
+        private void LoadGiangVien()
+        {
+            var list = GiangVienService.GetGIANGVIENs();
+            dgvGiangVien.DataSource = list;
+
+            if (dgvGiangVien.Columns.Count > 0)
+            {
+                // Ẩn các cột không cần thiết
+                if (dgvGiangVien.Columns.Contains("PASSWORD"))
+                    dgvGiangVien.Columns["PASSWORD"].Visible = false;
+                if (dgvGiangVien.Columns.Contains("MAROLE"))
+                    dgvGiangVien.Columns["MAROLE"].Visible = false;
+                if (dgvGiangVien.Columns.Contains("ROLE"))
+                    dgvGiangVien.Columns["ROLE"].Visible = false;
+
+                // Đặt tên cột
+                if (dgvGiangVien.Columns.Contains("EMAIL"))
+                    dgvGiangVien.Columns["EMAIL"].HeaderText = "Email";
+                if (dgvGiangVien.Columns.Contains("HOTEN"))
+                    dgvGiangVien.Columns["HOTEN"].HeaderText = "Họ tên";
+            }
+        }
+
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtTimKiem.Text.Trim().ToLower();
+            if (string.IsNullOrEmpty(keyword))
+            {
+                LoadGiangVien();
+                return;
+            }
+
+            var list = AppDbContext.NGUOIDUNG
+                .Where(n => n.MAROLE == 2 && 
+                    (n.EMAIL.ToLower().Contains(keyword) || n.HOTEN.ToLower().Contains(keyword)))
+                .ToList();
+
+            dgvGiangVien.DataSource = list;
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            frmThemGiangVien frm = new frmThemGiangVien();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                LoadGiangVien();
+            }
+        }
+
+        private void btnNhapExcel_Click(object sender, EventArgs e)
+        {
+            var frm = this.FindForm() as frmAdmin;
+            if (frm != null)
+            {
+                NhapExcelGiangVien nhapExcel = new NhapExcelGiangVien(frm);
+                nhapExcel.ShowDialog();
+                LoadGiangVien();
+            }
+            else
+            {
+                MessageBox.Show("Không thể mở form nhập Excel!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvGiangVien_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            string email = dgvGiangVien.Rows[e.RowIndex].Cells["EMAIL"].Value?.ToString();
+
+            if (dgvGiangVien.Columns[e.ColumnIndex].Name == "colSua")
+            {
+                frmSuaGiangVien frm = new frmSuaGiangVien(email);
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadGiangVien();
+                }
+            }
+            else if (dgvGiangVien.Columns[e.ColumnIndex].Name == "colXoa")
+            {
+                if (MessageBox.Show($"Bạn có chắc muốn xóa giảng viên này?", "Xác nhận",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        var gv = AppDbContext.NGUOIDUNG.FirstOrDefault(n => n.EMAIL == email);
+                        if (gv != null)
+                        {
+                            AppDbContext.NGUOIDUNG.Remove(gv);
+                            AppDbContext.SaveChanges();
+                            LoadGiangVien();
+                            MessageBox.Show("Xóa thành công!", "Thông báo");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+    }
+}

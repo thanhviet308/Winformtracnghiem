@@ -49,6 +49,7 @@ namespace PhanMemThiTracNghiem
         public frmThi(NGUOIDUNG nd, MONTHI mt, DateTime ThoiGianBatDauVaoThi, DateTime thoiGianKetThucThi)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
 
             oCauHoi = new List<Button>();
             luuBaiCham = new List<GroupBox>();
@@ -66,14 +67,14 @@ namespace PhanMemThiTracNghiem
             nguoiDung = nd;
             monThi = mt;
 
-            // Hi?n th? th�ng tin sinh vi�n 
+            // Hiển thị thông tin sinh viên 
             lblTenSinhVien.Text = nguoiDung.HOTEN.ToString() + "  ||  " + nguoiDung.EMAIL.ToString();
 
-            // Hi?n th? m�n thi
+            // Hiển thị môn thi
             lblMonThi.Text = monThi.TENMT;
             lblMonThi.Name = monThi.MAMT;
 
-            // G?i khung hi?n th? c�u h?i tr?c nghi?m
+            // Gọi khung hiển thị câu hỏi trắc nghiệm
             flowLayoutPanel1.Enabled = true;
             flowLayoutPanel1_Paint();
 
@@ -94,7 +95,7 @@ namespace PhanMemThiTracNghiem
         }
         private void flowLayoutPanel1_Paint()
         {
-            // T?o � c�u h?i b�n tr�i
+            // Tạo ô câu hỏi bên trái
             int x = 10, y = 105;
             int soCauHoi = 0;
             foreach (var item in CauHoiService.GetThongTinCauHoi())
@@ -119,7 +120,7 @@ namespace PhanMemThiTracNghiem
                 luuBaiCham.Add(TaoCauHoi( i));
             }
             
-            // T?o t?t c? c� trong v�ng ch?a c�u h?i
+            // Tạo tất cả câu hỏi trong vùng chứa câu hỏi
 
             foreach (CHITIETDETHI item in danhMucCauHoiBAL.GetCauHoi())
             {
@@ -133,16 +134,16 @@ namespace PhanMemThiTracNghiem
 
         private GroupBox TaoCauHoi(int i)
         {
-            // T?o m?i GroupBox ch?a m?i 1 c�u h?i
+            // Tạo mỗi GroupBox chứa mỗi 1 câu hỏi
             GroupBox groupBox = new GroupBox();
             groupBox.Location = new Point();
             groupBox.Font = new Font("Be Vietnam Pro", 10, FontStyle.Bold);
-            groupBox.Text = "C�u " + (i+1);
+            groupBox.Text = "Câu " + (i+1);
             groupBox.Name = (i+1).ToString();
             groupBox.Size = new System.Drawing.Size(1780, 300);
             flowLayoutPanel1.Controls.Add(groupBox);
 
-            // Ti?p theo ta t?o c�u h?i
+            // Tiếp theo ta tạo câu hỏi
             Label label = new Label();
             label.Location = new Point(30, 30);
             label.Size = new Size(1600, 50);
@@ -167,7 +168,7 @@ namespace PhanMemThiTracNghiem
                 rdo.Name = "rdo" + j.ToString();
                 rdo.Font = new Font("Be Vietnam Pro", 10);
 
-                // L?y 4 d�p �n
+                // Lấy 4 đáp án
                 if (j == 0)
                 {
                     rdo.Text = cauHoiMonThi[i].DAPAN1;
@@ -195,7 +196,7 @@ namespace PhanMemThiTracNghiem
 
 
 
-            // Ti?p theo ta t?o c�c 4 � d? ch?a d�p �n
+            // Tiếp theo ta tạo các 4 ô để chứa đáp án
 
             return groupBox;
         }
@@ -215,7 +216,7 @@ namespace PhanMemThiTracNghiem
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private System.EventHandler CauHoiRepositoryam(GroupBox a)
@@ -237,7 +238,7 @@ namespace PhanMemThiTracNghiem
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return null;
         }
@@ -268,11 +269,11 @@ namespace PhanMemThiTracNghiem
         {
             for (int i = 0; i < 100; i++)
             {
-                flowLayoutPanel1.Controls.Add(new Button() { Text = "C? l�n" });
+                flowLayoutPanel1.Controls.Add(new Button() { Text = "Cố lên" });
             }
             for (int i = 0; i < 100; i++)
             {
-                flowLayoutPanel1.Controls.Add(new Button() { Text = "M?nh m? l�n" });
+                flowLayoutPanel1.Controls.Add(new Button() { Text = "Mạnh mẽ lên" });
             }
         }
 
@@ -281,17 +282,17 @@ namespace PhanMemThiTracNghiem
 
         }
 
-        // N?P B�I
+        // NỘP BÀI
         private void NopBai_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("B?n c� mu?n n?p b�i kh�ng?", "Th�ng b�o", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Bạn có muốn nộp bài không?", "Thông báo", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.No)
                 return;
             NopBai_Click();
         }
 
-        // T�NH TH?I GIAN C�N L?I
+        // TÍNH THỜI GIAN CÒN LẠI
         private void btnDemNguoc_Click(object sender, EventArgs e)
         {
 
@@ -325,7 +326,7 @@ namespace PhanMemThiTracNghiem
             {
                 HienThiPhutGio();
                 this.timer1.Enabled = false;
-                MessageBox.Show("H?t gi? l�m b�i!!");
+                MessageBox.Show("Hết giờ làm bài!!");
                 NopBai_Click();
             }
             else
@@ -337,7 +338,7 @@ namespace PhanMemThiTracNghiem
 
         private void NopBai_Click()
         {
-            // L?y th?i gian k?t th�c thi
+            // Lấy thời gian kết thúc thi
             DateTime thoiGianThi = DateTime.Now;
             float diemMotCau;
             float diemThi = 0;
@@ -364,8 +365,8 @@ namespace PhanMemThiTracNghiem
             }
             diemThi = (float)(Math.Round(diemThi, 2));
 
-            // Luu d? li?u v�o Chi Ti?t K? Thi v� Luu �i?m
-            // T�m th?i gian kh?p di?n ra k? thi d? th�m c?p nh?p di?m, th?i gian k?t th�c thi v� th?i gian thi
+            // Lưu dữ liệu vào Chi Tiết Kỳ Thi và Lưu Điểm
+            // Tìm thời gian khớp diễn ra kỳ thi để thêm cập nhật điểm, thời gian kết thúc thi và thời gian thi
             foreach (var item in kiThiBAL.GetThongTinKyThi())
             {
                 if (DateTime.Now >= item.THOIGIANBDKITHI && DateTime.Now <= item.THOIGIANKTKITHI)
@@ -379,7 +380,7 @@ namespace PhanMemThiTracNghiem
                 }
             }
 
-            // Hi?n th?  di?m
+            // Hiển thị điểm
 
             ThiTracNghiem thiTracNghiem = new ThiTracNghiem(nguoiDung);
             thiTracNghiem.HienThi(diemThi, demSoCauDung, luuBaiLam);
@@ -403,7 +404,7 @@ namespace PhanMemThiTracNghiem
                 sGiay = "0" + iGiay.ToString();
             else
                 sGiay = iGiay.ToString();
-            // Hi?n th? th?i gian
+            // Hiển thị thời gian
             this.lblHienThi.Text = sPhut + ":" + sGiay;
 
         }
@@ -426,13 +427,13 @@ namespace PhanMemThiTracNghiem
 
 
 
-// CODE CU - LUU L?I KHI C?N XEM
+// CODE CŨ - LƯU LẠI KHI CẦN XEM
 
-// T?o c�u h?i
+// Tạo câu hỏi
 //flowLayoutPanel1.Controls.Add(new GroupBox()
 //{
 //    Name = tenGbox.ToString(),
-//    Text = "C�u " + tenGbox,
+//    Text = "Câu " + tenGbox,
 //    ForeColor = Color.Black,
 //    Size = new System.Drawing.Size(1200, 300),
 //    Anchor = AnchorStyles.Top & AnchorStyles.Bottom,
@@ -454,5 +455,5 @@ namespace PhanMemThiTracNghiem
 //if (giay == 0)
 //{
 //    timer1.Stop();
-//    MessageBox.Show("H?t gi? l�m b�i!");
+//    MessageBox.Show("Hết giờ làm bài!");
 //}

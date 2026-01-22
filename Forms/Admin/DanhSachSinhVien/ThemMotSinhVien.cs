@@ -1,5 +1,6 @@
 using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
         public ThemMotSinhVien(frmAdmin frm)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             NguoiDungService = new NguoiDungService();
             this.frmAdmin = frm;
         }
@@ -35,7 +37,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
                 sinhVien.MAROLE = 3; // Role SinhVien
                 NguoiDungService.Add(sinhVien);
                 frmAdmin.frmAdmin_Load(sender, e);
-                MessageBox.Show("Thêm thành công!");
+                MessageBox.Show("ThÃªm thÃ nh cÃ´ng!");
                 this.Close();
             }
             catch (Exception ex)

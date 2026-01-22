@@ -70,7 +70,7 @@ namespace PhanMemThiTracNghiem
             this.btnNopBai.Name = "btnNopBai";
             this.btnNopBai.Size = new System.Drawing.Size(129, 45);
             this.btnNopBai.TabIndex = 0;
-            this.btnNopBai.Text = "N?P B�I";
+            this.btnNopBai.Text = "NỘP BÀI";
             this.btnNopBai.Click += new System.EventHandler(this.NopBai_Click);
             // 
             // lblTenSinhVien
@@ -82,7 +82,7 @@ namespace PhanMemThiTracNghiem
             this.lblTenSinhVien.Name = "lblTenSinhVien";
             this.lblTenSinhVien.Size = new System.Drawing.Size(190, 32);
             this.lblTenSinhVien.TabIndex = 3;
-            this.lblTenSinhVien.Text = "T�n-MaSoSinhVien";
+            this.lblTenSinhVien.Text = "Tên-MaSoSinhVien";
             // 
             // guna2HtmlLabel3
             // 
@@ -92,7 +92,7 @@ namespace PhanMemThiTracNghiem
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
             this.guna2HtmlLabel3.Size = new System.Drawing.Size(50, 32);
             this.guna2HtmlLabel3.TabIndex = 3;
-            this.guna2HtmlLabel3.Text = "M�n: ";
+            this.guna2HtmlLabel3.Text = "Môn: ";
             // 
             // lblCount
             // 
@@ -114,7 +114,7 @@ namespace PhanMemThiTracNghiem
             this.lblMonThi.Name = "lblMonThi";
             this.lblMonThi.Size = new System.Drawing.Size(120, 32);
             this.lblMonThi.TabIndex = 3;
-            this.lblMonThi.Text = "T�n M�n Thi";
+            this.lblMonThi.Text = "Tên Môn Thi";
             // 
             // flowLayoutPanel1
             // 
@@ -200,7 +200,7 @@ namespace PhanMemThiTracNghiem
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
             this.guna2HtmlLabel1.Size = new System.Drawing.Size(162, 32);
             this.guna2HtmlLabel1.TabIndex = 13;
-            this.guna2HtmlLabel1.Text = "Th?i gian c�n l?i";
+            this.guna2HtmlLabel1.Text = "Thời gian còn lại";
             // 
             // guna2HtmlLabel2
             // 
@@ -227,7 +227,7 @@ namespace PhanMemThiTracNghiem
             this.MinimumSize = new System.Drawing.Size(1440, 810);
             this.Name = "frmThi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Ph?n M?m Thi Tr?c Nghi?m";
+            this.Text = "Phần Mềm Thi Trắc Nghiệm";
             this.Load += new System.EventHandler(this.frmThi_Load);
             this.panelMenu.ResumeLayout(false);
             this.pnlThi.ResumeLayout(false);

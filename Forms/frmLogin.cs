@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using PhanMemThiTracNghiem.Forms;
 using PhanMemThiTracNghiem.Forms.Admin;
 using PhanMemThiTracNghiem.Forms.GiangVien;
 using PhanMemThiTracNghiem.Services;
@@ -25,6 +26,7 @@ namespace PhanMemThiTracNghiem
         public frmLogin()
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             NguoiDungService = new NguoiDungService();
         }
 
@@ -39,30 +41,30 @@ namespace PhanMemThiTracNghiem
         {
             if (txtTaiKhoan.Text.Length == 0 && txtMatKhau.Text.Length == 0)
             {
-                MessageBox.Show("Vui l�ng nh?p email v� m?t kh?u");
+                MessageBox.Show("Vui lòng nhập email và mật khẩu");
                 return;
             }
             else if (txtTaiKhoan.Text.Length == 0)
             {
-                MessageBox.Show("Vui l�ng nh?p email");
+                MessageBox.Show("Vui lòng nhập email");
                 return;
             }
             else if (txtMatKhau.Text.Length == 0)
             {
-                MessageBox.Show("Vui l�ng nh?p m?t kh?u");
+                MessageBox.Show("Vui lòng nhập mật khẩu");
                 return;
             }
 
-            // �ang nh?p v?i b?ng NGUOIDUNG
+            // Đăng nhập với bảng NGUOIDUNG
             NGUOIDUNG nguoiDung = NguoiDungService.DangNhap(txtTaiKhoan.Text.Trim(), txtMatKhau.Text);
 
             if (nguoiDung == null)
             {
-                MessageBox.Show("Email ho?c m?t kh?u kh�ng ch�nh x�c!");
+                MessageBox.Show("Email hoặc mật khẩu không chính xác!");
                 return;
             }
 
-            // �i?u hu?ng theo Role
+            // Điều hướng theo Role
             // MAROLE: 1 = Admin, 2 = GiangVien, 3 = SinhVien
             switch (nguoiDung.MAROLE)
             {
@@ -73,14 +75,14 @@ namespace PhanMemThiTracNghiem
                     this.Close();
                     break;
 
-                case 2: // Gi?ng vi�n
+                case 2: // Giảng viên
                     frmGiangVien frmGiangVien = new frmGiangVien(nguoiDung);
                     this.Hide();
                     frmGiangVien.ShowDialog();
                     this.Close();
                     break;
 
-                case 3: // Sinh vi�n
+                case 3: // Sinh viên
                     frmSinhVien frmSinhVien = new frmSinhVien(nguoiDung);
                     this.Hide();
                     frmSinhVien.ShowDialog();
@@ -88,14 +90,14 @@ namespace PhanMemThiTracNghiem
                     break;
 
                 default:
-                    MessageBox.Show("Email n�y chua du?c ph�n quy?n!");
+                    MessageBox.Show("Email này chưa được phân quyền!");
                     break;
             }
         }
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            // Focus v�o textbox email
+            // Focus vào textbox email
             txtTaiKhoan.Focus();
         }
 

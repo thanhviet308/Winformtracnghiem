@@ -93,7 +93,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(116, 35);
             this.label1.TabIndex = 0;
-            this.label1.Text = "M� k� thi:";
+            this.label1.Text = "Mã kỳ thi:";
             // 
             // panel2
             // 
@@ -125,7 +125,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(122, 35);
             this.label2.TabIndex = 0;
-            this.label2.Text = "T�n k� thi:";
+            this.label2.Text = "Tên kỳ thi:";
             // 
             // panel3
             // 
@@ -162,7 +162,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(105, 35);
             this.label3.TabIndex = 0;
-            this.label3.Text = "M�n thi:";
+            this.label3.Text = "Môn thi:";
             // 
             // panel4
             // 
@@ -199,7 +199,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(207, 35);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Th?i gian b?t d?u:";
+            this.label4.Text = "Thời gian bắt đầu:";
             // 
             // panel5
             // 
@@ -237,7 +237,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(215, 35);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Th?i gian k?t th�c:";
+            this.label5.Text = "Thời gian kết thúc:";
             // 
             // guna2Button1
             // 
@@ -254,7 +254,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.guna2Button1.Name = "guna2Button1";
             this.guna2Button1.Size = new System.Drawing.Size(240, 55);
             this.guna2Button1.TabIndex = 1;
-            this.guna2Button1.Text = "X�c nh?n";
+            this.guna2Button1.Text = "Xác nhận";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // panel6
@@ -277,7 +277,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 35);
             this.label7.TabIndex = 2;
-            this.label7.Text = "ph�t";
+            this.label7.Text = "phút";
             // 
             // btnKiemTra
             // 
@@ -293,7 +293,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.btnKiemTra.Name = "btnKiemTra";
             this.btnKiemTra.Size = new System.Drawing.Size(176, 55);
             this.btnKiemTra.TabIndex = 1;
-            this.btnKiemTra.Text = "Ki?m tra";
+            this.btnKiemTra.Text = "Kiểm tra";
             this.btnKiemTra.Click += new System.EventHandler(this.btnKiemTra_Click);
             // 
             // label6
@@ -305,7 +305,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(159, 35);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Th?i gian thi:";
+            this.label6.Text = "Thời gian thi:";
             // 
             // dgvdemo
             // 

@@ -78,7 +78,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(223, 39);
             this.label1.TabIndex = 0;
-            this.label1.Text = "CHI TI?T KÃ THI";
+            this.label1.Text = "CHI TI·∫æT K·ª≤ THI";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // dgvChiTietKiThi
@@ -162,7 +162,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(98, 28);
             this.label27.TabIndex = 0;
-            this.label27.Text = "TÍn kÏ thi:";
+            this.label27.Text = "T√™n k·ª≥ thi:";
             // 
             // guna2Panel27
             // 
@@ -183,7 +183,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(94, 28);
             this.label24.TabIndex = 0;
-            this.label24.Text = "M„ kÏ thi:";
+            this.label24.Text = "M√£ k·ª≥ thi:";
             // 
             // guna2ControlBox1
             // 
@@ -238,37 +238,37 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             // 
             // colMakiThi
             // 
-            this.colMakiThi.HeaderText = "M„ kÏ thi";
+            this.colMakiThi.HeaderText = "M√£ k·ª≥ thi";
             this.colMakiThi.Name = "colMakiThi";
             // 
             // colMaMonThi
             // 
-            this.colMaMonThi.HeaderText = "M„ mÙn thi";
+            this.colMaMonThi.HeaderText = "M√£ m√¥n thi";
             this.colMaMonThi.Name = "colMaMonThi";
             // 
             // colMaSV
             // 
-            this.colMaSV.HeaderText = "ID sinh viÍn";
+            this.colMaSV.HeaderText = "ID sinh vi√™n";
             this.colMaSV.Name = "colMaSV";
             // 
             // colDiem
             // 
-            this.colDiem.HeaderText = "–i?m";
+            this.colDiem.HeaderText = "ƒêi·ªÉm";
             this.colDiem.Name = "colDiem";
             // 
             // colThoiGianBD
             // 
-            this.colThoiGianBD.HeaderText = "Th?i gian b?t d?u";
+            this.colThoiGianBD.HeaderText = "Th·ªùi gian b·∫Øt ƒë·∫ßu";
             this.colThoiGianBD.Name = "colThoiGianBD";
             // 
             // colThoiGianKT
             // 
-            this.colThoiGianKT.HeaderText = "Th?i gian k?t th˙c";
+            this.colThoiGianKT.HeaderText = "Th·ªùi gian k·∫øt th√∫c";
             this.colThoiGianKT.Name = "colThoiGianKT";
             // 
             // colThoiGianThi
             // 
-            this.colThoiGianThi.HeaderText = "Th?i gian thi";
+            this.colThoiGianThi.HeaderText = "Th·ªùi gian thi";
             this.colThoiGianThi.Name = "colThoiGianThi";
             // 
             // panel2

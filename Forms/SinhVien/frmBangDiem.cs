@@ -1,6 +1,7 @@
 using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         public frmBangDiem(NGUOIDUNG nd)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             nguoiDung = nd;
         }
 
@@ -30,7 +32,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             List<BANGDIEMreport> listReportBangDiem = new List<BANGDIEMreport>();
             listBangDiem = db.BANGDIEM.ToList();
 
-            // M� s? sinh vi�n label
+            // Mã số sinh viên label
             lblMaSoSinhVien.Text = nguoiDung.HOTEN +" | "+ nguoiDung.EMAIL;
 
             foreach (BANGDIEM item in listBangDiem)
@@ -48,23 +50,23 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             }
             if(listReportBangDiem.Count == 0)
             {
-                MessageBox.Show("Chua c� d? li?u di?m! Vui l�ng ch? c?p nh?p");
+                MessageBox.Show("Chưa có dữ liệu điểm! Vui lòng chờ cập nhật");
             }
             else
             {
                 dgvBangDiem.DataSource = listReportBangDiem;
                 
-                // �?t t�n c?t hi?n th?
+                // Đặt tên cột hiển thị
                 if (dgvBangDiem.Columns["ID"] != null)
                     dgvBangDiem.Columns["ID"].HeaderText = "STT";
                 if (dgvBangDiem.Columns["MAKITHI"] != null)
-                    dgvBangDiem.Columns["MAKITHI"].HeaderText = "M� K? Thi";
+                    dgvBangDiem.Columns["MAKITHI"].HeaderText = "Mã Kỳ Thi";
                 if (dgvBangDiem.Columns["MASV"] != null)
-                    dgvBangDiem.Columns["MASV"].HeaderText = "ID Sinh Vi�n";
+                    dgvBangDiem.Columns["MASV"].HeaderText = "ID Sinh Viên";
                 if (dgvBangDiem.Columns["DIEM"] != null)
-                    dgvBangDiem.Columns["DIEM"].HeaderText = "�i?m";
+                    dgvBangDiem.Columns["DIEM"].HeaderText = "Điểm";
                 if (dgvBangDiem.Columns["MAMT"] != null)
-                    dgvBangDiem.Columns["MAMT"].HeaderText = "M� M�n Thi";
+                    dgvBangDiem.Columns["MAMT"].HeaderText = "Mã Môn Thi";
             }           
         }
 

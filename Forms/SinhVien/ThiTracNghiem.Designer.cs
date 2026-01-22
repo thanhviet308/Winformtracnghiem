@@ -52,7 +52,7 @@ namespace PhanMemThiTracNghiem
             this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
             this.guna2HtmlLabel2.Size = new System.Drawing.Size(202, 52);
             this.guna2HtmlLabel2.TabIndex = 0;
-            this.guna2HtmlLabel2.Text = "S? c�u d�ng";
+            this.guna2HtmlLabel2.Text = "Số câu đúng";
             // 
             // lblSoCauDung
             // 
@@ -72,7 +72,7 @@ namespace PhanMemThiTracNghiem
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
             this.guna2HtmlLabel3.Size = new System.Drawing.Size(64, 52);
             this.guna2HtmlLabel3.TabIndex = 0;
-            this.guna2HtmlLabel3.Text = "�?t";
+            this.guna2HtmlLabel3.Text = "Đạt";
             // 
             // lblDiem
             // 

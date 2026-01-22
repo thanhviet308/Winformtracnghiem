@@ -1,5 +1,6 @@
 using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Models;
+using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +22,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
         public frmChiTietKiThi(string makithi, string tenkithi)
         {
             InitializeComponent();
+            ThemeHelper.ApplyVietnameseFont(this);
             this.makithi = makithi;
             this.tenkithi = tenkithi;  
             AppDbContext = new AppDbContext();    
@@ -50,7 +52,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
                 dgvChiTietKiThi.Rows[index].Cells["colMaMonThi"].Value = item.MAMT;
                 dgvChiTietKiThi.Rows[index].Cells["colMaSV"].Value = item.MASV;
                 dgvChiTietKiThi.Rows[index].Cells["colDiem"].Value = item.DIEM;
-                dgvChiTietKiThi.Rows[index].Cells["colThoiGianThi"].Value = (int)(item.THOIGIANTHI)/360 + " phút";
+                dgvChiTietKiThi.Rows[index].Cells["colThoiGianThi"].Value = (int)(item.THOIGIANTHI)/360 + " phÃºt";
                 dgvChiTietKiThi.Rows[index].Cells["colThoiGianBD"].Value = item.THOIGIANBD;
                 dgvChiTietKiThi.Rows[index].Cells["colThoiGianKT"].Value = item.THOIGIANKT;
             }
@@ -66,7 +68,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.KyThi
             float diem = float.Parse(dgvChiTietKiThi.Rows[e.RowIndex].Cells["colDiem"].FormattedValue.ToString());
             if (diem.ToString() != null)
             {
-                MessageBox.Show("Kì thi này dã hoàn thành không th? s?a !!!");
+                MessageBox.Show("Ká»³ thi nÃ y Ä‘Ã£ hoÃ n thÃ nh khÃ´ng thá»ƒ sá»­a !!!");
             }
             else
             {

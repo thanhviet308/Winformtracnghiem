@@ -218,7 +218,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(1470, 703);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "QU?N L› C¬U H?I";
+            this.tabPage1.Text = "QU·∫¢N L√ù C√ÇU H·ªéI";
             // 
             // label6
             // 
@@ -230,7 +230,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(105, 35);
             this.label6.TabIndex = 3;
-            this.label6.Text = "MÙn thi:";
+            this.label6.Text = "M√¥n thi:";
             // 
             // cbDanhMucMT
             // 
@@ -469,7 +469,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(125, 39);
             this.label9.TabIndex = 4;
-            this.label9.Text = "–·p ·n D";
+            this.label9.Text = "ƒê√°p √°n D";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label10
@@ -480,7 +480,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(125, 35);
             this.label10.TabIndex = 3;
-            this.label10.Text = "–·p ·n C";
+            this.label10.Text = "ƒê√°p √°n C";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label11
@@ -491,7 +491,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(125, 35);
             this.label11.TabIndex = 2;
-            this.label11.Text = "–·p ·n B";
+            this.label11.Text = "ƒê√°p √°n B";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label12
@@ -502,7 +502,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(125, 35);
             this.label12.TabIndex = 1;
-            this.label12.Text = "–·p ·n A";
+            this.label12.Text = "ƒê√°p √°n A";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label13
@@ -513,7 +513,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(125, 44);
             this.label13.TabIndex = 0;
-            this.label13.Text = "N?i dung c‚u h?i";
+            this.label13.Text = "N·ªôi dung c√¢u h·ªèi";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
@@ -585,7 +585,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnNhap.Name = "btnNhap";
             this.btnNhap.Size = new System.Drawing.Size(148, 41);
             this.btnNhap.TabIndex = 0;
-            this.btnNhap.Text = "Nh?p Excel";
+            this.btnNhap.Text = "Nh·∫≠p Excel";
             this.btnNhap.Click += new System.EventHandler(this.btnNhap_Click);
             // 
             // btnLuu
@@ -636,7 +636,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(135, 37);
             this.btnSua.TabIndex = 0;
-            this.btnSua.Text = "S?a";
+            this.btnSua.Text = "S·ª≠a";
             this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
             // txtMaCauHoi
@@ -654,7 +654,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.txtMaCauHoi.Margin = new System.Windows.Forms.Padding(5);
             this.txtMaCauHoi.Name = "txtMaCauHoi";
             this.txtMaCauHoi.PasswordChar = '\0';
-            this.txtMaCauHoi.PlaceholderText = "M„ c‚u h?i";
+            this.txtMaCauHoi.PlaceholderText = "M√£ c√¢u h·ªèi";
             this.txtMaCauHoi.SelectedText = "";
             this.txtMaCauHoi.Size = new System.Drawing.Size(132, 32);
             this.txtMaCauHoi.TabIndex = 1;
@@ -691,7 +691,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(148, 38);
             this.btnThem.TabIndex = 0;
-            this.btnThem.Text = "ThÍm";
+            this.btnThem.Text = "Th√™m";
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
             // btnXoa
@@ -709,7 +709,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(149, 38);
             this.btnXoa.TabIndex = 0;
-            this.btnXoa.Text = "XÛa";
+            this.btnXoa.Text = "X√≥a";
             this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // label1
@@ -719,7 +719,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(189, 22);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Danh s·ch c‚u h?i";
+            this.label1.Text = "Danh s√°ch c√¢u h·ªèi";
             // 
             // dgvCauHoi
             // 
@@ -789,7 +789,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Size = new System.Drawing.Size(1459, 703);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "TH‘NG TIN GI?NG VI N";
+            this.tabPage2.Text = "TH√îNG TIN GI·∫¢NG VI√äN";
             // 
             // guna2Panel1
             // 
@@ -823,7 +823,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.guna2Button1.Name = "guna2Button1";
             this.guna2Button1.Size = new System.Drawing.Size(213, 55);
             this.guna2Button1.TabIndex = 2;
-            this.guna2Button1.Text = "–?i m?t kh?u";
+            this.guna2Button1.Text = "ƒê·ªïi m·∫≠t kh·∫©u";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // panel3
@@ -863,7 +863,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(127, 35);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Ng‡y sinh:";
+            this.label5.Text = "Ng√†y sinh:";
             // 
             // panel4
             // 
@@ -921,7 +921,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(121, 35);
             this.label7.TabIndex = 0;
-            this.label7.Text = "M?t kh?u:";
+            this.label7.Text = "M·∫≠t kh·∫©u:";
             // 
             // panel2
             // 
@@ -966,7 +966,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(175, 35);
             this.label4.TabIndex = 0;
-            this.label4.Text = "H? tÍn:";
+            this.label4.Text = "H·ªç t√™n:";
             // 
             // panel1
             // 
@@ -1023,172 +1023,172 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(284, 40);
             this.label2.TabIndex = 0;
-            this.label2.Text = "ThÙng tin gi?ng viÍn";
+            this.label2.Text = "Th√¥ng tin gi·∫£ng vi√™n";
             // 
             // dataGridViewTextBoxColumn15
             // 
-            this.dataGridViewTextBoxColumn15.HeaderText = "–·p ·n 4";
+            this.dataGridViewTextBoxColumn15.HeaderText = "ƒê√°p √°n 4";
             this.dataGridViewTextBoxColumn15.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
             this.dataGridViewTextBoxColumn15.Width = 125;
             // 
             // dataGridViewTextBoxColumn16
             // 
-            this.dataGridViewTextBoxColumn16.HeaderText = "–·p ·n d˙ng";
+            this.dataGridViewTextBoxColumn16.HeaderText = "ƒê√°p √°n ƒë√∫ng";
             this.dataGridViewTextBoxColumn16.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.Width = 125;
             // 
             // colMaCauHoi
             // 
-            this.colMaCauHoi.HeaderText = "M„ c‚u h?i";
+            this.colMaCauHoi.HeaderText = "M√£ c√¢u h·ªèi";
             this.colMaCauHoi.MinimumWidth = 6;
             this.colMaCauHoi.Name = "colMaCauHoi";
             this.colMaCauHoi.Width = 125;
             // 
             // colCapDo
             // 
-            this.colCapDo.HeaderText = "C?p d?";
+            this.colCapDo.HeaderText = "C·∫•p ƒë·ªô";
             this.colCapDo.MinimumWidth = 6;
             this.colCapDo.Name = "colCapDo";
             this.colCapDo.Width = 125;
             // 
             // colNoidungCauHoi
             // 
-            this.colNoidungCauHoi.HeaderText = "N?i d?ng c‚u h?i";
+            this.colNoidungCauHoi.HeaderText = "N·ªôi dung c√¢u h·ªèi";
             this.colNoidungCauHoi.MinimumWidth = 6;
             this.colNoidungCauHoi.Name = "colNoidungCauHoi";
             this.colNoidungCauHoi.Width = 125;
             // 
             // colDapAn1
             // 
-            this.colDapAn1.HeaderText = "–·p ·n 1";
+            this.colDapAn1.HeaderText = "ƒê√°p √°n 1";
             this.colDapAn1.MinimumWidth = 6;
             this.colDapAn1.Name = "colDapAn1";
             this.colDapAn1.Width = 125;
             // 
             // colDapAn2
             // 
-            this.colDapAn2.HeaderText = "–·p ·n 2";
+            this.colDapAn2.HeaderText = "ƒê√°p √°n 2";
             this.colDapAn2.MinimumWidth = 6;
             this.colDapAn2.Name = "colDapAn2";
             this.colDapAn2.Width = 125;
             // 
             // colDapAN3
             // 
-            this.colDapAN3.HeaderText = "–·p ·n 3";
+            this.colDapAN3.HeaderText = "ƒê√°p √°n 3";
             this.colDapAN3.MinimumWidth = 6;
             this.colDapAN3.Name = "colDapAN3";
             this.colDapAN3.Width = 125;
             // 
             // colDapAn4
             // 
-            this.colDapAn4.HeaderText = "–·p ·n 4";
+            this.colDapAn4.HeaderText = "ƒê√°p √°n 4";
             this.colDapAn4.MinimumWidth = 6;
             this.colDapAn4.Name = "colDapAn4";
             this.colDapAn4.Width = 125;
             // 
             // colTrue
             // 
-            this.colTrue.HeaderText = "–·p ·n d˙ng";
+            this.colTrue.HeaderText = "ƒê√°p √°n ƒë√∫ng";
             this.colTrue.MinimumWidth = 6;
             this.colTrue.Name = "colTrue";
             this.colTrue.Width = 125;
             // 
             // dataGridViewTextBoxColumn1
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "M„ c‚u h?i";
+            this.dataGridViewTextBoxColumn1.HeaderText = "M√£ c√¢u h·ªèi";
             this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.Width = 125;
             // 
             // dataGridViewTextBoxColumn2
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "C?p d?";
+            this.dataGridViewTextBoxColumn2.HeaderText = "C·∫•p ƒë·ªô";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.Width = 125;
             // 
             // dataGridViewTextBoxColumn3
             // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "N?i d?ng c‚u h?i";
+            this.dataGridViewTextBoxColumn3.HeaderText = "N·ªôi dung c√¢u h·ªèi";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.Width = 125;
             // 
             // dataGridViewTextBoxColumn4
             // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "–·p ·n 1";
+            this.dataGridViewTextBoxColumn4.HeaderText = "ƒê√°p √°n 1";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 125;
             // 
             // dataGridViewTextBoxColumn5
             // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "–·p ·n 2";
+            this.dataGridViewTextBoxColumn5.HeaderText = "ƒê√°p √°n 2";
             this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.Width = 125;
             // 
             // dataGridViewTextBoxColumn6
             // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "–·p ·n 3";
+            this.dataGridViewTextBoxColumn6.HeaderText = "ƒê√°p √°n 3";
             this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.Width = 125;
             // 
             // dataGridViewTextBoxColumn7
             // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "–·p ·n 4";
+            this.dataGridViewTextBoxColumn7.HeaderText = "ƒê√°p √°n 4";
             this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.Width = 125;
             // 
             // dataGridViewTextBoxColumn8
             // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "–·p ·n d˙ng";
+            this.dataGridViewTextBoxColumn8.HeaderText = "ƒê√°p √°n ƒë√∫ng";
             this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.Width = 125;
             // 
             // dataGridViewTextBoxColumn9
             // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "M„ c‚u h?i";
+            this.dataGridViewTextBoxColumn9.HeaderText = "M√£ c√¢u h·ªèi";
             this.dataGridViewTextBoxColumn9.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.Width = 125;
             // 
             // dataGridViewTextBoxColumn10
             // 
-            this.dataGridViewTextBoxColumn10.HeaderText = "C?p d?";
+            this.dataGridViewTextBoxColumn10.HeaderText = "C·∫•p ƒë·ªô";
             this.dataGridViewTextBoxColumn10.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.Width = 125;
             // 
             // dataGridViewTextBoxColumn11
             // 
-            this.dataGridViewTextBoxColumn11.HeaderText = "N?i d?ng c‚u h?i";
+            this.dataGridViewTextBoxColumn11.HeaderText = "N·ªôi dung c√¢u h·ªèi";
             this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.Width = 125;
             // 
             // dataGridViewTextBoxColumn12
             // 
-            this.dataGridViewTextBoxColumn12.HeaderText = "–·p ·n 1";
+            this.dataGridViewTextBoxColumn12.HeaderText = "ƒê√°p √°n 1";
             this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.Width = 125;
             // 
             // dataGridViewTextBoxColumn14
             // 
-            this.dataGridViewTextBoxColumn14.HeaderText = "–·p ·n 3";
+            this.dataGridViewTextBoxColumn14.HeaderText = "ƒê√°p √°n 3";
             this.dataGridViewTextBoxColumn14.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             this.dataGridViewTextBoxColumn14.Width = 125;
             // 
             // dataGridViewTextBoxColumn13
             // 
-            this.dataGridViewTextBoxColumn13.HeaderText = "–·p ·n 2";
+            this.dataGridViewTextBoxColumn13.HeaderText = "ƒê√°p √°n 2";
             this.dataGridViewTextBoxColumn13.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
             this.dataGridViewTextBoxColumn13.Width = 125;
@@ -1219,7 +1219,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.linkLabel1.Size = new System.Drawing.Size(115, 30);
             this.linkLabel1.TabIndex = 4;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "–ang xu?t";
+            this.linkLabel1.Text = "ƒêƒÉng xu·∫•t";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // frmGiangVien

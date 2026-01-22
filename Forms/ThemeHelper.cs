@@ -35,12 +35,51 @@ namespace PhanMemThiTracNghiem.Forms
         public static readonly int BorderRadius = 8;
         public static readonly int BorderThickness = 1;
 
+        // ===== FONT NAME - Font hỗ trợ tiếng Việt Unicode =====
+        public static readonly string FontFamily = "Segoe UI";
+
         // ===== FONTS =====
-        public static readonly Font FontTitle = new Font("Segoe UI", 18F, FontStyle.Bold);
-        public static readonly Font FontSubtitle = new Font("Segoe UI", 14F, FontStyle.Bold);
-        public static readonly Font FontNormal = new Font("Segoe UI", 11F, FontStyle.Regular);
-        public static readonly Font FontSmall = new Font("Segoe UI", 9F, FontStyle.Regular);
-        public static readonly Font FontButton = new Font("Segoe UI", 10F, FontStyle.Bold);
+        public static readonly Font FontTitle = new Font(FontFamily, 18F, FontStyle.Bold);
+        public static readonly Font FontSubtitle = new Font(FontFamily, 14F, FontStyle.Bold);
+        public static readonly Font FontNormal = new Font(FontFamily, 11F, FontStyle.Regular);
+        public static readonly Font FontSmall = new Font(FontFamily, 9F, FontStyle.Regular);
+        public static readonly Font FontButton = new Font(FontFamily, 10F, FontStyle.Bold);
+        public static readonly Font FontLarge = new Font(FontFamily, 16F, FontStyle.Bold);
+
+        // ===== FONTS KHÔNG HỖ TRỢ TIẾNG VIỆT TỐT =====
+        private static readonly string[] UnsupportedFonts = new string[]
+        {
+            "Microsoft Sans Serif",
+            "Sitka Subheading",
+            "Sitka Text",
+            "Sitka Display",
+            "Sitka Heading",
+            "Sitka Banner",
+            "Cambria",
+            "Cambria Math"
+        };
+
+        /// <summary>
+        /// Kiểm tra font có hỗ trợ tiếng Việt không
+        /// </summary>
+        private static bool IsUnsupportedFont(string fontName)
+        {
+            foreach (var unsupported in UnsupportedFonts)
+            {
+                if (fontName.Equals(unsupported, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Tạo font mới với font family hỗ trợ tiếng Việt, giữ nguyên size và style
+        /// </summary>
+        private static Font CreateVietnameseFont(Font originalFont)
+        {
+            if (originalFont == null) return FontNormal;
+            return new Font(FontFamily, originalFont.Size, originalFont.Style);
+        }
 
         /// <summary>
         /// Áp dụng theme cho toàn bộ Form
@@ -55,12 +94,108 @@ namespace PhanMemThiTracNghiem.Forms
         }
 
         /// <summary>
+        /// Chỉ sửa font tiếng Việt cho Form (không thay đổi style/theme)
+        /// Sử dụng method này nếu không muốn thay đổi màu sắc
+        /// </summary>
+        public static void ApplyVietnameseFont(Form form)
+        {
+            if (form.Font != null && IsUnsupportedFont(form.Font.Name))
+            {
+                form.Font = CreateVietnameseFont(form.Font);
+            }
+            ApplyVietnameseFontToControls(form.Controls);
+        }
+
+        /// <summary>
+        /// Chỉ sửa font tiếng Việt cho UserControl (không thay đổi style/theme)
+        /// </summary>
+        public static void ApplyVietnameseFont(UserControl userControl)
+        {
+            if (userControl.Font != null && IsUnsupportedFont(userControl.Font.Name))
+            {
+                userControl.Font = CreateVietnameseFont(userControl.Font);
+            }
+            ApplyVietnameseFontToControls(userControl.Controls);
+        }
+
+        /// <summary>
+        /// Áp dụng font tiếng Việt đệ quy cho tất cả controls (không thay đổi style)
+        /// </summary>
+        private static void ApplyVietnameseFontToControls(Control.ControlCollection controls)
+        {
+            foreach (Control control in controls)
+            {
+                // Kiểm tra và thay thế font không hỗ trợ tiếng Việt
+                if (control.Font != null && IsUnsupportedFont(control.Font.Name))
+                {
+                    control.Font = CreateVietnameseFont(control.Font);
+                }
+
+                // Xử lý đặc biệt cho Guna2DataGridView
+                if (control is Guna2DataGridView dgv)
+                {
+                    FixDataGridViewFont(dgv);
+                }
+
+                // Đệ quy cho các controls con
+                if (control.HasChildren)
+                {
+                    ApplyVietnameseFontToControls(control.Controls);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sửa font cho DataGridView
+        /// </summary>
+        private static void FixDataGridViewFont(Guna2DataGridView dgv)
+        {
+            var headerFont = dgv.ThemeStyle.HeaderStyle.Font;
+            if (headerFont != null && IsUnsupportedFont(headerFont.Name))
+            {
+                dgv.ThemeStyle.HeaderStyle.Font = CreateVietnameseFont(headerFont);
+            }
+
+            var rowFont = dgv.ThemeStyle.RowsStyle.Font;
+            if (rowFont != null && IsUnsupportedFont(rowFont.Name))
+            {
+                dgv.ThemeStyle.RowsStyle.Font = CreateVietnameseFont(rowFont);
+            }
+
+            var altRowFont = dgv.ThemeStyle.AlternatingRowsStyle.Font;
+            if (altRowFont != null && IsUnsupportedFont(altRowFont.Name))
+            {
+                dgv.ThemeStyle.AlternatingRowsStyle.Font = CreateVietnameseFont(altRowFont);
+            }
+
+            // Fix ColumnHeadersDefaultCellStyle
+            if (dgv.ColumnHeadersDefaultCellStyle?.Font != null && 
+                IsUnsupportedFont(dgv.ColumnHeadersDefaultCellStyle.Font.Name))
+            {
+                dgv.ColumnHeadersDefaultCellStyle.Font = CreateVietnameseFont(dgv.ColumnHeadersDefaultCellStyle.Font);
+            }
+
+            // Fix DefaultCellStyle
+            if (dgv.DefaultCellStyle?.Font != null && 
+                IsUnsupportedFont(dgv.DefaultCellStyle.Font.Name))
+            {
+                dgv.DefaultCellStyle.Font = CreateVietnameseFont(dgv.DefaultCellStyle.Font);
+            }
+        }
+
+        /// <summary>
         /// Áp dụng theme đệ quy cho tất cả controls
         /// </summary>
         private static void ApplyThemeToControls(Control.ControlCollection controls)
         {
             foreach (Control control in controls)
             {
+                // Kiểm tra và thay thế font không hỗ trợ tiếng Việt trước
+                if (control.Font != null && IsUnsupportedFont(control.Font.Name))
+                {
+                    control.Font = CreateVietnameseFont(control.Font);
+                }
+
                 // Guna2Button - Primary
                 if (control is Guna2Button btn)
                 {
@@ -80,6 +215,7 @@ namespace PhanMemThiTracNghiem.Forms
                 else if (control is Guna2DataGridView dgv)
                 {
                     ApplyDataGridViewStyle(dgv);
+                    FixDataGridViewFont(dgv);
                 }
                 // Guna2Panel
                 else if (control is Guna2Panel pnl)
