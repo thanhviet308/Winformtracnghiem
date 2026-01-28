@@ -236,8 +236,7 @@ namespace PhanMemThiTracNghiem.Data
                     Email = "admin@gmail.com",
                     MatKhau = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", // SHA256 của "123456"
                     MaVaiTro = 1,
-                    NgayTao = new DateTime(2026, 1, 1),
-                    TrangThai = true
+                    NgayTao = new DateTime(2026, 1, 1)
                 }
             );
         }

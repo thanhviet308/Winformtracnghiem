@@ -35,9 +35,6 @@ namespace PhanMemThiTracNghiem.Models
         [Column("ngay_tao")]
         public DateTime NgayTao { get; set; } = DateTime.Now;
 
-        [Column("trang_thai")]
-        public bool TrangThai { get; set; } = true;
-
         // Navigation properties
         public virtual ICollection<CauHoiThi> CauHoiThis { get; set; }
         public virtual ICollection<NganHangDe> NganHangDes { get; set; }

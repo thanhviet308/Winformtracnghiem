@@ -125,9 +125,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThem.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
             this.btnThem.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnThem.ForeColor = System.Drawing.Color.White;
-            this.btnThem.Location = new System.Drawing.Point(1010, 7);
+            this.btnThem.Location = new System.Drawing.Point(970, 7);
             this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(150, 40);
+            this.btnThem.Size = new System.Drawing.Size(190, 40);
             this.btnThem.TabIndex = 1;
             this.btnThem.Text = "+ Thêm giảng viên";
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
@@ -205,9 +205,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.colSua.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
             this.colSua.Name = "colSua";
             this.colSua.ReadOnly = true;
-            this.colSua.Text = "Sửa";
+            this.colSua.Text = "✏️ Sửa";
             this.colSua.UseColumnTextForLinkValue = true;
-            this.colSua.Width = 60;
+            this.colSua.Width = 90;
             // 
             // colXoa
             // 
@@ -216,9 +216,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.colXoa.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
             this.colXoa.Name = "colXoa";
             this.colXoa.ReadOnly = true;
-            this.colXoa.Text = "Xóa";
+            this.colXoa.Text = "🗑️ Xóa";
             this.colXoa.UseColumnTextForLinkValue = true;
-            this.colXoa.Width = 60;
+            this.colXoa.Width = 90;
             // 
             // ucQuanLyGiangVien
             // 

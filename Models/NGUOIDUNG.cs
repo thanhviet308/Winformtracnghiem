@@ -53,8 +53,7 @@ namespace PhanMemThiTracNghiem.Models
         [Column("ngay_tao")]
         public DateTime NgayTao { get; set; } = DateTime.Now;
 
-        [Column("trang_thai")]
-        public bool TrangThai { get; set; } = true;
+        // Đã xóa TrangThai theo yêu cầu
 
         // Navigation properties
         [ForeignKey("MaVaiTro")]

@@ -16,10 +16,9 @@ namespace PhanMemThiTracNghiem.Repositories
             _context = new AppDbContext();
         }
 
-        // Lấy tất cả môn học
         public List<MonHoc> GetAll()
         {
-            return _context.MonHoc.Where(m => m.TrangThai == true).ToList();
+            return _context.MonHoc.ToList();
         }
 
         // Lấy môn học theo ID
@@ -53,7 +52,6 @@ namespace PhanMemThiTracNghiem.Repositories
                 {
                     existing.TenMon = monHoc.TenMon;
                     existing.MoTa = monHoc.MoTa;
-                    existing.TrangThai = monHoc.TrangThai;
                     _context.SaveChanges();
                     return true;
                 }
@@ -65,7 +63,6 @@ namespace PhanMemThiTracNghiem.Repositories
             }
         }
 
-        // Xóa môn học (soft delete)
         public bool Delete(long id)
         {
             try
@@ -73,7 +70,7 @@ namespace PhanMemThiTracNghiem.Repositories
                 var monHoc = _context.MonHoc.Find(id);
                 if (monHoc != null)
                 {
-                    monHoc.TrangThai = false;
+                    _context.MonHoc.Remove(monHoc);
                     _context.SaveChanges();
                     return true;
                 }
@@ -99,7 +96,6 @@ namespace PhanMemThiTracNghiem.Repositories
                 {
                     TenMon = monThiDTO.TenMT,
                     MoTa = "",
-                    TrangThai = true,
                     NgayTao = DateTime.Now
                 };
                 context.MonHoc.Add(monHoc);

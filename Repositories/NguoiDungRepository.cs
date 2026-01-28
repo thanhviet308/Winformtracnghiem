@@ -41,14 +41,14 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             string hashedPassword = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(matKhau);
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
-                .FirstOrDefault(x => x.Email == email && x.MatKhau == hashedPassword && x.TrangThai == true);
+                .FirstOrDefault(x => x.Email == email && x.MatKhau == hashedPassword);
         }
 
         // Lấy người dùng theo vai trò
         public List<NguoiDung> GetByRole(long maVaiTro)
         {
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
-                .Where(x => x.MaVaiTro == maVaiTro && x.TrangThai == true).ToList();
+                .Where(x => x.MaVaiTro == maVaiTro).ToList();
         }
 
         // Thêm người dùng mới
@@ -78,7 +78,6 @@ namespace PhanMemThiTracNghiem.Repositories
                     existing.Email = nguoiDung.Email;
                     existing.HoTen = nguoiDung.HoTen;
                     existing.MaVaiTro = nguoiDung.MaVaiTro;
-                    existing.TrangThai = nguoiDung.TrangThai;
                     AppDbContext.SaveChanges();
                     return true;
                 }
@@ -90,24 +89,10 @@ namespace PhanMemThiTracNghiem.Repositories
             }
         }
 
-        // Xóa người dùng (soft delete)
+        // Xóa người dùng (hard delete)
         public bool Delete(long id)
         {
-            try
-            {
-                var nguoiDung = AppDbContext.NguoiDung.Find(id);
-                if (nguoiDung != null)
-                {
-                    nguoiDung.TrangThai = false; // Soft delete
-                    AppDbContext.SaveChanges();
-                    return true;
-                }
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
+            return HardDelete(id);
         }
 
         // Xóa người dùng vĩnh viễn

@@ -1,6 +1,5 @@
 using PhanMemThiTracNghiem.Forms.Admin;
-using PhanMemThiTracNghiem.Forms.Admin.DeThi;
-using PhanMemThiTracNghiem.Forms.Admin.KyThi;
+// Đã xóa DeThi và KyThi - không thuộc Admin
 using PhanMemThiTracNghiem.Forms.GiangVien;
 using System;
 using System.Collections.Generic;

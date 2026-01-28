@@ -1,3 +1,4 @@
+// ...existing code...
 using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Repositories;
@@ -6,8 +7,9 @@ using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.Forms;
 using PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien;
 using PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien;
-using PhanMemThiTracNghiem.Forms.Admin.DeThi;
-using PhanMemThiTracNghiem.Forms.Admin.KyThi;
+// Đã xóa DeThi và KyThi - không thuộc Admin
+using PhanMemThiTracNghiem.Forms.Admin.LopHoc;
+using PhanMemThiTracNghiem.Forms.Admin.MonHoc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +27,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         private readonly GiangVienService GiangVienService;
         private readonly SinhVienService SinhVienService;
         private readonly NguoiDung nguoiDung;
-        private readonly KyThiService KyThiService;
+        // KyThiService đã xóa - không thuộc Admin
         private readonly AppDbContext AppDbContext;
         private readonly MonHocService MonHocService;
      
@@ -36,7 +38,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             ThemeHelper.ApplyVietnameseFont(this);
             GiangVienService = new GiangVienService();
             SinhVienService = new SinhVienService();
-            KyThiService = new KyThiService();
+            // KyThiService đã xóa
             AppDbContext = new AppDbContext();
             MonHocService = new MonHocService();
             nguoiDung = nd;
@@ -62,40 +64,44 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // Khởi tạo các tab với UserControl mới
             InitializeGiangVienTab();
             InitializeSinhVienTab();
-            InitializeDeThiTab();
-            InitializeKyThiTab();
+            
+            // Thiết lập tab Lớp học và Môn học (thay thế Đề thi và Kỳ thi)
+            SetupAdminTabs();
             
             // Ẩn các panel không còn dùng
             guna2Panel4.Visible = false; // Panel ngày sinh giáo viên
-           
-            foreach (var item in KyThiService.GetKITHIs())
-            {
-                cbTenKiThi1.Items.Add(item.TenKyThi);
-            }
-            cbTenKiThi1.SelectedIndex = -1;
-            foreach (var item in MonHocService.GetThongTinMonThi())
-            {
-                cbTenMonThi.Items.Add(item.TenMon);
-            }
-            cbTenMonThi.SelectedIndex = -1;
-            
         }
 
         /// <summary>
-        /// Khởi tạo tab Quản lý đề thi với UserControl mới
+        /// Thiết lập các tab cho Admin: Lớp học và Môn học
         /// </summary>
-        private void InitializeDeThiTab()
+        private void SetupAdminTabs()
         {
-            // Ẩn các panel cũ
-            guna2Panel16.Visible = false;
-            guna2Panel20.Visible = false;
+            // Tìm TabControl
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Guna.UI2.WinForms.Guna2TabControl tabControl)
+                {
+                    // === Chuyển tabPage3 thành Quản lý Môn học ===
+                    tabPage3.Text = "QUẢN LÝ MÔN HỌC";
+                    tabPage3.Controls.Clear();
+                    var ucQuanLyMonHoc = new ucQuanLyMonHoc();
+                    ucQuanLyMonHoc.Dock = System.Windows.Forms.DockStyle.Fill;
+                    tabPage3.Controls.Add(ucQuanLyMonHoc);
 
-            // Tạo và thêm UserControl mới
-            var ucQuanLyDeThi = new DeThi.ucQuanLyDeThi();
-            ucQuanLyDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabPage3.Controls.Add(ucQuanLyDeThi);
-            ucQuanLyDeThi.BringToFront();
+                    // === Chuyển tabPage4 thành Quản lý Lớp học ===
+                    tabPage4.Text = "QUẢN LÝ LỚP HỌC";
+                    tabPage4.Controls.Clear();
+                    var ucQuanLyLopHoc = new ucQuanLyLopHoc();
+                    ucQuanLyLopHoc.Dock = System.Windows.Forms.DockStyle.Fill;
+                    tabPage4.Controls.Add(ucQuanLyLopHoc);
+
+                    break;
+                }
+            }
         }
+
+        // Đã xóa InitializeDeThiTab - không thuộc Admin
 
         /// <summary>
         /// Khởi tạo tab Quản lý giảng viên với UserControl mới
@@ -132,24 +138,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             tabPage2.Controls.Add(ucQuanLySinhVien);
             ucQuanLySinhVien.BringToFront();
         }
-
-        /// <summary>
-        /// Khởi tạo tab Quản lý kỳ thi với UserControl mới
-        /// </summary>
-        private void InitializeKyThiTab()
-        {
-            // Ẩn tất cả controls cũ trên tabPage4
-            foreach (Control ctrl in tabPage4.Controls)
-            {
-                ctrl.Visible = false;
-            }
-
-            // Tạo và thêm UserControl mới
-            var ucQuanLyKyThi = new ucQuanLyKyThi();
-            ucQuanLyKyThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabPage4.Controls.Add(ucQuanLyKyThi);
-            ucQuanLyKyThi.BringToFront();
-        }
+        // Đã chuyển sang SetupAdminTabs
 
         private void LoadDGVKiThi(List<Models.KyThi> listkithi)
         {
@@ -278,111 +267,14 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             try
             {
                 int id = int.Parse(dgvDanhSachSinhVien.SelectedRows[0].Cells["ID"].Value.ToString());
-                string email = txtMaSinhVien.Text;
+                // ...existing code...
                 string hoten = txtTenSinhVien.Text;
-                SinhVienService.CapNhapSinhVien(id, email, hoten);
-                MessageBox.Show("Cập nhật thành công!");
-                frmAdmin_Load(sender,e);
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void txtTimKiemSinhVien_TextChanged(object sender, EventArgs e)
-        {
-            string tensv = txtTimKiemSinhVien.Text.Trim();
-            if (tensv == "")
-            {
-                frmAdmin_Load(sender, e);
-            }
-            else
-            {
-                dgvDanhSachSinhVien.DataSource = SinhVienService.FindName(tensv);
-            }
-        }
-
-
-
-      
-
-        private void btnThemMonThi_Click(object sender, EventArgs e)
-        {
-            frmThemMonThi frmThemMonThi = new frmThemMonThi();
-            if (frmThemMonThi.ShowDialog() == DialogResult.OK)
-            {
-                frmAdmin_Load(sender, e); // Reload data
-            }
-        }
-
-        private void btnThemKiThi_Click_1(object sender, EventArgs e)
-        {
-            try
-            {
-                KiThiDTO kithi = new KiThiDTO();
-                kithi.ID++;
-                kithi.MaKiThi = txtMaKiThi.Text;
-                kithi.TenKiThi = txtTenKiThi.Text;
-                kithi.Admin = nguoiDung.Email.ToString();
-                kithi.ThoiGianBD = dateBD.Value;
-                kithi.ThoiGianKT = dateKT.Value;
-                frmThemChiTiet frmThemChiTiet = new frmThemChiTiet(txtMaKiThi.Text, txtTenKiThi.Text);
-                frmThemChiTiet.ShowDialog();
-                KyThiService.InsertUpdate(kithi);
-                frmAdmin_Load(sender, e);
-                MessageBox.Show("Thêm thành công!");
-                txtMaKiThi.Clear();
-                txtTenKiThi.Clear();
-
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void btnThemDeThi_Click(object sender, EventArgs e)
-        {
-            frmThemDeThi frmThemDeThi = new frmThemDeThi();
-            if (frmThemDeThi.ShowDialog() == DialogResult.OK)
-            {
-                frmAdmin_Load(sender, e); // Reload data
-                
-                // Mở chi tiết đề thi chỉnh sửa
-                ChiTietDeThi chiTietDeThi = new ChiTietDeThi(frmThemDeThi.MaDeThiMoi);
-                chiTietDeThi.ShowDialog();
-                frmAdmin_Load(sender, e);
-            }
-        }
-
-        private void dgvKiThi_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            dgvKiThi.CurrentRow.Selected = true;
-            txtMaKiThi.Text = dgvKiThi.Rows[e.RowIndex].Cells["colMaKiThi"].FormattedValue.ToString();
-            txtTenKiThi.Text = dgvKiThi.Rows[e.RowIndex].Cells["colTenKiThi"].FormattedValue.ToString();
-            dateBD.Value =DateTime.Parse( dgvKiThi.Rows[e.RowIndex].Cells["colThoiGianBD"].FormattedValue.ToString());
-            dateKT.Value = DateTime.Parse(dgvKiThi.Rows[e.RowIndex].Cells["colThoiGianKT"].FormattedValue.ToString());
-
-        }
-
-        private void dgvKiThi_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            long makithi = Convert.ToInt64(dgvKiThi.Rows[e.RowIndex].Cells["colMaKiThi"].Value);
-            string tenkithi = dgvKiThi.Rows[e.RowIndex].Cells["colTenKiThi"].FormattedValue.ToString();
-            frmChiTietKiThi frmChiTietKiThi = new frmChiTietKiThi(makithi, tenkithi);
-            frmChiTietKiThi.ShowDialog();   
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            frmLogin frmLogin = new frmLogin();
-            this.Hide();
-            frmLogin.ShowDialog();
-            this.Close();
-        }
     }
 }

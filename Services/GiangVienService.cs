@@ -33,7 +33,6 @@ namespace PhanMemThiTracNghiem.Services
         public bool Add(NguoiDung giangVien)
         {
             giangVien.MaVaiTro = ROLE_GIANG_VIEN;
-            giangVien.TrangThai = true;
             giangVien.NgayTao = DateTime.Now;
             // Hash password
             giangVien.MatKhau = Helpers.PasswordHelper.HashPassword(giangVien.MatKhau);

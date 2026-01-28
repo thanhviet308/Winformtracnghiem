@@ -23,12 +23,6 @@ namespace PhanMemThiTracNghiem.Models
         [Column("so_cau")]
         public int SoCau { get; set; }
 
-        [Column("so_cau_co_ban")]
-        public int? SoCauCoBan { get; set; }
-
-        [Column("so_cau_nang_cao")]
-        public int? SoCauNangCao { get; set; }
-
         // Navigation properties
         [ForeignKey("MaNganHangDe")]
         public virtual NganHangDe NganHangDe { get; set; }

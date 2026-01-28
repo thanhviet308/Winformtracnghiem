@@ -205,9 +205,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.colSua.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
             this.colSua.Name = "colSua";
             this.colSua.ReadOnly = true;
-            this.colSua.Text = "Sửa";
+            this.colSua.Text = "✏️ Sửa";
             this.colSua.UseColumnTextForLinkValue = true;
-            this.colSua.Width = 60;
+            this.colSua.Width = 90;
             // 
             // colXoa
             // 
@@ -216,9 +216,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.colXoa.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
             this.colXoa.Name = "colXoa";
             this.colXoa.ReadOnly = true;
-            this.colXoa.Text = "Xóa";
+            this.colXoa.Text = "🗑️ Xóa";
             this.colXoa.UseColumnTextForLinkValue = true;
-            this.colXoa.Width = 60;
+            this.colXoa.Width = 90;
             // 
             // ucQuanLySinhVien
             // 

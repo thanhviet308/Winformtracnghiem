@@ -44,18 +44,31 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             if (dgvSinhVien.Columns.Count > 0)
             {
                 // Ẩn các cột không cần thiết
-                if (dgvSinhVien.Columns.Contains("PASSWORD"))
-                    dgvSinhVien.Columns["PASSWORD"].Visible = false;
-                if (dgvSinhVien.Columns.Contains("MAROLE"))
-                    dgvSinhVien.Columns["MAROLE"].Visible = false;
-                if (dgvSinhVien.Columns.Contains("ROLE"))
-                    dgvSinhVien.Columns["ROLE"].Visible = false;
+                string[] hiddenColumns = { "MatKhau", "MaVaiTro", "VaiTro", 
+                    "CauHoiThis", "NganHangDes", "LopHocSinhViens", 
+                    "PhanCongGiangDays", "PhanCongGiamSats", "BaiThis" };
+                
+                foreach (var col in hiddenColumns)
+                {
+                    if (dgvSinhVien.Columns.Contains(col))
+                        dgvSinhVien.Columns[col].Visible = false;
+                }
 
-                // Đặt tên cột
-                if (dgvSinhVien.Columns.Contains("EMAIL"))
-                    dgvSinhVien.Columns["EMAIL"].HeaderText = "Email";
-                if (dgvSinhVien.Columns.Contains("HOTEN"))
-                    dgvSinhVien.Columns["HOTEN"].HeaderText = "Họ tên";
+                // Đặt tên cột hiển thị tiếng Việt
+                if (dgvSinhVien.Columns.Contains("Id"))
+                    dgvSinhVien.Columns["Id"].HeaderText = "ID";
+                if (dgvSinhVien.Columns.Contains("HoTen"))
+                    dgvSinhVien.Columns["HoTen"].HeaderText = "Họ tên";
+                if (dgvSinhVien.Columns.Contains("Email"))
+                    dgvSinhVien.Columns["Email"].HeaderText = "Email";
+                if (dgvSinhVien.Columns.Contains("NgayTao"))
+                    dgvSinhVien.Columns["NgayTao"].HeaderText = "Ngày tạo";
+
+                // Di chuyển cột thao tác về cuối cùng
+                if (dgvSinhVien.Columns.Contains("colSua"))
+                    dgvSinhVien.Columns["colSua"].DisplayIndex = dgvSinhVien.Columns.Count - 2;
+                if (dgvSinhVien.Columns.Contains("colXoa"))
+                    dgvSinhVien.Columns["colXoa"].DisplayIndex = dgvSinhVien.Columns.Count - 1;
             }
         }
 

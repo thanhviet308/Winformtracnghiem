@@ -33,7 +33,6 @@ namespace PhanMemThiTracNghiem.Services
         public bool Add(NguoiDung sinhVien)
         {
             sinhVien.MaVaiTro = ROLE_SINH_VIEN;
-            sinhVien.TrangThai = true;
             sinhVien.NgayTao = DateTime.Now;
             // Hash password - mặc định là 123456
             if (string.IsNullOrEmpty(sinhVien.MatKhau))

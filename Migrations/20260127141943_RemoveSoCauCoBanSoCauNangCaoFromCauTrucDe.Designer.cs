@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhanMemThiTracNghiem.Data;
 
@@ -11,9 +12,11 @@ using PhanMemThiTracNghiem.Data;
 namespace PhanMemThiTracNghiem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260127141943_RemoveSoCauCoBanSoCauNangCaoFromCauTrucDe")]
+    partial class RemoveSoCauCoBanSoCauNangCaoFromCauTrucDe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,6 +296,10 @@ namespace PhanMemThiTracNghiem.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("ten_mon");
 
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit")
+                        .HasColumnName("trang_thai");
+
                     b.HasKey("Id");
 
                     b.ToTable("mon_hoc");
@@ -373,6 +380,10 @@ namespace PhanMemThiTracNghiem.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("ngay_tao");
 
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit")
+                        .HasColumnName("trang_thai");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -390,7 +401,8 @@ namespace PhanMemThiTracNghiem.Migrations
                             HoTen = "Quản trị viên",
                             MaVaiTro = 1L,
                             MatKhau = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-                            NgayTao = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            NgayTao = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TrangThai = true
                         });
                 });
 

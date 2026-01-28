@@ -261,7 +261,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemDeThi.Size = new System.Drawing.Size(173, 62);
             this.btnThemDeThi.TabIndex = 2;
             this.btnThemDeThi.Text = "Thêm";
-            this.btnThemDeThi.Click += new System.EventHandler(this.btnThemDeThi_Click);
             // 
             // guna2Panel17
             // 
@@ -426,7 +425,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemMonThi.Size = new System.Drawing.Size(173, 62);
             this.btnThemMonThi.TabIndex = 2;
             this.btnThemMonThi.Text = "Thêm";
-            this.btnThemMonThi.Click += new System.EventHandler(this.btnThemMonThi_Click);
             // 
             // guna2Panel21
             // 
@@ -839,7 +837,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.txtTimKiemSinhVien.SelectedText = "";
             this.txtTimKiemSinhVien.Size = new System.Drawing.Size(248, 36);
             this.txtTimKiemSinhVien.TabIndex = 11;
-            this.txtTimKiemSinhVien.TextChanged += new System.EventHandler(this.txtTimKiemSinhVien_TextChanged);
             // 
             // label14
             // 
@@ -1414,7 +1411,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnCapNhap.Size = new System.Drawing.Size(173, 62);
             this.btnCapNhap.TabIndex = 2;
             this.btnCapNhap.Text = "Cập nhật";
-            this.btnCapNhap.Click += new System.EventHandler(this.btnThemKiThi_Click_1);
             // 
             // btnThemKiThi
             // 
@@ -1433,7 +1429,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.btnThemKiThi.Size = new System.Drawing.Size(173, 62);
             this.btnThemKiThi.TabIndex = 2;
             this.btnThemKiThi.Text = "Thêm";
-            this.btnThemKiThi.Click += new System.EventHandler(this.btnThemKiThi_Click_1);
             // 
             // guna2Panel27
             // 
@@ -1658,8 +1653,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.dgvKiThi.ThemeStyle.RowsStyle.Height = 24;
             this.dgvKiThi.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvKiThi.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.dgvKiThi.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKiThi_CellClick);
-            this.dgvKiThi.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKiThi_CellDoubleClick);
             // 
             // colSTT
             // 
@@ -1767,7 +1760,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             this.linkLabel1.TabIndex = 7;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Đăng xuất";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // frmAdmin
             // 
