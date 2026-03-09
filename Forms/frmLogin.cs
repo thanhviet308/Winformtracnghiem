@@ -69,21 +69,21 @@ namespace PhanMemThiTracNghiem
             switch (nguoiDung.MaVaiTro)
             {
                 case 1: // Admin
-                    frmAdmin frmAdmin = new frmAdmin(nguoiDung);
+                    frmAdminNew frmAdmin = new frmAdminNew(nguoiDung);
                     this.Hide();
                     frmAdmin.ShowDialog();
                     this.Close();
                     break;
 
                 case 2: // Giảng viên
-                    frmGiangVien frmGiangVien = new frmGiangVien(nguoiDung);
+                    frmGiangVienNew frmGiangVien = new frmGiangVienNew(nguoiDung);
                     this.Hide();
                     frmGiangVien.ShowDialog();
                     this.Close();
                     break;
 
                 case 3: // Sinh viên
-                    frmSinhVien frmSinhVien = new frmSinhVien(nguoiDung);
+                    frmSinhVienNew frmSinhVien = new frmSinhVienNew(nguoiDung);
                     this.Hide();
                     frmSinhVien.ShowDialog();
                     this.Close();
@@ -105,7 +105,7 @@ namespace PhanMemThiTracNghiem
 
         private void chkHienMatKhau_CheckedChanged_1(object sender, EventArgs e)
         {
-            txtMatKhau.PasswordChar = (chkHienMatKhau.Checked) ? '\0' : '?';
+            txtMatKhau.PasswordChar = (chkHienMatKhau.Checked) ? '\0' : '*';
         }
     }
 }

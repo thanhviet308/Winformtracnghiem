@@ -73,7 +73,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            frmSinhVien frmSinhVien = new frmSinhVien(nguoiDung);
+            frmSinhVienNew frmSinhVien = new frmSinhVienNew(nguoiDung);
             this.Hide();
             frmSinhVien.ShowDialog();
             this.Close();

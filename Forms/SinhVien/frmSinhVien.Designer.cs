@@ -66,7 +66,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblTenKyThi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTenKyThi.BackColor = System.Drawing.Color.Transparent;
             this.lblTenKyThi.Font = new System.Drawing.Font("Times New Roman", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenKyThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblTenKyThi.ForeColor = System.Drawing.Color.White;
             this.lblTenKyThi.Location = new System.Drawing.Point(137, 25);
             this.lblTenKyThi.Name = "lblTenKyThi";
             this.lblTenKyThi.Size = new System.Drawing.Size(404, 55);
@@ -78,7 +78,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             this.pnlKyThi.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlKyThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.pnlKyThi.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.pnlKyThi.Controls.Add(this.lblTenKyThi);
             this.pnlKyThi.Location = new System.Drawing.Point(91, 47);
             this.pnlKyThi.Name = "pnlKyThi";
@@ -90,7 +90,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.pnlThongTinThi.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlThongTinThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.pnlThongTinThi.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.pnlThongTinThi.Controls.Add(this.panel1);
             this.pnlThongTinThi.Controls.Add(this.btnXemDiem);
             this.pnlThongTinThi.Controls.Add(this.btnVaoThi);
@@ -123,12 +123,12 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             // btnXemDiem
             // 
-            this.btnXemDiem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.btnXemDiem.BackColor = System.Drawing.Color.FromArgb(94, 148, 255);
             this.btnXemDiem.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnXemDiem.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnXemDiem.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnXemDiem.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnXemDiem.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.btnXemDiem.FillColor = System.Drawing.Color.FromArgb(94, 148, 255);
             this.btnXemDiem.Font = new System.Drawing.Font("Be Vietnam Pro", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnXemDiem.ForeColor = System.Drawing.Color.White;
             this.btnXemDiem.Location = new System.Drawing.Point(779, 225);
@@ -140,12 +140,12 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             // btnVaoThi
             // 
-            this.btnVaoThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.btnVaoThi.BackColor = System.Drawing.Color.FromArgb(94, 148, 255);
             this.btnVaoThi.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnVaoThi.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnVaoThi.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnVaoThi.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnVaoThi.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.btnVaoThi.FillColor = System.Drawing.Color.FromArgb(94, 148, 255);
             this.btnVaoThi.Font = new System.Drawing.Font("Be Vietnam Pro", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVaoThi.ForeColor = System.Drawing.Color.White;
             this.btnVaoThi.Location = new System.Drawing.Point(779, 143);
@@ -158,9 +158,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblThoiGianKetThuc
             // 
             this.lblThoiGianKetThuc.AutoSize = true;
-            this.lblThoiGianKetThuc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.lblThoiGianKetThuc.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.lblThoiGianKetThuc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblThoiGianKetThuc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblThoiGianKetThuc.ForeColor = System.Drawing.Color.White;
             this.lblThoiGianKetThuc.Location = new System.Drawing.Point(420, 295);
             this.lblThoiGianKetThuc.Name = "lblThoiGianKetThuc";
             this.lblThoiGianKetThuc.Size = new System.Drawing.Size(121, 25);
@@ -170,9 +170,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.label6.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Location = new System.Drawing.Point(143, 295);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(166, 25);
@@ -182,9 +182,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblThoiGianBatDau
             // 
             this.lblThoiGianBatDau.AutoSize = true;
-            this.lblThoiGianBatDau.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.lblThoiGianBatDau.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.lblThoiGianBatDau.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblThoiGianBatDau.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblThoiGianBatDau.ForeColor = System.Drawing.Color.White;
             this.lblThoiGianBatDau.Location = new System.Drawing.Point(420, 251);
             this.lblThoiGianBatDau.Name = "lblThoiGianBatDau";
             this.lblThoiGianBatDau.Size = new System.Drawing.Size(121, 25);
@@ -194,9 +194,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.label5.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(143, 251);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(163, 25);
@@ -206,9 +206,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblNgayThi
             // 
             this.lblNgayThi.AutoSize = true;
-            this.lblNgayThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.lblNgayThi.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.lblNgayThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNgayThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblNgayThi.ForeColor = System.Drawing.Color.White;
             this.lblNgayThi.Location = new System.Drawing.Point(420, 207);
             this.lblNgayThi.Name = "lblNgayThi";
             this.lblNgayThi.Size = new System.Drawing.Size(121, 25);
@@ -218,9 +218,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblMonThi
             // 
             this.lblMonThi.AutoSize = true;
-            this.lblMonThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.lblMonThi.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.lblMonThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMonThi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblMonThi.ForeColor = System.Drawing.Color.White;
             this.lblMonThi.Location = new System.Drawing.Point(420, 163);
             this.lblMonThi.Name = "lblMonThi";
             this.lblMonThi.Size = new System.Drawing.Size(121, 25);
@@ -230,9 +230,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.label4.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(143, 207);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(118, 25);
@@ -242,9 +242,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblLop
             // 
             this.lblLop.AutoSize = true;
-            this.lblLop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.lblLop.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.lblLop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLop.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblLop.ForeColor = System.Drawing.Color.White;
             this.lblLop.Location = new System.Drawing.Point(420, 119);
             this.lblLop.Name = "lblLop";
             this.lblLop.Size = new System.Drawing.Size(121, 25);
@@ -254,9 +254,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.label3.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(143, 163);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 25);
@@ -266,9 +266,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblHoTen
             // 
             this.lblHoTen.AutoSize = true;
-            this.lblHoTen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.lblHoTen.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.lblHoTen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHoTen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblHoTen.ForeColor = System.Drawing.Color.White;
             this.lblHoTen.Location = new System.Drawing.Point(420, 75);
             this.lblHoTen.Name = "lblHoTen";
             this.lblHoTen.Size = new System.Drawing.Size(121, 25);
@@ -278,9 +278,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.label2.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(143, 119);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 25);
@@ -290,9 +290,9 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.label1.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(143, 75);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(151, 25);
@@ -302,7 +302,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // lblThongTinCaNhan
             // 
             this.lblThongTinCaNhan.AutoSize = true;
-            this.lblThongTinCaNhan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblThongTinCaNhan.BackColor = System.Drawing.Color.FromArgb(94, 148, 255);
             this.lblThongTinCaNhan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblThongTinCaNhan.ForeColor = System.Drawing.Color.White;
             this.lblThongTinCaNhan.Location = new System.Drawing.Point(22, 14);
@@ -323,7 +323,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // guna2ControlBox1
             // 
             this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox1.Location = new System.Drawing.Point(1177, 3);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
@@ -334,7 +334,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox3.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            this.guna2ControlBox3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox3.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox3.Location = new System.Drawing.Point(1129, 3);
             this.guna2ControlBox3.Name = "guna2ControlBox3";
@@ -351,7 +351,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Font = new System.Drawing.Font("Be Vietnam Pro", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.LinkColor = System.Drawing.Color.Black;
+            this.linkLabel1.LinkColor = System.Drawing.Color.White;
             this.linkLabel1.Location = new System.Drawing.Point(3, 2);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(115, 30);
@@ -372,7 +372,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.FromArgb(37, 37, 56);
             this.ClientSize = new System.Drawing.Size(1226, 559);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.guna2ControlBox3);

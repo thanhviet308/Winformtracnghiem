@@ -51,7 +51,7 @@ namespace PhanMemThiTracNghiem
             // 
             // panelMenu
             // 
-            this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.panelMenu.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.panelMenu.Controls.Add(this.btnNopBai);
             this.panelMenu.Location = new System.Drawing.Point(3, 3);
             this.panelMenu.Name = "panelMenu";
@@ -65,7 +65,7 @@ namespace PhanMemThiTracNghiem
             this.btnNopBai.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnNopBai.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnNopBai.Font = new System.Drawing.Font("Cambria", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNopBai.ForeColor = System.Drawing.Color.Black;
+            this.btnNopBai.ForeColor = System.Drawing.Color.White;
             this.btnNopBai.Location = new System.Drawing.Point(3, 8);
             this.btnNopBai.Name = "btnNopBai";
             this.btnNopBai.Size = new System.Drawing.Size(129, 45);
@@ -144,7 +144,7 @@ namespace PhanMemThiTracNghiem
             this.pnlThi.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlThi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.pnlThi.BackColor = System.Drawing.Color.FromArgb(37, 37, 56);
             this.pnlThi.Controls.Add(this.lblHienThi);
             this.pnlThi.Controls.Add(this.guna2HtmlLabel1);
             this.pnlThi.Controls.Add(this.guna2HtmlLabel2);
@@ -165,7 +165,7 @@ namespace PhanMemThiTracNghiem
             // 
             this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox3.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            this.guna2ControlBox3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox3.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox3.Location = new System.Drawing.Point(1342, 3);
             this.guna2ControlBox3.Name = "guna2ControlBox3";
@@ -175,7 +175,7 @@ namespace PhanMemThiTracNghiem
             // guna2ControlBox1
             // 
             this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox1.Location = new System.Drawing.Point(1390, 3);
             this.guna2ControlBox1.Name = "guna2ControlBox1";

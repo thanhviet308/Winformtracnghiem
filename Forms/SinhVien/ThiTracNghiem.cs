@@ -23,6 +23,12 @@ namespace PhanMemThiTracNghiem
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             nguoiDung = nd;
+
+            // Đồng bộ dark theme
+            guna2HtmlLabel2.ForeColor = Color.White;
+            lblSoCauDung.ForeColor = Color.White;
+            guna2HtmlLabel3.ForeColor = Color.White;
+            lblDiem.ForeColor = Color.White;
         }
 
         internal void HienThi(float diemThi, int demSoCauDung, List<int> luuBaiLam)
@@ -89,7 +95,7 @@ namespace PhanMemThiTracNghiem
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             int i = 1;
-            frmSinhVien frmSV = new frmSinhVien(nguoiDung, i);
+            frmSinhVienNew frmSV = new frmSinhVienNew(nguoiDung, i);
             this.Hide();
             frmSV.ShowDialog();
             this.Close();

@@ -22,6 +22,7 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             return _context.KyThi
                 .Include(k => k.NganHangDe)
+                    .ThenInclude(n => n.MonHoc)
                 .Include(k => k.LopHoc)
                 .OrderByDescending(k => k.NgayTao)
                 .ToList();
@@ -32,6 +33,7 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             return _context.KyThi
                 .Include(k => k.NganHangDe)
+                    .ThenInclude(n => n.MonHoc)
                 .Include(k => k.LopHoc)
                 .FirstOrDefault(k => k.Id == id);
         }
@@ -42,6 +44,7 @@ namespace PhanMemThiTracNghiem.Repositories
             var now = DateTime.Now;
             return _context.KyThi
                 .Include(k => k.NganHangDe)
+                    .ThenInclude(n => n.MonHoc)
                 .Include(k => k.LopHoc)
                 .Where(k => k.ThoiGianBatDau <= now && k.ThoiGianKetThuc >= now)
                 .ToList();

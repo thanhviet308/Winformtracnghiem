@@ -74,7 +74,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox3.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            this.guna2ControlBox3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox3.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox3.Location = new System.Drawing.Point(1128, 4);
             this.guna2ControlBox3.Name = "guna2ControlBox3";
@@ -84,7 +84,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // guna2ControlBox1
             // 
             this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox1.Location = new System.Drawing.Point(1176, 4);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
@@ -98,7 +98,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel1.Enabled = false;
             this.guna2HtmlLabel1.Font = new System.Drawing.Font("Be Vietnam Pro Medium", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.guna2HtmlLabel1.ForeColor = System.Drawing.Color.White;
             this.guna2HtmlLabel1.Location = new System.Drawing.Point(58, 12);
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
             this.guna2HtmlLabel1.Size = new System.Drawing.Size(385, 52);
@@ -123,7 +123,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             this.lblMaSoSinhVien.BackColor = System.Drawing.Color.Transparent;
             this.lblMaSoSinhVien.Enabled = false;
             this.lblMaSoSinhVien.Font = new System.Drawing.Font("Be Vietnam Pro Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMaSoSinhVien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(40)))), ((int)(((byte)(61)))));
+            this.lblMaSoSinhVien.ForeColor = System.Drawing.Color.White;
             this.lblMaSoSinhVien.Location = new System.Drawing.Point(3, 100);
             this.lblMaSoSinhVien.Name = "lblMaSoSinhVien";
             this.lblMaSoSinhVien.Size = new System.Drawing.Size(233, 32);
@@ -155,7 +155,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.FromArgb(37, 37, 56);
             this.ClientSize = new System.Drawing.Size(1226, 559);
             this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.lblMaSoSinhVien);

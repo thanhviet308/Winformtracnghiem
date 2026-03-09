@@ -7,9 +7,8 @@ using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.Forms;
 using PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien;
 using PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien;
-// Đã xóa DeThi và KyThi - không thuộc Admin
-using PhanMemThiTracNghiem.Forms.Admin.LopHoc;
-using PhanMemThiTracNghiem.Forms.Admin.MonHoc;
+using PhanMemThiTracNghiem.Forms.Admin.DeThi;
+using PhanMemThiTracNghiem.Forms.Admin.KyThi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +26,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
         private readonly GiangVienService GiangVienService;
         private readonly SinhVienService SinhVienService;
         private readonly NguoiDung nguoiDung;
-        // KyThiService đã xóa - không thuộc Admin
+        private readonly KyThiService KyThiService;
         private readonly AppDbContext AppDbContext;
         private readonly MonHocService MonHocService;
      
@@ -38,7 +37,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             ThemeHelper.ApplyVietnameseFont(this);
             GiangVienService = new GiangVienService();
             SinhVienService = new SinhVienService();
-            // KyThiService đã xóa
+            KyThiService = new KyThiService();
             AppDbContext = new AppDbContext();
             MonHocService = new MonHocService();
             nguoiDung = nd;
@@ -64,44 +63,40 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // Khởi tạo các tab với UserControl mới
             InitializeGiangVienTab();
             InitializeSinhVienTab();
-            
-            // Thiết lập tab Lớp học và Môn học (thay thế Đề thi và Kỳ thi)
-            SetupAdminTabs();
+            InitializeDeThiTab();
+            InitializeKyThiTab();
             
             // Ẩn các panel không còn dùng
             guna2Panel4.Visible = false; // Panel ngày sinh giáo viên
+           
+            foreach (var item in KyThiService.GetKITHIs())
+            {
+                cbTenKiThi1.Items.Add(item.TenKyThi);
+            }
+            cbTenKiThi1.SelectedIndex = -1;
+            foreach (var item in MonHocService.GetThongTinMonThi())
+            {
+                cbTenMonThi.Items.Add(item.TenMon);
+            }
+            cbTenMonThi.SelectedIndex = -1;
+            
         }
 
         /// <summary>
-        /// Thiết lập các tab cho Admin: Lớp học và Môn học
+        /// Khởi tạo tab Quản lý đề thi với UserControl mới
         /// </summary>
-        private void SetupAdminTabs()
+        private void InitializeDeThiTab()
         {
-            // Tìm TabControl
-            foreach (Control ctrl in this.Controls)
-            {
-                if (ctrl is Guna.UI2.WinForms.Guna2TabControl tabControl)
-                {
-                    // === Chuyển tabPage3 thành Quản lý Môn học ===
-                    tabPage3.Text = "QUẢN LÝ MÔN HỌC";
-                    tabPage3.Controls.Clear();
-                    var ucQuanLyMonHoc = new ucQuanLyMonHoc();
-                    ucQuanLyMonHoc.Dock = System.Windows.Forms.DockStyle.Fill;
-                    tabPage3.Controls.Add(ucQuanLyMonHoc);
+            // Ẩn các panel cũ
+            guna2Panel16.Visible = false;
+            guna2Panel20.Visible = false;
 
-                    // === Chuyển tabPage4 thành Quản lý Lớp học ===
-                    tabPage4.Text = "QUẢN LÝ LỚP HỌC";
-                    tabPage4.Controls.Clear();
-                    var ucQuanLyLopHoc = new ucQuanLyLopHoc();
-                    ucQuanLyLopHoc.Dock = System.Windows.Forms.DockStyle.Fill;
-                    tabPage4.Controls.Add(ucQuanLyLopHoc);
-
-                    break;
-                }
-            }
+            // Tạo và thêm UserControl mới
+            var ucQuanLyDeThi = new DeThi.ucQuanLyDeThi();
+            ucQuanLyDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabPage3.Controls.Add(ucQuanLyDeThi);
+            ucQuanLyDeThi.BringToFront();
         }
-
-        // Đã xóa InitializeDeThiTab - không thuộc Admin
 
         /// <summary>
         /// Khởi tạo tab Quản lý giảng viên với UserControl mới
@@ -138,7 +133,24 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             tabPage2.Controls.Add(ucQuanLySinhVien);
             ucQuanLySinhVien.BringToFront();
         }
-        // Đã chuyển sang SetupAdminTabs
+
+        /// <summary>
+        /// Khởi tạo tab Quản lý kỳ thi với UserControl mới
+        /// </summary>
+        private void InitializeKyThiTab()
+        {
+            // Ẩn tất cả controls cũ trên tabPage4
+            foreach (Control ctrl in tabPage4.Controls)
+            {
+                ctrl.Visible = false;
+            }
+
+            // Tạo và thêm UserControl mới
+            var ucQuanLyKyThi = new ucQuanLyKyThi();
+            ucQuanLyKyThi.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabPage4.Controls.Add(ucQuanLyKyThi);
+            ucQuanLyKyThi.BringToFront();
+        }
 
         private void LoadDGVKiThi(List<Models.KyThi> listkithi)
         {

@@ -51,17 +51,36 @@ namespace PhanMemThiTracNghiem.Services
 
         public void LuuChiTietKyThi(NguoiDung nguoiDung, string maKyThi, MonHoc monHoc, float diem, DateTime thoiGianBD, DateTime thoiGianKT, int thoiGianThi)
         {
-            // Tạo bài thi mới
-            var baiThi = new BaiThi
+            long? kyThiId = long.TryParse(maKyThi, out long id) ? id : (long?)null;
+
+            // Tìm bài thi đã có (tạo sẵn khi giáo viên tạo kỳ thi)
+            var baiThi = _context.BaiThi
+                .FirstOrDefault(b => b.MaKyThi == kyThiId
+                                  && b.MaSinhVien == nguoiDung.Id
+                                  && (b.TrangThai == "chua_thi" || b.TrangThai == "dang_thi"));
+
+            if (baiThi != null)
             {
-                MaKyThi = long.TryParse(maKyThi, out long id) ? id : (long?)null,
-                MaSinhVien = nguoiDung.Id,
-                ThoiGianBatDau = thoiGianBD,
-                ThoiGianNopBai = thoiGianKT,
-                DiemSo = (int)diem,
-                TrangThai = "da_nop"
-            };
-            _context.BaiThi.Add(baiThi);
+                // Cập nhật bài thi đã có
+                baiThi.ThoiGianBatDau = thoiGianBD;
+                baiThi.ThoiGianNopBai = thoiGianKT;
+                baiThi.DiemSo = (int)diem;
+                baiThi.TrangThai = "da_nop";
+            }
+            else
+            {
+                // Tạo mới nếu chưa có
+                baiThi = new BaiThi
+                {
+                    MaKyThi = kyThiId,
+                    MaSinhVien = nguoiDung.Id,
+                    ThoiGianBatDau = thoiGianBD,
+                    ThoiGianNopBai = thoiGianKT,
+                    DiemSo = (int)diem,
+                    TrangThai = "da_nop"
+                };
+                _context.BaiThi.Add(baiThi);
+            }
             _context.SaveChanges();
         }
 

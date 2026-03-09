@@ -89,7 +89,7 @@ namespace PhanMemThiTracNghiem
             this.pnlHienThiODungSai.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlHienThiODungSai.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.pnlHienThiODungSai.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.pnlHienThiODungSai.Location = new System.Drawing.Point(174, 169);
             this.pnlHienThiODungSai.Name = "pnlHienThiODungSai";
             this.pnlHienThiODungSai.Size = new System.Drawing.Size(896, 364);
@@ -100,7 +100,7 @@ namespace PhanMemThiTracNghiem
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(45, 45, 68);
             this.panel1.Controls.Add(this.guna2HtmlLabel2);
             this.panel1.Controls.Add(this.lblSoCauDung);
             this.panel1.Controls.Add(this.guna2HtmlLabel3);
@@ -114,7 +114,7 @@ namespace PhanMemThiTracNghiem
             // 
             this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox3.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            this.guna2ControlBox3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox3.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox3.Location = new System.Drawing.Point(1130, 2);
             this.guna2ControlBox3.Name = "guna2ControlBox3";
@@ -124,7 +124,7 @@ namespace PhanMemThiTracNghiem
             // guna2ControlBox1
             // 
             this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
             this.guna2ControlBox1.Location = new System.Drawing.Point(1178, 2);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
@@ -157,7 +157,7 @@ namespace PhanMemThiTracNghiem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.FromArgb(37, 37, 56);
             this.ClientSize = new System.Drawing.Size(1226, 559);
             this.Controls.Add(this.guna2ControlBox3);
             this.Controls.Add(this.panel1);
