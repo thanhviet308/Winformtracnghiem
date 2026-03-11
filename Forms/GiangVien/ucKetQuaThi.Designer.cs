@@ -133,16 +133,16 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             // Columns
             this.dgvKetQua.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
             {
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colSTT", HeaderText = "STT", Width = 50, FillWeight = 30 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colSTT", HeaderText = "STT", MinimumWidth = 50, FillWeight = 40 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colHoTen", HeaderText = "Họ tên SV", FillWeight = 100 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colEmail", HeaderText = "Email", FillWeight = 100 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colKyThi", HeaderText = "Kỳ thi", FillWeight = 100 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colLopHoc", HeaderText = "Lớp", FillWeight = 70 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colMonHoc", HeaderText = "Môn", FillWeight = 70 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colDiem", HeaderText = "Điểm", Width = 60, FillWeight = 40 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colDiem", HeaderText = "Điểm", MinimumWidth = 60, FillWeight = 45 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colThoiGianNop", HeaderText = "Thời gian nộp", FillWeight = 90 },
                 new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colTrangThai", HeaderText = "Kết quả", FillWeight = 70 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colViPham", HeaderText = "Vi phạm", Width = 70, FillWeight = 50 }
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colViPham", HeaderText = "Vi phạm", MinimumWidth = 70, FillWeight = 50 }
             });
 
             // ===== ucKetQuaThi =====

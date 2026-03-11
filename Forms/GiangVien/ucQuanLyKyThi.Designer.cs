@@ -133,7 +133,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnThem.ForeColor = System.Drawing.Color.White;
             this.btnThem.Location = new System.Drawing.Point(970, 18);
             this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(110, 31);
+            this.btnThem.Size = new System.Drawing.Size(150, 31);
             this.btnThem.TabIndex = 3;
             this.btnThem.Text = "➕ Tạo kỳ thi";
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);

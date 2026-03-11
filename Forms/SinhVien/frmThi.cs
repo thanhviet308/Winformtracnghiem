@@ -39,6 +39,8 @@ namespace PhanMemThiTracNghiem
         private readonly DateTime thoiGianBatDau;
         private readonly DateTime thoiGianKetThuc;
         private readonly List<CauHoiDTO> cauHoiMonThi = new List<CauHoiDTO>();
+        private readonly long _maKyThi;
+        private long _maBaiThi;
 
 
         public int TongThoiGian = 6;
@@ -55,7 +57,7 @@ namespace PhanMemThiTracNghiem
 
 
 
-        public frmThi(NguoiDung nd, MonHoc mt, DateTime ThoiGianBatDauVaoThi, DateTime thoiGianKetThucThi)
+        public frmThi(NguoiDung nd, MonHoc mt, DateTime ThoiGianBatDauVaoThi, DateTime thoiGianKetThucThi, long maKyThi = 0)
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
@@ -75,6 +77,10 @@ namespace PhanMemThiTracNghiem
             thoiGianKetThuc = thoiGianKetThucThi;
             nguoiDung = nd;
             monThi = mt;
+            _maKyThi = maKyThi;
+
+            // Tạo bản ghi BaiThi khi bắt đầu thi
+            TaoBaiThi();
 
             // Hiển thị thông tin sinh viên 
             lblTenSinhVien.Text = nguoiDung.HoTen.ToString() + "  ||  " + nguoiDung.Email.ToString();
@@ -115,6 +121,61 @@ namespace PhanMemThiTracNghiem
             // Chặn copy/paste trong toàn form
             this.KeyPreview = true;
             this.KeyDown += FrmThi_KeyDown;
+        }
+
+        /// <summary>
+        /// Tạo hoặc tìm bản ghi BaiThi khi sinh viên bắt đầu làm bài
+        /// </summary>
+        private void TaoBaiThi()
+        {
+            try
+            {
+                long kyThiId = _maKyThi;
+
+                // Nếu chưa có maKyThi, tìm kỳ thi đang diễn ra
+                if (kyThiId == 0)
+                {
+                    var kyThi = duLieu.Set<KyThi>()
+                        .FirstOrDefault(k => DateTime.Now >= k.ThoiGianBatDau && DateTime.Now <= k.ThoiGianKetThuc);
+                    if (kyThi != null)
+                        kyThiId = kyThi.Id;
+                }
+
+                if (kyThiId > 0)
+                {
+                    // Tìm bài thi đang thi hoặc chưa thi
+                    var baiThiCu = duLieu.Set<BaiThi>()
+                        .FirstOrDefault(b => b.MaKyThi == kyThiId
+                                          && b.MaSinhVien == nguoiDung.Id
+                                          && (b.TrangThai == "chua_thi" || b.TrangThai == "dang_thi"));
+
+                    if (baiThiCu != null)
+                    {
+                        baiThiCu.TrangThai = "dang_thi";
+                        baiThiCu.ThoiGianBatDau = DateTime.Now;
+                        duLieu.SaveChanges();
+                        _maBaiThi = baiThiCu.Id;
+                    }
+                    else
+                    {
+                        // Tạo mới bài thi (luôn tạo để đảm bảo có _maBaiThi)
+                        var baiThiMoi = new BaiThi
+                        {
+                            MaKyThi = kyThiId,
+                            MaSinhVien = nguoiDung.Id,
+                            ThoiGianBatDau = DateTime.Now,
+                            TrangThai = "dang_thi"
+                        };
+                        duLieu.Set<BaiThi>().Add(baiThiMoi);
+                        duLieu.SaveChanges();
+                        _maBaiThi = baiThiMoi.Id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Lỗi tạo bài thi: " + ex.Message);
+            }
         }
 
         private void frmThi_Load(object sender, EventArgs e)
@@ -308,9 +369,19 @@ namespace PhanMemThiTracNghiem
         // TÍNH THỜI GIAN CÒN LẠI
         private void btnDemNguoc_Click(object sender, EventArgs e)
         {
-            TongThoiGian = (thoiGianKetThuc.Hour - DateTime.Now.Hour) * 60 + (60 - thoiGianBatDau.Minute) + thoiGianKetThuc.Minute;
-            iPhut = TongThoiGian - 1;
-            iGiay = 59;
+            // Tính thời gian còn lại = thời gian kết thúc - hiện tại
+            TimeSpan thoiGianConLai = thoiGianKetThuc - DateTime.Now;
+            if (thoiGianConLai.TotalSeconds <= 0)
+            {
+                iPhut = 0;
+                iGiay = 0;
+            }
+            else
+            {
+                iPhut = (int)thoiGianConLai.TotalMinutes;
+                iGiay = thoiGianConLai.Seconds;
+            }
+            TongThoiGian = iPhut;
             this.timer1.Enabled = true;
             HienThiPhutGio();
         }
@@ -377,23 +448,32 @@ namespace PhanMemThiTracNghiem
             }
             diemThi = (float)(Math.Round(diemThi, 2));
 
-            // Lưu dữ liệu vào Chi Tiết Kỳ Thi và Lưu Điểm
-            // Tìm thời gian khớp diễn ra kỳ thi để thêm cập nhật điểm, thời gian kết thúc thi và thời gian thi
-            foreach (var item in kiThiBAL.GetThongTinKyThi())
+            // Lưu dữ liệu: cập nhật bài thi đã tạo khi bắt đầu thi
+            if (_maBaiThi > 0)
             {
-                if (DateTime.Now >= item.ThoiGianBatDau && DateTime.Now <= item.ThoiGianKetThuc)
+                try
                 {
-                    foreach (var i in ChiTietKyThiService.GetThongTinChiTietKyThi())
+                    var baiThi = duLieu.Set<BaiThi>().Find(_maBaiThi);
+                    if (baiThi != null)
                     {
-                        ChiTietKyThiService.LuuChiTietKyThi(nguoiDung, item.Id.ToString(), monThi, diemThi, thoiGianBatDau, thoiGianThi, (thoiGianThi.Hour * 60 + thoiGianThi.Minute) - (thoiGianBatDau.Hour * 60 + thoiGianBatDau.Minute));
-                        break;
+                        baiThi.ThoiGianNopBai = thoiGianThi;
+                        baiThi.DiemSo = (int)Math.Round(diemThi);
+                        baiThi.TrangThai = "da_nop";
+                        duLieu.SaveChanges();
                     }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Lỗi cập nhật bài thi: " + ex.Message);
                 }
             }
 
-            // Hiển thị điểm
+            // Hiển thị màn hình nộp bài thành công (không hiện điểm)
+            // Điểm sẽ được xem ở lịch sử thi sau khi kỳ thi kết thúc
+            _dangHienDialog = true;
+            this.Deactivate -= FrmThi_Deactivate; // Gỡ sự kiện chống gian lận khi đã nộp bài
             ThiTracNghiem thiTracNghiem = new ThiTracNghiem(nguoiDung);
-            thiTracNghiem.HienThi(diemThi, demSoCauDung, luuBaiLam);
+            thiTracNghiem.HienThiNopBaiThanhCong(DateTime.Now);
             this.Hide();
             thiTracNghiem.ShowDialog();
             this.Close();
@@ -500,11 +580,8 @@ namespace PhanMemThiTracNghiem
         {
             try
             {
-                // Tìm bài thi hiện tại của sinh viên
-                var baiThi = duLieu.Set<BaiThi>()
-                    .FirstOrDefault(b => b.MaSinhVien == nguoiDung.Id && b.TrangThai == "dang_thi");
-
-                long? maBaiThi = baiThi?.Id;
+                // Sử dụng _maBaiThi đã được tạo khi bắt đầu thi
+                long? maBaiThi = _maBaiThi > 0 ? _maBaiThi : (long?)null;
 
                 // Kiểm tra xem đã có nhật ký vi phạm loại này chưa
                 var viPhamCu = duLieu.Set<NhatKyViPham>()

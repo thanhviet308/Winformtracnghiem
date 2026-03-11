@@ -80,7 +80,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(220, 25);
+            this.lblTitle.Size = new System.Drawing.Size(320, 32);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "📊 THỐNG KÊ TỔNG QUAN";
             // 
@@ -92,7 +92,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
             this.btnRefresh.Location = new System.Drawing.Point(880, 10);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(100, 30);
+            this.btnRefresh.Size = new System.Drawing.Size(140, 30);
             this.btnRefresh.TabIndex = 1;
             this.btnRefresh.Text = "🔄 Làm mới";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);

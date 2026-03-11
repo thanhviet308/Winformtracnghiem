@@ -93,7 +93,7 @@ namespace PhanMemThiTracNghiem.Repositories
             }
         }
 
-        // Xóa kỳ thi
+        // Xóa kỳ thi (xóa cứng, bao gồm toàn bộ dữ liệu liên quan)
         public bool Delete(long id)
         {
             try
@@ -101,6 +101,39 @@ namespace PhanMemThiTracNghiem.Repositories
                 var kyThi = _context.KyThi.Find(id);
                 if (kyThi != null)
                 {
+                    // Xóa vi phạm liên quan đến bài thi của kỳ thi
+                    var baiThiIds = _context.BaiThi
+                        .Where(b => b.MaKyThi == id)
+                        .Select(b => b.Id)
+                        .ToList();
+
+                    if (baiThiIds.Any())
+                    {
+                        var viPhams = _context.NhatKyViPham
+                            .Where(v => baiThiIds.Contains(v.MaBaiThi ?? 0))
+                            .ToList();
+                        _context.NhatKyViPham.RemoveRange(viPhams);
+
+                        // Xóa trả lời bài thi
+                        var traLois = _context.TraLoiBaiThi
+                            .Where(t => baiThiIds.Contains(t.MaBaiThi ?? 0))
+                            .ToList();
+                        _context.TraLoiBaiThi.RemoveRange(traLois);
+
+                        // Xóa bài thi
+                        var baiThis = _context.BaiThi
+                            .Where(b => b.MaKyThi == id)
+                            .ToList();
+                        _context.BaiThi.RemoveRange(baiThis);
+                    }
+
+                    // Xóa phân công giám sát
+                    var phanCongs = _context.PhanCongGiamSat
+                        .Where(p => p.MaKyThi == id)
+                        .ToList();
+                    _context.PhanCongGiamSat.RemoveRange(phanCongs);
+
+                    // Xóa kỳ thi
                     _context.KyThi.Remove(kyThi);
                     _context.SaveChanges();
                     return true;

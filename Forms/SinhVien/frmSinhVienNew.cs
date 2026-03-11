@@ -74,16 +74,16 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             };
             panelHeader.Controls.Add(pnlControl);
 
-            var btnMinimize = new Guna.UI2.WinForms.Guna2ControlBox
+            // Thứ tự thêm: Close phải ngoài cùng, rồi Maximize, rồi Minimize
+            var btnClose = new Guna.UI2.WinForms.Guna2ControlBox
             {
                 Size = new Size(45, 45),
                 Dock = DockStyle.Right,
-                ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox,
                 FillColor = Color.Transparent,
                 IconColor = Color.White,
-                HoverState = { FillColor = Color.FromArgb(60, 60, 90) }
+                HoverState = { FillColor = Color.FromArgb(232, 17, 35) }
             };
-            pnlControl.Controls.Add(btnMinimize);
+            pnlControl.Controls.Add(btnClose);
 
             var btnMaximize = new Guna.UI2.WinForms.Guna2ControlBox
             {
@@ -96,15 +96,16 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             };
             pnlControl.Controls.Add(btnMaximize);
 
-            var btnClose = new Guna.UI2.WinForms.Guna2ControlBox
+            var btnMinimize = new Guna.UI2.WinForms.Guna2ControlBox
             {
                 Size = new Size(45, 45),
                 Dock = DockStyle.Right,
+                ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox,
                 FillColor = Color.Transparent,
                 IconColor = Color.White,
-                HoverState = { FillColor = Color.FromArgb(232, 17, 35) }
+                HoverState = { FillColor = Color.FromArgb(60, 60, 90) }
             };
-            pnlControl.Controls.Add(btnClose);
+            pnlControl.Controls.Add(btnMinimize);
 
             // Tên trang
             lblPageTitle = new Label
@@ -113,29 +114,22 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(240, 12)
+                Location = new Point(240, 12),
+                Anchor = AnchorStyles.Left | AnchorStyles.Top
             };
             panelHeader.Controls.Add(lblPageTitle);
 
-            // Tên sinh viên + Đăng xuất bên phải
-            Panel pnlUser = new Panel
-            {
-                Dock = DockStyle.Right,
-                Width = 300,
-                BackColor = Color.Transparent
-            };
-
+            // Tên sinh viên bên phải header (trước nút điều khiển)
             lblWelcome = new Label
             {
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(10, 13),
-                Anchor = AnchorStyles.Right | AnchorStyles.Top
+                Dock = DockStyle.Right,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Padding = new Padding(10, 0, 15, 0)
             };
-            pnlUser.Controls.Add(lblWelcome);
-
-            panelHeader.Controls.Add(pnlUser);
+            panelHeader.Controls.Add(lblWelcome);
 
             // ===== SIDEBAR =====
             panelMenu = new Panel

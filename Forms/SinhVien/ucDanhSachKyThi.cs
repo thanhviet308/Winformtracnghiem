@@ -211,6 +211,20 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                 return;
             }
 
+            // Kiểm tra sinh viên đã nộp bài chưa
+            using (var db = new AppDbContext())
+            {
+                var daNopBai = db.BaiThi
+                    .Any(b => b.MaKyThi == kt.Id
+                              && b.MaSinhVien == _nguoiDung.Id
+                              && b.TrangThai == "da_nop");
+                if (daNopBai)
+                {
+                    MessageBox.Show("Bạn đã nộp bài cho kỳ thi này rồi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
             // Lấy môn học
             MonHoc monHoc = kt.NganHangDe?.MonHoc;
             if (monHoc == null)
@@ -221,7 +235,7 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 
             // Mở form thi
             var parentForm = this.FindForm();
-            frmThi frmThi = new frmThi(_nguoiDung, monHoc, DateTime.Now, kt.ThoiGianKetThuc);
+            frmThi frmThi = new frmThi(_nguoiDung, monHoc, DateTime.Now, kt.ThoiGianKetThuc, kt.Id);
             parentForm.Hide();
             frmThi.WindowState = FormWindowState.Maximized;
             frmThi.ShowDialog();

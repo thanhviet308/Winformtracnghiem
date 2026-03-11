@@ -124,17 +124,15 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     dgvKetQua.Rows[index].Cells["colDiem"].Value = bt.DiemSo?.ToString() ?? "—";
                     dgvKetQua.Rows[index].Cells["colThoiGianNop"].Value = bt.ThoiGianNopBai?.ToString("dd/MM/yyyy HH:mm") ?? "—";
 
-                    // Trạng thái đạt/không đạt
+                    // Kết quả: hiển thị điểm
                     string trangThai;
                     if (bt.DiemSo == null)
                         trangThai = "⏳ Chưa chấm";
-                    else if (bt.DiemSo >= 5)
-                        trangThai = "✅ Đạt";
                     else
-                        trangThai = "❌ Không đạt";
+                        trangThai = $"{bt.DiemSo}/10";
                     dgvKetQua.Rows[index].Cells["colTrangThai"].Value = trangThai;
 
-                    // Đếm vi phạm
+                    // Đếm vi phạm - tìm theo bài thi ID hoặc theo sinh viên + kỳ thi
                     int tongViPham = _context.NhatKyViPham
                         .Where(v => v.MaBaiThi == bt.Id)
                         .Sum(v => (int?)v.SoLanViPham) ?? 0;

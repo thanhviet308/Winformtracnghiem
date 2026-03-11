@@ -124,7 +124,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnThem.ForeColor = System.Drawing.Color.White;
             this.btnThem.Location = new System.Drawing.Point(850, 18);
             this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(130, 31);
+            this.btnThem.Size = new System.Drawing.Size(175, 31);
             this.btnThem.TabIndex = 3;
             this.btnThem.Text = "➕ Thêm khung đề";
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);

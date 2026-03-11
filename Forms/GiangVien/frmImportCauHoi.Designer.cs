@@ -247,7 +247,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnChonFileLai.ForeColor = System.Drawing.Color.White;
             this.btnChonFileLai.Location = new System.Drawing.Point(700, 12);
             this.btnChonFileLai.Name = "btnChonFileLai";
-            this.btnChonFileLai.Size = new System.Drawing.Size(130, 28);
+            this.btnChonFileLai.Size = new System.Drawing.Size(155, 28);
             this.btnChonFileLai.TabIndex = 6;
             this.btnChonFileLai.Text = "\ud83d\udd04 \u0110\u1ed5i file kh\u00e1c";
             this.btnChonFileLai.Click += new System.EventHandler(this.btnChonFileLai_Click);
@@ -455,7 +455,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnImport.ForeColor = System.Drawing.Color.White;
             this.btnImport.Location = new System.Drawing.Point(590, 17);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(120, 36);
+            this.btnImport.Size = new System.Drawing.Size(150, 36);
             this.btnImport.TabIndex = 1;
             this.btnImport.Text = "\u2705 Import";
             this.btnImport.Enabled = false;

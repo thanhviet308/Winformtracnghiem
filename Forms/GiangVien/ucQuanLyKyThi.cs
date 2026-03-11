@@ -172,17 +172,17 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             }
             else if (columnName == "colXoa")
             {
-                // Kiểm tra có sinh viên nào đã thi chưa
-                var hasBaiThi = _context.BaiThi.Any(b => b.MaKyThi == id && b.TrangThai != "chua_thi");
-                if (hasBaiThi)
-                {
-                    MessageBox.Show("Không thể xóa kỳ thi đã có sinh viên làm bài!", "Cảnh báo", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                // Kiểm tra có sinh viên nào đã thi chưa để cảnh báo
+                var soBaiThi = _context.BaiThi.Count(b => b.MaKyThi == id && b.TrangThai != "chua_thi");
+                
+                string thongBao;
+                if (soBaiThi > 0)
+                    thongBao = $"Kỳ thi này đã có {soBaiThi} sinh viên làm bài!\nXóa sẽ mất toàn bộ dữ liệu bài thi, điểm và vi phạm.\n\nBạn có chắc chắn muốn xóa?";
+                else
+                    thongBao = "Bạn có chắc chắn muốn xóa kỳ thi này?";
 
-                var result = MessageBox.Show("Bạn có chắc chắn muốn xóa kỳ thi này?", "Xác nhận", 
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show(thongBao, "Xác nhận xóa", 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
                     if (_kyThiService.Delete(id))

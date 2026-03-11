@@ -106,30 +106,61 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 
             using (var db = new AppDbContext())
             {
+                // Chỉ lấy bài thi có kỳ thi còn tồn tại
                 var listBaiThi = db.BaiThi
-                    .Where(bt => bt.MaSinhVien == _nguoiDung.Id)
+                    .Where(bt => bt.MaSinhVien == _nguoiDung.Id && bt.KyThi != null)
                     .OrderByDescending(bt => bt.Id)
                     .ToList();
+
+                // Xóa bài thi mồ côi (kỳ thi đã bị xóa)
+                var baiThiMoCoi = db.BaiThi
+                    .Where(bt => bt.MaSinhVien == _nguoiDung.Id && bt.KyThi == null)
+                    .ToList();
+                if (baiThiMoCoi.Any())
+                {
+                    foreach (var bt in baiThiMoCoi)
+                    {
+                        var vpLienQuan = db.NhatKyViPham.Where(v => v.MaBaiThi == bt.Id).ToList();
+                        db.NhatKyViPham.RemoveRange(vpLienQuan);
+                    }
+                    db.BaiThi.RemoveRange(baiThiMoCoi);
+                    db.SaveChanges();
+                }
 
                 int stt = 1;
                 foreach (var bt in listBaiThi)
                 {
                     string tenKyThi = "";
                     string ngayThi = "";
+                    bool kyThiDaKetThuc = false;
 
                     if (bt.KyThi != null)
                     {
                         tenKyThi = bt.KyThi.TenKyThi;
                         ngayThi = bt.KyThi.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm");
+                        kyThiDaKetThuc = DateTime.Now >= bt.KyThi.ThoiGianKetThuc;
                     }
 
-                    string trangThai = (bt.DiemSo ?? 0) >= 5 ? "Đạt" : "Không đạt";
+                    // Chỉ hiển thị điểm khi kỳ thi đã kết thúc
+                    string diem;
+                    string trangThai;
+
+                    if (kyThiDaKetThuc)
+                    {
+                        diem = (bt.DiemSo ?? 0).ToString();
+                        trangThai = (bt.DiemSo ?? 0) >= 5 ? "Đạt" : "Không đạt";
+                    }
+                    else
+                    {
+                        diem = "Chưa công bố";
+                        trangThai = "Đã nộp bài";
+                    }
 
                     int idx = dgvLichSu.Rows.Add(
                         stt++,
                         tenKyThi,
                         ngayThi,
-                        (bt.DiemSo ?? 0).ToString(),
+                        diem,
                         trangThai
                     );
                 }
@@ -145,9 +176,15 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
         {
             if (dgvLichSu.Columns[e.ColumnIndex].Name == "colTrangThai" && e.Value != null)
             {
-                if (e.Value.ToString() == "Đạt")
+                string val = e.Value.ToString();
+                if (val == "Đạt")
                 {
                     e.CellStyle.ForeColor = Color.FromArgb(40, 167, 69);
+                    e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                }
+                else if (val == "Đã nộp bài")
+                {
+                    e.CellStyle.ForeColor = Color.FromArgb(94, 148, 255);
                     e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
                 }
                 else
@@ -159,7 +196,13 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 
             if (dgvLichSu.Columns[e.ColumnIndex].Name == "colDiem" && e.Value != null)
             {
-                if (int.TryParse(e.Value.ToString(), out int diem))
+                string diemText = e.Value.ToString();
+                if (diemText == "Chưa công bố")
+                {
+                    e.CellStyle.ForeColor = Color.FromArgb(160, 160, 170);
+                    e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Italic);
+                }
+                else if (int.TryParse(diemText, out int diem))
                 {
                     e.CellStyle.ForeColor = diem >= 5 ? Color.FromArgb(40, 167, 69) : Color.FromArgb(220, 53, 69);
                     e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);

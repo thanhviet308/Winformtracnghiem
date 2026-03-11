@@ -421,7 +421,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnXuatExcel.ForeColor = System.Drawing.Color.White;
             this.btnXuatExcel.Location = new System.Drawing.Point(650, 12);
             this.btnXuatExcel.Name = "btnXuatExcel";
-            this.btnXuatExcel.Size = new System.Drawing.Size(120, 36);
+            this.btnXuatExcel.Size = new System.Drawing.Size(160, 36);
             this.btnXuatExcel.TabIndex = 0;
             this.btnXuatExcel.Text = "📊 Xuất Excel";
             this.btnXuatExcel.Click += new System.EventHandler(this.btnXuatExcel_Click);

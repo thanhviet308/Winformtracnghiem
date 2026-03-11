@@ -7,8 +7,6 @@ using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.Forms;
 using PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien;
 using PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien;
-using PhanMemThiTracNghiem.Forms.Admin.DeThi;
-using PhanMemThiTracNghiem.Forms.Admin.KyThi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -63,8 +61,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             // Khởi tạo các tab với UserControl mới
             InitializeGiangVienTab();
             InitializeSinhVienTab();
-            InitializeDeThiTab();
-            InitializeKyThiTab();
             
             // Ẩn các panel không còn dùng
             guna2Panel4.Visible = false; // Panel ngày sinh giáo viên
@@ -80,22 +76,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             }
             cbTenMonThi.SelectedIndex = -1;
             
-        }
-
-        /// <summary>
-        /// Khởi tạo tab Quản lý đề thi với UserControl mới
-        /// </summary>
-        private void InitializeDeThiTab()
-        {
-            // Ẩn các panel cũ
-            guna2Panel16.Visible = false;
-            guna2Panel20.Visible = false;
-
-            // Tạo và thêm UserControl mới
-            var ucQuanLyDeThi = new DeThi.ucQuanLyDeThi();
-            ucQuanLyDeThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabPage3.Controls.Add(ucQuanLyDeThi);
-            ucQuanLyDeThi.BringToFront();
         }
 
         /// <summary>
@@ -132,24 +112,6 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             ucQuanLySinhVien.Dock = System.Windows.Forms.DockStyle.Fill;
             tabPage2.Controls.Add(ucQuanLySinhVien);
             ucQuanLySinhVien.BringToFront();
-        }
-
-        /// <summary>
-        /// Khởi tạo tab Quản lý kỳ thi với UserControl mới
-        /// </summary>
-        private void InitializeKyThiTab()
-        {
-            // Ẩn tất cả controls cũ trên tabPage4
-            foreach (Control ctrl in tabPage4.Controls)
-            {
-                ctrl.Visible = false;
-            }
-
-            // Tạo và thêm UserControl mới
-            var ucQuanLyKyThi = new ucQuanLyKyThi();
-            ucQuanLyKyThi.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabPage4.Controls.Add(ucQuanLyKyThi);
-            ucQuanLyKyThi.BringToFront();
         }
 
         private void LoadDGVKiThi(List<Models.KyThi> listkithi)

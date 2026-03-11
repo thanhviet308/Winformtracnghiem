@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,67 +25,124 @@ namespace PhanMemThiTracNghiem
             ThemeHelper.ApplyVietnameseFont(this);
             nguoiDung = nd;
 
-            // Đồng bộ dark theme
-            guna2HtmlLabel2.ForeColor = Color.White;
-            lblSoCauDung.ForeColor = Color.White;
-            guna2HtmlLabel3.ForeColor = Color.White;
-            lblDiem.ForeColor = Color.White;
+            // Ẩn panel điểm và panel ô đúng sai
+            panel1.Visible = false;
+            pnlHienThiODungSai.Visible = false;
         }
 
-        internal void HienThi(float diemThi, int demSoCauDung, List<int> luuBaiLam)
+        /// <summary>
+        /// Hiển thị màn hình nộp bài thành công (không hiện điểm)
+        /// Điểm sẽ được xem ở lịch sử thi sau khi kỳ thi kết thúc
+        /// </summary>
+        internal void HienThiNopBaiThanhCong(DateTime thoiGianNopBai)
         {
-            // Số câu đúng
-            lblSoCauDung.Text = demSoCauDung.ToString() + "/" + luuBaiLam.Count().ToString();
+            // Ẩn các panel cũ
+            panel1.Visible = false;
+            pnlHienThiODungSai.Visible = false;
 
-            // Số điểm
-            lblDiem.Text = diemThi.ToString();
-
-            // TẠO Ô ĐÚNG SAI & Tô màu cho ô có câu trả lời đúng
-            int x = 25, y = 25;
-            for (int i = 0; i < luuBaiLam.Count(); i++)
+            // ===== ICON CHECK THÀNH CÔNG =====
+            Panel pnlIcon = new Panel
             {
-                Button btn = new Button();
-                btn.Location = new Point(x, y);
-                btn.Text = (i + 1).ToString();
-                btn.TextAlign = ContentAlignment.MiddleCenter;
-                btn.Name = i.ToString();
-                btn.Size = new Size(53, 46);
-                btn.BackColor = Color.FromArgb(255, 72, 81);
-                btn.Focus();
-
-                pnlHienThiODungSai.Controls.Add(btn);
-
-                btn.BringToFront();
-
-                x += 80;
-
-                if ((i + 1) % 10 == 0)
+                Size = new Size(100, 100),
+                BackColor = Color.Transparent
+            };
+            pnlIcon.Paint += (s, ev) =>
+            {
+                ev.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var brush = new SolidBrush(Color.FromArgb(40, 167, 69)))
                 {
-                    y += 70;
-                    x = 25;
+                    ev.Graphics.FillEllipse(brush, 5, 5, 90, 90);
                 }
-                if (luuBaiLam[i] == 1)
+                using (var pen = new Pen(Color.White, 5))
                 {
-                    btn.BackColor = Color.Green;
+                    ev.Graphics.DrawLine(pen, 28, 50, 43, 65);
+                    ev.Graphics.DrawLine(pen, 43, 65, 72, 35);
                 }
-            }
+            };
 
-        }
-        private void TaoNut(int i, ref int x, ref int y)
-        {
-            Button btn = new Button();
-            btn.Location = new Point(x, y);
-            btn.Font = new Font("Be Vietnam Pro", 10);
-            btn.Text = i.ToString();
-            btn.Name = i.ToString();
-            btn.TextAlign = ContentAlignment.MiddleCenter;
-            btn.Size = new Size(53, 46);
-            btn.BackColor = Color.Red;
-            btn.Focus();
+            // ===== TIÊU ĐỀ =====
+            Label lblThanhCong = new Label
+            {
+                Text = "Nộp bài thành công!",
+                Font = new Font("Be Vietnam Pro", 22, FontStyle.Bold),
+                ForeColor = Color.FromArgb(40, 167, 69),
+                AutoSize = true,
+                BackColor = Color.Transparent
+            };
 
-            pnlHienThiODungSai.Controls.Add(btn);
+            // ===== THÔNG BÁO PHỤ =====
+            Label lblThongBao = new Label
+            {
+                Text = "Điểm số sẽ được công bố sau khi kỳ thi kết thúc.\nBạn có thể xem điểm trong mục \"Lịch sử thi\".",
+                Font = new Font("Be Vietnam Pro", 12),
+                ForeColor = Color.FromArgb(200, 200, 200),
+                AutoSize = true,
+                BackColor = Color.Transparent,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
 
-            btn.BringToFront();
+            // ===== THỜI GIAN NỘP =====
+            Label lblThoiGian = new Label
+            {
+                Text = "Thời gian nộp: " + thoiGianNopBai.ToString("HH:mm:ss  dd/MM/yyyy"),
+                Font = new Font("Be Vietnam Pro", 11),
+                ForeColor = Color.FromArgb(160, 160, 170),
+                AutoSize = true,
+                BackColor = Color.Transparent
+            };
+
+            // ===== NÚT QUAY LẠI =====
+            var btnQuayLai = new Guna.UI2.WinForms.Guna2Button
+            {
+                Text = "Quay lại trang chính",
+                Font = new Font("Be Vietnam Pro", 12, FontStyle.Bold),
+                Size = new Size(260, 50),
+                FillColor = Color.FromArgb(94, 148, 255),
+                ForeColor = Color.White,
+                BorderRadius = 10,
+                Cursor = Cursors.Hand
+            };
+            btnQuayLai.Click += (s, ev) =>
+            {
+                int i = 1;
+                frmSinhVienNew frmSV = new frmSinhVienNew(nguoiDung, i);
+                this.Hide();
+                frmSV.ShowDialog();
+                this.Close();
+            };
+
+            // ===== BỐ TRÍ GIAO DIỆN =====
+            // Tính toán vị trí giữa form
+            int centerX = this.ClientSize.Width / 2;
+            int startY = 80;
+
+            pnlIcon.Location = new Point(centerX - pnlIcon.Width / 2, startY);
+            this.Controls.Add(pnlIcon);
+            pnlIcon.BringToFront();
+
+            startY += pnlIcon.Height + 20;
+            lblThanhCong.Location = new Point(centerX - lblThanhCong.PreferredWidth / 2, startY);
+            this.Controls.Add(lblThanhCong);
+            lblThanhCong.BringToFront();
+
+            startY += lblThanhCong.PreferredHeight + 20;
+            lblThongBao.Location = new Point(centerX - lblThongBao.PreferredWidth / 2, startY);
+            this.Controls.Add(lblThongBao);
+            lblThongBao.BringToFront();
+
+            startY += lblThongBao.PreferredHeight + 25;
+            lblThoiGian.Location = new Point(centerX - lblThoiGian.PreferredWidth / 2, startY);
+            this.Controls.Add(lblThoiGian);
+            lblThoiGian.BringToFront();
+
+            startY += lblThoiGian.PreferredHeight + 35;
+            btnQuayLai.Location = new Point(centerX - btnQuayLai.Width / 2, startY);
+            this.Controls.Add(btnQuayLai);
+            btnQuayLai.BringToFront();
+
+            // Ẩn hình ngôi sao 2 bên (nếu có)
+            panel2.Visible = false;
+            panel3.Visible = false;
         }
 
         private void ThiTracNghiem_Load(object sender, EventArgs e)

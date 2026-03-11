@@ -138,7 +138,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             this.btnLuuDL.Location = new System.Drawing.Point(359, 502);
             this.btnLuuDL.Margin = new System.Windows.Forms.Padding(2);
             this.btnLuuDL.Name = "btnLuuDL";
-            this.btnLuuDL.Size = new System.Drawing.Size(135, 37);
+            this.btnLuuDL.Size = new System.Drawing.Size(180, 37);
             this.btnLuuDL.TabIndex = 14;
             this.btnLuuDL.Text = "Lưu dữ liệu";
             this.btnLuuDL.Click += new System.EventHandler(this.btnLuuDL_Click);
@@ -247,7 +247,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
             this.btnTaiFileMau.Location = new System.Drawing.Point(530, 502);
             this.btnTaiFileMau.Margin = new System.Windows.Forms.Padding(2);
             this.btnTaiFileMau.Name = "btnTaiFileMau";
-            this.btnTaiFileMau.Size = new System.Drawing.Size(135, 37);
+            this.btnTaiFileMau.Size = new System.Drawing.Size(180, 37);
             this.btnTaiFileMau.TabIndex = 15;
             this.btnTaiFileMau.Text = "📥 Tải file mẫu";
             this.btnTaiFileMau.Click += new System.EventHandler(this.btnTaiFileMau_Click);
