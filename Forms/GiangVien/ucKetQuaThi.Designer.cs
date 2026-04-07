@@ -21,6 +21,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelFilter = new System.Windows.Forms.Panel();
             this.cboKyThi = new Guna.UI2.WinForms.Guna2ComboBox();
             this.txtTimKiem = new Guna.UI2.WinForms.Guna2TextBox();
+            this.btnXuatExcel = new Guna.UI2.WinForms.Guna2Button();
             this.dgvKetQua = new Guna.UI2.WinForms.Guna2DataGridView();
 
             this.panelTitle.SuspendLayout();
@@ -57,6 +58,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelFilter.BackColor = System.Drawing.Color.White;
             this.panelFilter.Controls.Add(this.cboKyThi);
             this.panelFilter.Controls.Add(this.txtTimKiem);
+            this.panelFilter.Controls.Add(this.btnXuatExcel);
             this.panelFilter.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFilter.Location = new System.Drawing.Point(0, 50);
             this.panelFilter.Name = "panelFilter";
@@ -89,6 +91,19 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.txtTimKiem.PlaceholderText = "🔍 Tìm theo tên SV, email, kỳ thi...";
             this.txtTimKiem.Size = new System.Drawing.Size(300, 36);
             this.txtTimKiem.TextChanged += new System.EventHandler(this.txtTimKiem_TextChanged);
+
+            // btnXuatExcel
+            this.btnXuatExcel.BorderRadius = 5;
+            this.btnXuatExcel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(144)))));
+            this.btnXuatExcel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnXuatExcel.ForeColor = System.Drawing.Color.White;
+            this.btnXuatExcel.Location = new System.Drawing.Point(1045, 15);
+            this.btnXuatExcel.Name = "btnXuatExcel";
+            this.btnXuatExcel.Size = new System.Drawing.Size(140, 36);
+            this.btnXuatExcel.TabIndex = 2;
+            this.btnXuatExcel.Text = "📊 Xuất Excel";
+            this.btnXuatExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnXuatExcel.Click += new System.EventHandler(this.btnXuatExcel_Click);
 
             // ===== dgvKetQua =====
             this.dgvKetQua.AllowUserToAddRows = false;
@@ -167,6 +182,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private System.Windows.Forms.Panel panelFilter;
         private Guna.UI2.WinForms.Guna2ComboBox cboKyThi;
         private Guna.UI2.WinForms.Guna2TextBox txtTimKiem;
+        private Guna.UI2.WinForms.Guna2Button btnXuatExcel;
         private Guna.UI2.WinForms.Guna2DataGridView dgvKetQua;
     }
 }

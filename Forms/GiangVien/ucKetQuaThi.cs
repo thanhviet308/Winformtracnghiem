@@ -2,9 +2,12 @@ using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.Forms;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -161,6 +164,121 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private void txtTimKiem_TextChanged(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void btnXuatExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvKetQua.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                string kyThiPart = "TatCaKyThi";
+                if (cboKyThi.SelectedIndex > 0 && _kyThiList != null && _kyThiList.Count >= cboKyThi.SelectedIndex)
+                {
+                    var selectedKyThi = _kyThiList[cboKyThi.SelectedIndex - 1];
+                    kyThiPart = SanitizeFileName(selectedKyThi?.TenKyThi ?? "KyThi");
+                }
+
+                using (var sfd = new SaveFileDialog())
+                {
+                    sfd.Filter = "Excel Files|*.xlsx";
+                    sfd.FileName = $"KetQuaThi_{kyThiPart}_{DateTime.Now:yyyyMMdd_HHmm}.xlsx";
+
+                    if (sfd.ShowDialog() != DialogResult.OK) return;
+
+                    ExportDataGridViewToExcel(dgvKetQua, sfd.FileName);
+
+                    MessageBox.Show("Xuất Excel thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi xuất Excel: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static void ExportDataGridViewToExcel(DataGridView dgv, string filePath)
+        {
+            // EPPlus requires license context set explicitly
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var visibleColumns = dgv.Columns.Cast<DataGridViewColumn>()
+                .Where(c => c.Visible)
+                .OrderBy(c => c.DisplayIndex)
+                .ToList();
+
+            using (var package = new ExcelPackage())
+            {
+                var ws = package.Workbook.Worksheets.Add("KetQuaThi");
+
+                // Header
+                for (int c = 0; c < visibleColumns.Count; c++)
+                {
+                    ws.Cells[1, c + 1].Value = visibleColumns[c].HeaderText;
+                }
+
+                using (var range = ws.Cells[1, 1, 1, visibleColumns.Count])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(94, 148, 255));
+                    range.Style.Font.Color.SetColor(Color.White);
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
+
+                int rowIndex = 2;
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    for (int c = 0; c < visibleColumns.Count; c++)
+                    {
+                        var col = visibleColumns[c];
+                        object value = row.Cells[col.Name].Value;
+                        ws.Cells[rowIndex, c + 1].Value = value?.ToString() ?? string.Empty;
+                    }
+                    rowIndex++;
+                }
+
+                // Basic formatting
+                var dataRange = ws.Cells[1, 1, Math.Max(1, rowIndex - 1), visibleColumns.Count];
+                dataRange.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                dataRange.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                dataRange.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                dataRange.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                dataRange.Style.Border.Top.Color.SetColor(Color.FromArgb(220, 220, 220));
+                dataRange.Style.Border.Left.Color.SetColor(Color.FromArgb(220, 220, 220));
+                dataRange.Style.Border.Right.Color.SetColor(Color.FromArgb(220, 220, 220));
+                dataRange.Style.Border.Bottom.Color.SetColor(Color.FromArgb(220, 220, 220));
+
+                ws.View.FreezePanes(2, 1);
+                ws.Cells[ws.Dimension.Address].AutoFitColumns(12, 50);
+                ws.Cells[1, 1, 1, visibleColumns.Count].AutoFilter = true;
+
+                // Ensure directory exists
+                var dir = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrWhiteSpace(dir) && !Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                package.SaveAs(new FileInfo(filePath));
+            }
+        }
+
+        private static string SanitizeFileName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return "File";
+            foreach (var ch in Path.GetInvalidFileNameChars())
+            {
+                name = name.Replace(ch, '_');
+            }
+            return name.Trim();
         }
     }
 }

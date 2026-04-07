@@ -121,8 +121,10 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             headerStyle.ForeColor = System.Drawing.Color.White;
             headerStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             headerStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            headerStyle.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvViPham.ColumnHeadersDefaultCellStyle = headerStyle;
-            this.dgvViPham.ColumnHeadersHeight = 45;
+            this.dgvViPham.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvViPham.ColumnHeadersHeight = 55;
             this.dgvViPham.EnableHeadersVisualStyles = false;
 
             // Cell Style
@@ -143,17 +145,17 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             // Columns
             this.dgvViPham.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
             {
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colSTT", HeaderText = "STT", Width = 50, FillWeight = 25 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colHoTen", HeaderText = "Họ tên SV", FillWeight = 100 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colEmail", HeaderText = "Email", FillWeight = 100 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colKyThi", HeaderText = "Kỳ thi", FillWeight = 90 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colLopHoc", HeaderText = "Lớp", FillWeight = 60 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colChuyenTab", HeaderText = "Chuyển tab", Width = 80, FillWeight = 50 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colCopy", HeaderText = "Copy", Width = 60, FillWeight = 40 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colPaste", HeaderText = "Paste", Width = 60, FillWeight = 40 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colTongViPham", HeaderText = "Tổng", Width = 60, FillWeight = 40 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colLanCuoi", HeaderText = "Lần cuối", FillWeight = 80 },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colMucDo", HeaderText = "Mức độ", FillWeight = 80 }
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colSTT", HeaderText = "STT", MinimumWidth = 50, FillWeight = 30 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colHoTen", HeaderText = "Họ tên SV", MinimumWidth = 160, FillWeight = 130 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colEmail", HeaderText = "Email", MinimumWidth = 170, FillWeight = 140 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colKyThi", HeaderText = "Kỳ thi", MinimumWidth = 100, FillWeight = 100 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colLopHoc", HeaderText = "Lớp", MinimumWidth = 80, FillWeight = 80 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colChuyenTab", HeaderText = "Chuyển tab", MinimumWidth = 110, FillWeight = 90 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colCopy", HeaderText = "Copy", MinimumWidth = 70, FillWeight = 55 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colPaste", HeaderText = "Paste", MinimumWidth = 70, FillWeight = 55 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colTongViPham", HeaderText = "Tổng", MinimumWidth = 70, FillWeight = 55 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colLanCuoi", HeaderText = "Lần cuối", MinimumWidth = 150, FillWeight = 130 },
+                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "colMucDo", HeaderText = "Mức độ", MinimumWidth = 120, FillWeight = 100 }
             });
 
             // ===== ucViPhamSinhVien =====

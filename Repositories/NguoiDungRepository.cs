@@ -19,7 +19,10 @@ namespace PhanMemThiTracNghiem.Repositories
         // Lấy tất cả người dùng
         public List<NguoiDung> GetAll()
         {
-            return AppDbContext.NguoiDung.Include(x => x.VaiTro).ToList();
+            return AppDbContext.NguoiDung
+                .Include(x => x.VaiTro)
+                .OrderBy(x => x.Id)
+                .ToList();
         }
 
         // Lấy người dùng theo ID
@@ -48,7 +51,9 @@ namespace PhanMemThiTracNghiem.Repositories
         public List<NguoiDung> GetByRole(long maVaiTro)
         {
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
-                .Where(x => x.MaVaiTro == maVaiTro).ToList();
+                .Where(x => x.MaVaiTro == maVaiTro)
+                .OrderBy(x => x.Id)
+                .ToList();
         }
 
         // Thêm người dùng mới

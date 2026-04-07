@@ -2,6 +2,7 @@ using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Forms;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -21,7 +22,79 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             _context = new AppDbContext();
             _kyThiId = kyThiId;
 
+            InitUi();
+
             LoadThongKe();
+        }
+
+        private void InitUi()
+        {
+            ApplyWhiteDataGridViewStyle(dgvChiTiet);
+
+            panelHeader.Resize += (_, __) => LayoutHeader();
+            panelStats.Resize += (_, __) => LayoutStatPanels();
+            LayoutHeader();
+            LayoutStatPanels();
+        }
+
+        private void LayoutHeader()
+        {
+            // Keep time label neatly right-aligned
+            lblThoiGian.AutoSize = true;
+            lblThoiGian.Top = 15;
+            lblThoiGian.Left = Math.Max(15, panelHeader.ClientSize.Width - lblThoiGian.Width - 15);
+        }
+
+        private void LayoutStatPanels()
+        {
+            const int gap = 15;
+            int available = panelStats.ClientSize.Width - (gap * 4);
+            if (available <= 0) return;
+
+            int w = available / 3;
+            int y = 15;
+            int h = panelSoLieu.Height;
+
+            panelSoLieu.SetBounds(gap, y, w, h);
+            panelProgress.SetBounds(panelSoLieu.Right + gap, y, w, h);
+            panelDiem.SetBounds(panelProgress.Right + gap, y, w, h);
+        }
+
+        private static void ApplyWhiteDataGridViewStyle(DataGridView dgv)
+        {
+            if (dgv == null) return;
+
+            dgv.BackgroundColor = Color.White;
+            dgv.BorderStyle = BorderStyle.FixedSingle;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.GridColor = SystemColors.ControlLight;
+            dgv.EnableHeadersVisualStyles = false;
+
+            dgv.ColumnHeadersHeight = 38;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(45, 45, 68);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(45, 45, 68);
+
+            dgv.DefaultCellStyle.BackColor = Color.White;
+            dgv.DefaultCellStyle.ForeColor = Color.Black;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgv.DefaultCellStyle.SelectionBackColor = SystemColors.ControlLight;
+            dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = SystemColors.Control;
+            dgv.RowTemplate.Height = 32;
+            dgv.RowHeadersVisible = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.ReadOnly = true;
+
+            // Column alignment for readability
+            if (dgv.Columns.Contains("colSTT")) dgv.Columns["colSTT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            if (dgv.Columns.Contains("colBatDau")) dgv.Columns["colBatDau"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            if (dgv.Columns.Contains("colNopBai")) dgv.Columns["colNopBai"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            if (dgv.Columns.Contains("colDiem")) dgv.Columns["colDiem"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            if (dgv.Columns.Contains("colTrangThai")) dgv.Columns["colTrangThai"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void LoadThongKe()
@@ -49,8 +122,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 lblDiemThapNhat.Text = thongKe.DiemThapNhat.ToString("F2");
 
                 // Tính phần trăm
-                double phanTramDaThi = thongKe.TongSoSinhVien > 0 
-                    ? (thongKe.SoDaThi * 100.0 / thongKe.TongSoSinhVien) 
+                double phanTramDaThi = thongKe.TongSoSinhVien > 0
+                    ? (thongKe.SoDaThi * 100.0 / thongKe.TongSoSinhVien)
                     : 0;
                 progressDaThi.Value = (int)Math.Min(phanTramDaThi, 100);
                 lblPhanTramDaThi.Text = $"{phanTramDaThi:F1}%";
@@ -79,7 +152,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 dgvChiTiet.Rows[index].Cells["colBatDau"].Value = baiThi.ThoiGianBatDau?.ToString("HH:mm:ss") ?? "-";
                 dgvChiTiet.Rows[index].Cells["colNopBai"].Value = baiThi.ThoiGianNopBai?.ToString("HH:mm:ss") ?? "-";
                 dgvChiTiet.Rows[index].Cells["colDiem"].Value = baiThi.DiemSo?.ToString("F2") ?? "-";
-                
+
                 // Trạng thái với màu sắc
                 string trangThai;
                 switch (baiThi.TrangThai)
@@ -96,6 +169,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 }
                 dgvChiTiet.Rows[index].Cells["colTrangThai"].Value = trangThai;
             }
+
+            dgvChiTiet.ClearSelection();
         }
 
         private void btnXuatExcel_Click(object sender, EventArgs e)
@@ -110,7 +185,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         // TODO: Implement Excel export using EPPlus or similar library
-                        MessageBox.Show("Chức năng xuất Excel đang được phát triển!", "Thông báo", 
+                        MessageBox.Show("Chức năng xuất Excel đang được phát triển!", "Thông báo",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }

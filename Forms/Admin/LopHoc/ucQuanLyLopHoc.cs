@@ -29,7 +29,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
         public void LoadLopHoc()
         {
             dgvLopHoc.Rows.Clear();
-            var list = LopHocService.GetAll();
+            var list = LopHocService.GetAll().OrderBy(l => l.Id).ToList();
 
             foreach (var lop in list)
             {
@@ -54,6 +54,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
             dgvLopHoc.Rows.Clear();
             var list = LopHocService.GetAll()
                 .Where(l => l.TenLop.ToLower().Contains(keyword))
+                .OrderBy(l => l.Id)
                 .ToList();
 
             foreach (var lop in list)
@@ -117,7 +118,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
             // Xóa
             else if (dgvLopHoc.Columns[e.ColumnIndex].Name == "colXoa")
             {
-                if (MessageBox.Show($"Bạn có chắc muốn xóa lớp '{tenLop}'?\nTất cả sinh viên và phân công sẽ bị xóa!", 
+                if (MessageBox.Show($"Bạn có chắc muốn xóa lớp '{tenLop}'?\nTất cả sinh viên và phân công sẽ bị xóa!",
                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     try

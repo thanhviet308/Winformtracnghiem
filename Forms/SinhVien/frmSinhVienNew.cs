@@ -69,26 +69,29 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             Panel pnlControl = new Panel
             {
                 Dock = DockStyle.Right,
-                Width = 140,
+                Width = 135,
                 BackColor = Color.Transparent
             };
-            panelHeader.Controls.Add(pnlControl);
+            pnlControl.Padding = new Padding(0);
 
-            // Thứ tự thêm: Close phải ngoài cùng, rồi Maximize, rồi Minimize
-            var btnClose = new Guna.UI2.WinForms.Guna2ControlBox
+            // Lưu ý: Với DockStyle.Right, control Add SAU sẽ nằm ngoài cùng bên phải.
+            var btnMinimize = new Guna.UI2.WinForms.Guna2ControlBox
             {
                 Size = new Size(45, 45),
                 Dock = DockStyle.Right,
+                Margin = new Padding(0),
+                ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox,
                 FillColor = Color.Transparent,
                 IconColor = Color.White,
-                HoverState = { FillColor = Color.FromArgb(232, 17, 35) }
+                HoverState = { FillColor = Color.FromArgb(60, 60, 90) }
             };
-            pnlControl.Controls.Add(btnClose);
+            pnlControl.Controls.Add(btnMinimize);
 
             var btnMaximize = new Guna.UI2.WinForms.Guna2ControlBox
             {
                 Size = new Size(45, 45),
                 Dock = DockStyle.Right,
+                Margin = new Padding(0),
                 ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MaximizeBox,
                 FillColor = Color.Transparent,
                 IconColor = Color.White,
@@ -96,16 +99,16 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             };
             pnlControl.Controls.Add(btnMaximize);
 
-            var btnMinimize = new Guna.UI2.WinForms.Guna2ControlBox
+            var btnClose = new Guna.UI2.WinForms.Guna2ControlBox
             {
                 Size = new Size(45, 45),
                 Dock = DockStyle.Right,
-                ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox,
+                Margin = new Padding(0),
                 FillColor = Color.Transparent,
                 IconColor = Color.White,
-                HoverState = { FillColor = Color.FromArgb(60, 60, 90) }
+                HoverState = { FillColor = Color.FromArgb(232, 17, 35) }
             };
-            pnlControl.Controls.Add(btnMinimize);
+            pnlControl.Controls.Add(btnClose);
 
             // Tên trang
             lblPageTitle = new Label
@@ -114,10 +117,10 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                 Font = new Font("Segoe UI", 13, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(240, 12),
-                Anchor = AnchorStyles.Left | AnchorStyles.Top
+                Dock = DockStyle.Left,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(20, 0, 0, 0)
             };
-            panelHeader.Controls.Add(lblPageTitle);
 
             // Tên sinh viên bên phải header (trước nút điều khiển)
             lblWelcome = new Label
@@ -125,11 +128,16 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                 Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Dock = DockStyle.Right,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Padding = new Padding(10, 0, 15, 0)
+                Dock = DockStyle.Left,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(10, 0, 0, 0)
             };
             panelHeader.Controls.Add(lblWelcome);
+
+            panelHeader.Controls.Add(lblPageTitle);
+
+            // Đưa cụm nút điều khiển ra ngoài cùng bên phải
+            panelHeader.Controls.Add(pnlControl);
 
             // ===== SIDEBAR =====
             panelMenu = new Panel

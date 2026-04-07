@@ -38,16 +38,16 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
         private void LoadGiangVien()
         {
-            var list = GiangVienService.GetGIANGVIENs();
+            var list = GiangVienService.GetGIANGVIENs().OrderBy(gv => gv.Id).ToList();
             dgvGiangVien.DataSource = list;
 
             if (dgvGiangVien.Columns.Count > 0)
             {
                 // Ẩn các cột không cần thiết
-                string[] hiddenColumns = { "MatKhau", "MaVaiTro", "VaiTro", 
-                    "CauHoiThis", "NganHangDes", "LopHocSinhViens", 
+                string[] hiddenColumns = { "MatKhau", "MaVaiTro", "VaiTro",
+                    "CauHoiThis", "NganHangDes", "LopHocSinhViens",
                     "PhanCongGiangDays", "PhanCongGiamSats", "BaiThis" };
-                
+
                 foreach (var col in hiddenColumns)
                 {
                     if (dgvGiangVien.Columns.Contains(col))
@@ -82,8 +82,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin
             }
 
             var list = AppDbContext.NguoiDung
-                .Where(n => n.MaVaiTro == 2 && 
+                .Where(n => n.MaVaiTro == 2 &&
                     (n.Email.ToLower().Contains(keyword) || n.HoTen.ToLower().Contains(keyword)))
+                .OrderBy(n => n.Id)
                 .ToList();
 
             dgvGiangVien.DataSource = list;

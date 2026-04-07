@@ -2,6 +2,7 @@ using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PhanMemThiTracNghiem.Forms.Admin.MonHoc
@@ -22,7 +23,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.MonHoc
         {
             try
             {
-                var list = MonHocService.GetThongTinMonThi();
+                var list = MonHocService.GetThongTinMonThi().OrderBy(m => m.Id).ToList();
                 dgvMonHoc.Rows.Clear();
 
                 foreach (var item in list)
@@ -50,6 +51,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.MonHoc
             }
 
             var list = MonHocService.GetThongTinMonThi();
+            list = list.OrderBy(m => m.Id).ToList();
             dgvMonHoc.Rows.Clear();
 
             foreach (var item in list)

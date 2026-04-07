@@ -66,6 +66,7 @@ namespace PhanMemThiTracNghiem.Services
 
             return _context.NguoiDung
                 .Where(n => n.MaVaiTro == 3 && !sinhVienTrongLop.Contains(n.Id))
+                .OrderBy(n => n.Id)
                 .ToList();
         }
 
@@ -145,7 +146,7 @@ namespace PhanMemThiTracNghiem.Services
                 // Kiểm tra đã tồn tại chưa
                 var existing = _context.PhanCongGiangDay
                     .FirstOrDefault(p => p.MaLop == maLop && p.MaMon == maMon);
-                
+
                 if (existing != null)
                 {
                     // Cập nhật giảng viên
@@ -164,7 +165,7 @@ namespace PhanMemThiTracNghiem.Services
                     };
                     _context.PhanCongGiangDay.Add(phanCong);
                 }
-                
+
                 _context.SaveChanges();
                 return true;
             }
@@ -181,7 +182,7 @@ namespace PhanMemThiTracNghiem.Services
             {
                 var phanCong = _context.PhanCongGiangDay
                     .FirstOrDefault(p => p.MaLop == maLop && p.MaMon == maMon);
-                
+
                 if (phanCong != null)
                 {
                     _context.PhanCongGiangDay.Remove(phanCong);
@@ -201,12 +202,13 @@ namespace PhanMemThiTracNghiem.Services
         {
             return _context.NguoiDung
                 .Where(n => n.MaVaiTro == 2) // Role giảng viên = 2
+                .OrderBy(n => n.Id)
                 .ToList();
         }
 
         public List<MonHoc> GetAllMonHoc()
         {
-            return _context.MonHoc.ToList();
+            return _context.MonHoc.OrderBy(m => m.Id).ToList();
         }
     }
 }

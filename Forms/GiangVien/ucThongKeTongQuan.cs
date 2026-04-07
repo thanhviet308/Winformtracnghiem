@@ -4,6 +4,7 @@ using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Forms;
 using System;
 using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PhanMemThiTracNghiem.Forms.GiangVien
@@ -18,8 +19,44 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
+
+            ApplyWhiteDataGridViewStyle(dgvKyThiGanDay);
+            ApplyWhiteDataGridViewStyle(dgvThongKeCauHoi);
+
             _thongKeService = new ThongKeService();
             _context = new AppDbContext();
+        }
+
+        private static void ApplyWhiteDataGridViewStyle(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+
+            dgv.BackgroundColor = Color.White;
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.GridColor = Color.FromArgb(229, 231, 235);
+            dgv.RowHeadersVisible = false;
+
+            dgv.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+            {
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                BackColor = Color.White,
+                ForeColor = ThemeHelper.TextPrimary,
+                Font = ThemeHelper.FontButton,
+                SelectionBackColor = Color.White,
+                SelectionForeColor = ThemeHelper.TextPrimary
+            };
+
+            dgv.DefaultCellStyle = new DataGridViewCellStyle
+            {
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                BackColor = Color.White,
+                ForeColor = ThemeHelper.TextPrimary,
+                Font = ThemeHelper.FontSmall,
+                SelectionBackColor = Color.White,
+                SelectionForeColor = ThemeHelper.TextPrimary
+            };
         }
 
         public void SetNguoiDung(NguoiDung nguoiDung)
@@ -90,6 +127,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     trangThai = "🔴 Đang thi";
                 dgvKyThiGanDay.Rows[index].Cells["colTrangThaiKT"].Value = trangThai;
             }
+
+            ClearGridSelection(dgvKyThiGanDay);
         }
 
         private void LoadThongKeCauHoi()
@@ -103,6 +142,21 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 int index = dgvThongKeCauHoi.Rows.Add();
                 dgvThongKeCauHoi.Rows[index].Cells["colMonHoc"].Value = item.TenMonHoc;
                 dgvThongKeCauHoi.Rows[index].Cells["colSoCauHoi"].Value = item.SoCauHoi;
+            }
+
+            ClearGridSelection(dgvThongKeCauHoi);
+        }
+
+        private static void ClearGridSelection(DataGridView dgv)
+        {
+            try
+            {
+                dgv.ClearSelection();
+                dgv.CurrentCell = null;
+            }
+            catch
+            {
+                // ignore
             }
         }
 

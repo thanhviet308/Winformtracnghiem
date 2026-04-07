@@ -22,6 +22,7 @@ namespace PhanMemThiTracNghiem.Repositories
             return _context.NganHangDe
                 .Include(n => n.MonHoc)
                 .Include(n => n.NguoiDung)
+                .OrderBy(n => n.Id)
                 .ToList();
         }
 
@@ -41,6 +42,7 @@ namespace PhanMemThiTracNghiem.Repositories
             return _context.NganHangDe
                 .Include(n => n.NguoiDung)
                 .Where(n => n.MaMon == maMon)
+                .OrderBy(n => n.Id)
                 .ToList();
         }
 

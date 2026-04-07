@@ -44,7 +44,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
                 _allKyThi = _context.KyThi
                     .Where(k => nganHangDeIds.Contains(k.MaNganHangDe ?? 0))
-                    .OrderByDescending(k => k.NgayTao)
+                    .OrderBy(k => k.Id)
                     .ToList();
 
                 // Load thêm thông tin liên quan
@@ -92,6 +92,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 }
             }
 
+            filtered = filtered.OrderBy(k => k.Id).ToList();
+
             foreach (var item in filtered)
             {
                 int index = dgvKyThi.Rows.Add();
@@ -101,7 +103,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 dgvKyThi.Rows[index].Cells["colLopHoc"].Value = item.LopHoc?.TenLop ?? "N/A";
                 dgvKyThi.Rows[index].Cells["colThoiGianBD"].Value = item.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm");
                 dgvKyThi.Rows[index].Cells["colThoiLuong"].Value = item.ThoiLuongPhut + " phút";
-                
+
                 // Trạng thái
                 string trangThai;
                 var now = DateTime.Now;
@@ -158,7 +160,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     var hasBaiThi = _context.BaiThi.Any(b => b.MaKyThi == id && b.TrangThai != "chua_thi");
                     if (hasBaiThi)
                     {
-                        MessageBox.Show("Không thể sửa kỳ thi đã có sinh viên làm bài!", "Cảnh báo", 
+                        MessageBox.Show("Không thể sửa kỳ thi đã có sinh viên làm bài!", "Cảnh báo",
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
@@ -174,14 +176,14 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             {
                 // Kiểm tra có sinh viên nào đã thi chưa để cảnh báo
                 var soBaiThi = _context.BaiThi.Count(b => b.MaKyThi == id && b.TrangThai != "chua_thi");
-                
+
                 string thongBao;
                 if (soBaiThi > 0)
                     thongBao = $"Kỳ thi này đã có {soBaiThi} sinh viên làm bài!\nXóa sẽ mất toàn bộ dữ liệu bài thi, điểm và vi phạm.\n\nBạn có chắc chắn muốn xóa?";
                 else
                     thongBao = "Bạn có chắc chắn muốn xóa kỳ thi này?";
 
-                var result = MessageBox.Show(thongBao, "Xác nhận xóa", 
+                var result = MessageBox.Show(thongBao, "Xác nhận xóa",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {

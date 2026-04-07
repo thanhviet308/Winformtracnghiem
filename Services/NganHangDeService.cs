@@ -41,6 +41,7 @@ namespace PhanMemThiTracNghiem.Services
         {
             return _context.NganHangDe
                 .Where(n => n.NguoiTao == nguoiTaoId)
+                .OrderBy(n => n.Id)
                 .ToList();
         }
 

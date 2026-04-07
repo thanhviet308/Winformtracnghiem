@@ -1,6 +1,7 @@
 using PhanMemThiTracNghiem.Data;
 using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.Forms;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -66,24 +67,46 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             dgvLichSu.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(245, 248, 250);
             dgvLichSu.RowTemplate.Height = 40;
 
+            // Header alignment: avoid centered headers
+            dgvLichSu.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
             // Columns
             dgvLichSu.Columns.Add("colSTT", "STT");
             dgvLichSu.Columns.Add("colKyThi", "Kỳ thi");
             dgvLichSu.Columns.Add("colNgayThi", "Ngày thi");
             dgvLichSu.Columns.Add("colDiem", "Điểm");
-            dgvLichSu.Columns.Add("colTrangThai", "Trạng thái");
+
+            var colChiTiet = new DataGridViewButtonColumn
+            {
+                Name = "colChiTiet",
+                HeaderText = "Chi tiết",
+                Text = "Xem",
+                UseColumnTextForButtonValue = true,
+                FlatStyle = FlatStyle.Flat
+            };
+            dgvLichSu.Columns.Add(colChiTiet);
+
+            dgvLichSu.Columns.Add("colBaiThiId", "BaiThiId");
+
+            dgvLichSu.Columns["colBaiThiId"].Visible = false;
 
             dgvLichSu.Columns["colSTT"].FillWeight = 8;
-            dgvLichSu.Columns["colKyThi"].FillWeight = 35;
-            dgvLichSu.Columns["colNgayThi"].FillWeight = 22;
+            dgvLichSu.Columns["colKyThi"].FillWeight = 40;
+            dgvLichSu.Columns["colNgayThi"].FillWeight = 25;
             dgvLichSu.Columns["colDiem"].FillWeight = 15;
-            dgvLichSu.Columns["colTrangThai"].FillWeight = 20;
+            dgvLichSu.Columns["colChiTiet"].FillWeight = 12;
 
-            dgvLichSu.Columns["colSTT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvLichSu.Columns["colDiem"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvLichSu.Columns["colTrangThai"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvLichSu.Columns["colSTT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvLichSu.Columns["colDiem"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvLichSu.Columns["colChiTiet"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            // Text columns: left align for readability
+            dgvLichSu.Columns["colKyThi"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvLichSu.Columns["colNgayThi"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             dgvLichSu.CellFormatting += DgvLichSu_CellFormatting;
+            dgvLichSu.CellContentClick += DgvLichSu_CellContentClick;
+            dgvLichSu.CellDoubleClick += DgvLichSu_CellDoubleClick;
 
             this.Controls.Add(dgvLichSu);
             this.Resize += (s, e) => LayoutControls();
@@ -108,8 +131,13 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
             {
                 // Chỉ lấy bài thi có kỳ thi còn tồn tại
                 var listBaiThi = db.BaiThi
-                    .Where(bt => bt.MaSinhVien == _nguoiDung.Id && bt.KyThi != null)
-                    .OrderByDescending(bt => bt.Id)
+                    .Include(bt => bt.KyThi)
+                    // Lịch sử thi: chỉ hiển thị bài đã nộp / đã chấm điểm
+                    // (bỏ các bản ghi tạo sẵn trạng thái "chua_thi" khi giảng viên tạo kỳ thi)
+                    .Where(bt => bt.MaSinhVien == _nguoiDung.Id
+                              && bt.KyThi != null
+                              && (bt.TrangThai == "da_nop" || bt.TrangThai == "cham_diem"))
+                    .OrderBy(bt => bt.Id)
                     .ToList();
 
                 // Xóa bài thi mồ côi (kỳ thi đã bị xóa)
@@ -141,19 +169,30 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                         kyThiDaKetThuc = DateTime.Now >= bt.KyThi.ThoiGianKetThuc;
                     }
 
-                    // Chỉ hiển thị điểm khi kỳ thi đã kết thúc
                     string diem;
-                    string trangThai;
 
-                    if (kyThiDaKetThuc)
+                    var rawTrangThai = (bt.TrangThai ?? "").Trim().ToLowerInvariant();
+                    bool daNop = rawTrangThai == "da_nop" || rawTrangThai == "cham_diem";
+                    bool dangThi = rawTrangThai == "dang_thi";
+
+                    if (daNop)
                     {
-                        diem = (bt.DiemSo ?? 0).ToString();
-                        trangThai = (bt.DiemSo ?? 0) >= 5 ? "Đạt" : "Không đạt";
+                        if (kyThiDaKetThuc)
+                        {
+                            diem = (bt.DiemSo ?? 0).ToString();
+                        }
+                        else
+                        {
+                            diem = "Chưa công bố";
+                        }
+                    }
+                    else if (dangThi)
+                    {
+                        diem = "—";
                     }
                     else
                     {
-                        diem = "Chưa công bố";
-                        trangThai = "Đã nộp bài";
+                        diem = "—";
                     }
 
                     int idx = dgvLichSu.Rows.Add(
@@ -161,7 +200,8 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                         tenKyThi,
                         ngayThi,
                         diem,
-                        trangThai
+                        null,
+                        bt.Id
                     );
                 }
             }
@@ -174,30 +214,15 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
 
         private void DgvLichSu_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dgvLichSu.Columns[e.ColumnIndex].Name == "colTrangThai" && e.Value != null)
-            {
-                string val = e.Value.ToString();
-                if (val == "Đạt")
-                {
-                    e.CellStyle.ForeColor = Color.FromArgb(40, 167, 69);
-                    e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                }
-                else if (val == "Đã nộp bài")
-                {
-                    e.CellStyle.ForeColor = Color.FromArgb(94, 148, 255);
-                    e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                }
-                else
-                {
-                    e.CellStyle.ForeColor = Color.FromArgb(220, 53, 69);
-                    e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                }
-            }
-
             if (dgvLichSu.Columns[e.ColumnIndex].Name == "colDiem" && e.Value != null)
             {
                 string diemText = e.Value.ToString();
                 if (diemText == "Chưa công bố")
+                {
+                    e.CellStyle.ForeColor = Color.FromArgb(160, 160, 170);
+                    e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Italic);
+                }
+                else if (diemText == "—")
                 {
                     e.CellStyle.ForeColor = Color.FromArgb(160, 160, 170);
                     e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Italic);
@@ -207,6 +232,79 @@ namespace PhanMemThiTracNghiem.Forms.SinhVien
                     e.CellStyle.ForeColor = diem >= 5 ? Color.FromArgb(40, 167, 69) : Color.FromArgb(220, 53, 69);
                     e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
                 }
+            }
+        }
+
+        private void DgvLichSu_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            try
+            {
+                var row = dgvLichSu.Rows[e.RowIndex];
+                if (row?.Cells["colBaiThiId"]?.Value == null) return;
+
+                if (!long.TryParse(row.Cells["colBaiThiId"].Value.ToString(), out long baiThiId)) return;
+                TryOpenChiTiet(baiThiId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi mở chi tiết bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DgvLichSu_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (dgvLichSu.Columns[e.ColumnIndex].Name != "colChiTiet") return;
+
+            try
+            {
+                var row = dgvLichSu.Rows[e.RowIndex];
+                if (row?.Cells["colBaiThiId"]?.Value == null) return;
+                if (!long.TryParse(row.Cells["colBaiThiId"].Value.ToString(), out long baiThiId)) return;
+
+                TryOpenChiTiet(baiThiId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi mở chi tiết bài thi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TryOpenChiTiet(long baiThiId)
+        {
+            using (var db = new AppDbContext())
+            {
+                var baiThi = db.BaiThi
+                    .Include(bt => bt.KyThi)
+                    .FirstOrDefault(bt => bt.Id == baiThiId);
+
+                if (baiThi?.KyThi == null)
+                {
+                    MessageBox.Show("Không tìm thấy kỳ thi của bài thi này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var rawTrangThai = (baiThi.TrangThai ?? "").Trim().ToLowerInvariant();
+                bool daNop = rawTrangThai == "da_nop" || rawTrangThai == "cham_diem";
+                if (!daNop)
+                {
+                    MessageBox.Show("Bạn chưa nộp bài nên chưa có kết quả chi tiết.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                bool kyThiDaKetThuc = DateTime.Now >= baiThi.KyThi.ThoiGianKetThuc;
+                if (!kyThiDaKetThuc)
+                {
+                    MessageBox.Show("Kết quả chi tiết sẽ được công bố sau khi kỳ thi kết thúc.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+
+            using (var frm = new frmChiTietKetQuaBaiThi(baiThiId))
+            {
+                frm.ShowDialog();
             }
         }
     }

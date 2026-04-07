@@ -18,7 +18,7 @@ namespace PhanMemThiTracNghiem.Repositories
 
         public List<MonHoc> GetAll()
         {
-            return _context.MonHoc.ToList();
+            return _context.MonHoc.OrderBy(m => m.Id).ToList();
         }
 
         // Lấy môn học theo ID

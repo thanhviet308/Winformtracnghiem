@@ -39,14 +39,16 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
         private void LoadSinhVienChuaGan(string keyword = "")
         {
             _sinhVienChuaGan = LopHocService.GetSinhVienChuaThuocLop(_maLop);
-            
+
             if (!string.IsNullOrEmpty(keyword))
             {
                 _sinhVienChuaGan = _sinhVienChuaGan
-                    .Where(sv => sv.HoTen.ToLower().Contains(keyword.ToLower()) || 
+                    .Where(sv => sv.HoTen.ToLower().Contains(keyword.ToLower()) ||
                                  sv.Email.ToLower().Contains(keyword.ToLower()))
                     .ToList();
             }
+
+            _sinhVienChuaGan = _sinhVienChuaGan.OrderBy(sv => sv.Id).ToList();
 
             dgvSinhVienChuaGan.Rows.Clear();
             foreach (var sv in _sinhVienChuaGan)
@@ -62,14 +64,16 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
         private void LoadSinhVienDaGan(string keyword = "")
         {
             _sinhVienDaGan = LopHocService.GetSinhVienInLop(_maLop);
-            
+
             if (!string.IsNullOrEmpty(keyword))
             {
                 _sinhVienDaGan = _sinhVienDaGan
-                    .Where(sv => sv.HoTen.ToLower().Contains(keyword.ToLower()) || 
+                    .Where(sv => sv.HoTen.ToLower().Contains(keyword.ToLower()) ||
                                  sv.Email.ToLower().Contains(keyword.ToLower()))
                     .ToList();
             }
+
+            _sinhVienDaGan = _sinhVienDaGan.OrderBy(sv => sv.Id).ToList();
 
             dgvSinhVienDaGan.Rows.Clear();
             foreach (var sv in _sinhVienDaGan)
@@ -97,7 +101,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
             try
             {
                 List<long> selectedIds = new List<long>();
-                
+
                 foreach (DataGridViewRow row in dgvSinhVienChuaGan.Rows)
                 {
                     bool isChecked = Convert.ToBoolean(row.Cells["colChuaGanChon"].Value ?? false);
@@ -110,15 +114,15 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
 
                 if (selectedIds.Count == 0)
                 {
-                    MessageBox.Show("Vui lòng chọn ít nhất một sinh viên!", "Thông báo", 
+                    MessageBox.Show("Vui lòng chọn ít nhất một sinh viên!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 int count = LopHocService.AddMultipleSinhVienToLop(_maLop, selectedIds);
-                MessageBox.Show($"Đã gán {count} sinh viên vào lớp!", "Thông báo", 
+                MessageBox.Show($"Đã gán {count} sinh viên vào lớp!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
                 LoadData();
             }
             catch (Exception ex)
@@ -132,7 +136,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
             try
             {
                 List<long> selectedIds = new List<long>();
-                
+
                 foreach (DataGridViewRow row in dgvSinhVienDaGan.Rows)
                 {
                     bool isChecked = Convert.ToBoolean(row.Cells["colDaGanChon"].Value ?? false);
@@ -145,12 +149,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
 
                 if (selectedIds.Count == 0)
                 {
-                    MessageBox.Show("Vui lòng chọn ít nhất một sinh viên!", "Thông báo", 
+                    MessageBox.Show("Vui lòng chọn ít nhất một sinh viên!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (MessageBox.Show($"Bạn có chắc muốn xóa {selectedIds.Count} sinh viên khỏi lớp?", 
+                if (MessageBox.Show($"Bạn có chắc muốn xóa {selectedIds.Count} sinh viên khỏi lớp?",
                     "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int count = 0;
@@ -159,10 +163,10 @@ namespace PhanMemThiTracNghiem.Forms.Admin.LopHoc
                         if (LopHocService.RemoveSinhVienFromLop(_maLop, id))
                             count++;
                     }
-                    
-                    MessageBox.Show($"Đã xóa {count} sinh viên khỏi lớp!", "Thông báo", 
+
+                    MessageBox.Show($"Đã xóa {count} sinh viên khỏi lớp!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+
                     LoadData();
                 }
             }

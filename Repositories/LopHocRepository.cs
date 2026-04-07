@@ -19,7 +19,7 @@ namespace PhanMemThiTracNghiem.Repositories
         // Lấy tất cả lớp học
         public List<LopHoc> GetAll()
         {
-            return _context.LopHoc.ToList();
+            return _context.LopHoc.OrderBy(l => l.Id).ToList();
         }
 
         // Lấy lớp học theo ID
@@ -38,6 +38,7 @@ namespace PhanMemThiTracNghiem.Repositories
                 .Include(ls => ls.SinhVien)
                 .Where(ls => ls.MaLop == maLop)
                 .Select(ls => ls.SinhVien)
+                .OrderBy(sv => sv.Id)
                 .ToList();
         }
 

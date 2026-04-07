@@ -38,11 +38,11 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             if (cboMonHoc == null) return;
             cboMonHoc.Items.Clear();
             cboMonHoc.Items.Add("-- Tất cả môn học --");
-            
+
             var monHocs = _monHocService.GetThongTinMonThi();
             if (monHocs != null)
             {
-                foreach (var mh in monHocs)
+                foreach (var mh in monHocs.OrderBy(m => m.Id))
                 {
                     cboMonHoc.Items.Add(mh);
                 }
@@ -66,7 +66,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     ch.LuaChonTracNghiems = _context.LuaChonTracNghiem
                         .Where(l => l.MaCauHoi == ch.Id)
                         .ToList();
-                    
+
                     ch.MonHoc = _context.MonHoc.FirstOrDefault(m => m.Id == ch.MaMon);
                 }
 
@@ -102,12 +102,14 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 }
             }
 
+            filtered = filtered.OrderBy(c => c.Id).ToList();
+
             foreach (var item in filtered)
             {
                 int index = dgvCauHoi.Rows.Add();
                 dgvCauHoi.Rows[index].Cells["colId"].Value = item.Id;
-                dgvCauHoi.Rows[index].Cells["colNoiDung"].Value = item.NoiDung.Length > 80 
-                    ? item.NoiDung.Substring(0, 80) + "..." 
+                dgvCauHoi.Rows[index].Cells["colNoiDung"].Value = item.NoiDung.Length > 80
+                    ? item.NoiDung.Substring(0, 80) + "..."
                     : item.NoiDung;
                 dgvCauHoi.Rows[index].Cells["colMonHoc"].Value = item.MonHoc?.TenMon ?? "N/A";
                 dgvCauHoi.Rows[index].Cells["colSoLuaChon"].Value = item.LuaChonTracNghiems?.Count ?? 0;
@@ -176,7 +178,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             }
             else if (columnName == "colXoa")
             {
-                var result = MessageBox.Show("Bạn có chắc chắn muốn xóa câu hỏi này?", "Xác nhận", 
+                var result = MessageBox.Show("Bạn có chắc chắn muốn xóa câu hỏi này?", "Xác nhận",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
@@ -187,7 +189,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     }
                     else
                     {
-                        MessageBox.Show("Không thể xóa câu hỏi! Câu hỏi có thể đang được sử dụng trong kỳ thi.", 
+                        MessageBox.Show("Không thể xóa câu hỏi! Câu hỏi có thể đang được sử dụng trong kỳ thi.",
                             "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }

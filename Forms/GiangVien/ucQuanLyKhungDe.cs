@@ -42,7 +42,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             var monHocs = _monHocService.GetThongTinMonThi();
             if (monHocs != null)
             {
-                foreach (var mh in monHocs)
+                foreach (var mh in monHocs.OrderBy(m => m.Id))
                 {
                     cboMonHoc.Items.Add(mh);
                 }
@@ -102,6 +102,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     filtered = filtered.Where(n => n.TenDe.ToLower().Contains(keyword)).ToList();
                 }
             }
+
+            filtered = filtered.OrderBy(n => n.Id).ToList();
 
             foreach (var item in filtered)
             {

@@ -54,6 +54,11 @@ namespace PhanMemThiTracNghiem
         private const int MAX_VI_PHAM = 5; // Tự nộp bài khi vượt quá
         private Label lblCanhBaoViPham;
         private bool _dangHienDialog = false; // Cờ tạm tắt phát hiện gian lận khi hiện dialog
+        private bool _isSubmitting = false;
+        private bool _daNopTruocDo = false;
+        private string _thongBaoChanVaoThi = "";
+
+        private readonly ToolTip _toolTip = new ToolTip();
 
 
 
@@ -81,6 +86,18 @@ namespace PhanMemThiTracNghiem
 
             // Tạo bản ghi BaiThi khi bắt đầu thi
             TaoBaiThi();
+
+            if (_daNopTruocDo)
+            {
+                this.Shown += (_, __) =>
+                {
+                    _dangHienDialog = true;
+                    MessageBox.Show(_thongBaoChanVaoThi, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _dangHienDialog = false;
+                    this.Close();
+                };
+                return;
+            }
 
             // Hiển thị thông tin sinh viên 
             lblTenSinhVien.Text = nguoiDung.HoTen.ToString() + "  ||  " + nguoiDung.Email.ToString();
@@ -121,6 +138,21 @@ namespace PhanMemThiTracNghiem
             // Chặn copy/paste trong toàn form
             this.KeyPreview = true;
             this.KeyDown += FrmThi_KeyDown;
+
+            this.FormClosing += FrmThi_FormClosing;
+
+            // Cho phép kéo cửa sổ (borderless) bằng cách kéo vùng chính
+            try
+            {
+                if (guna2DragControl1 != null)
+                {
+                    guna2DragControl1.TargetControl = pnlThi;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
         /// <summary>
@@ -143,6 +175,19 @@ namespace PhanMemThiTracNghiem
 
                 if (kyThiId > 0)
                 {
+                    // Nếu đã nộp/chấm điểm rồi thì không cho vào thi lại
+                    var baiThiDaNop = duLieu.Set<BaiThi>()
+                        .FirstOrDefault(b => b.MaKyThi == kyThiId
+                                          && b.MaSinhVien == nguoiDung.Id
+                                          && (b.TrangThai == "da_nop" || b.TrangThai == "cham_diem"));
+                    if (baiThiDaNop != null)
+                    {
+                        _daNopTruocDo = true;
+                        _thongBaoChanVaoThi = "Bạn đã nộp bài kỳ thi này rồi. Không thể vào thi lại.";
+                        _maBaiThi = baiThiDaNop.Id;
+                        return;
+                    }
+
                     // Tìm bài thi đang thi hoặc chưa thi
                     var baiThiCu = duLieu.Set<BaiThi>()
                         .FirstOrDefault(b => b.MaKyThi == kyThiId
@@ -181,10 +226,11 @@ namespace PhanMemThiTracNghiem
         private void frmThi_Load(object sender, EventArgs e)
         {
             btnDemNguoc_Click(sender, e);
-            for (int i = 0; i < CauHoiService.GetThongTinCauHoi().Count(); i++)
+
+            layDapAnThi.Clear();
+            for (int i = 0; i < cauHoiMonThi.Count; i++)
             {
                 layDapAnThi.Add(null);
-           
             }
         }
 
@@ -195,11 +241,11 @@ namespace PhanMemThiTracNghiem
             int soCauHoi = 0;
             foreach (var item in CauHoiService.GetThongTinCauHoi())
             {
-                if(item.MaMT == monThi.Id.ToString())
+                if (item.MaMT == monThi.Id.ToString())
                 {
                     soCauHoi++;
                     cauHoiMonThi.Add(item);
-                }          
+                }
             }
             for (int i = 0; i < cauHoiMonThi.Count; i++)
             {
@@ -212,9 +258,9 @@ namespace PhanMemThiTracNghiem
                     y += 40;
                     x = 10;
                 }
-                luuBaiCham.Add(TaoCauHoi( i));
+                luuBaiCham.Add(TaoCauHoi(i));
             }
-            
+
             // Tạo tất cả câu hỏi trong vùng chứa câu hỏi
             // Note: danhMucCauHoiBAL.GetCauHoi() không còn dùng nữa
         }
@@ -225,61 +271,137 @@ namespace PhanMemThiTracNghiem
             GroupBox groupBox = new GroupBox();
             groupBox.Location = new Point();
             groupBox.Font = new Font("Be Vietnam Pro", 10, FontStyle.Bold);
-            groupBox.Text = "Câu " + (i+1);
-            groupBox.Name = (i+1).ToString();
-            groupBox.Size = new System.Drawing.Size(1780, 300);
+            groupBox.Text = "Câu " + (i + 1);
+            groupBox.Name = (i + 1).ToString();
+            groupBox.Size = new System.Drawing.Size(1780, 320);
             flowLayoutPanel1.Controls.Add(groupBox);
 
-            // Tiếp theo ta tạo câu hỏi
-            Label label = new Label();
-            label.Location = new Point(30, 30);
-            label.Size = new Size(1600, 50);
-            label.Name = i.ToString();
-            label.Font = new Font("Be Vietnam Pro", 10);
-            
-            label.Text = cauHoiMonThi[i].NDCAUHOI;
-            groupBox.Controls.Add(label);
+            // Nội dung câu hỏi (cho phép bôi đen để copy)
+            var rtb = new RichTextBox
+            {
+                Location = new Point(30, 30),
+                Size = new Size(1600, 90),
+                Name = "rtbQuestion_" + i,
+                Font = new Font("Be Vietnam Pro", 10),
+                Text = cauHoiMonThi[i].NDCAUHOI,
+                ReadOnly = true,
+                BorderStyle = BorderStyle.None,
+                BackColor = Color.White,
+                ForeColor = Color.Black,
+                DetectUrls = false,
+                ScrollBars = RichTextBoxScrollBars.None,
+                TabStop = false,
+                ShortcutsEnabled = true,
+                Cursor = Cursors.IBeam,
+                Tag = i
+            };
+
+            rtb.Multiline = true;
+            rtb.WordWrap = true;
+            rtb.HideSelection = false;
+            rtb.Select(0, 0);
+
+            // Fit height roughly to content (cap to avoid huge boxes)
+            try
+            {
+                var preferred = TextRenderer.MeasureText(rtb.Text, rtb.Font, new Size(rtb.Width, int.MaxValue),
+                    TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl);
+                int desiredHeight = Math.Min(140, Math.Max(70, preferred.Height + 10));
+                rtb.Height = desiredHeight;
+            }
+            catch
+            {
+                // ignore
+            }
+
+            _toolTip.SetToolTip(rtb, "Bôi đen để copy (Ctrl+C)");
+            groupBox.Controls.Add(rtb);
+
+            int answerTop = rtb.Bottom + 35;
+            int stepY = 60;
 
             for (int j = 0; j < 4; j++)
             {
-                RadioButton rdo = new RadioButton();
-                if (j == 1 || j == 3)
-                {
-                    rdo.Location = new Point(800, 150 + ((j - 1) * 30));
-                }
-                else
-                {
-                    rdo.Location = new Point(30, 150 + (j * 30));
-                }
-                rdo.Size = new Size(450, 30);
-                rdo.Name = "rdo" + j.ToString();
-                rdo.Font = new Font("Be Vietnam Pro", 10);
+                int baseX = (j == 1 || j == 3) ? 800 : 30;
+                int row = (j == 1 || j == 3) ? (j - 1) : j;
+                int y = answerTop + (row * stepY);
 
-                // Lấy 4 đáp án
-                if (j == 0)
+                string dapAn = j switch
                 {
-                    rdo.Text = cauHoiMonThi[i].DapAn1;
-                }
-                if (j == 1)
+                    0 => cauHoiMonThi[i].DapAn1,
+                    1 => cauHoiMonThi[i].DapAn2,
+                    2 => cauHoiMonThi[i].DapAn3,
+                    _ => cauHoiMonThi[i].DapAn4
+                };
+
+                var rdo = new RadioButton
                 {
-                    rdo.Text = cauHoiMonThi[i].DapAn2;
-                }
-                if (j == 2)
+                    Location = new Point(baseX, y),
+                    AutoSize = false,
+                    Size = new Size(18, 18),
+                    Name = "rdo" + j,
+                    Font = new Font("Be Vietnam Pro", 10),
+                    Text = string.Empty,
+                    Tag = dapAn
+                };
+
+                var rtbAnswer = new RichTextBox
                 {
-                    rdo.Text = cauHoiMonThi[i].DapAn3;
-                }
-                if (j == 3)
+                    Location = new Point(baseX + 22, y - 4),
+                    Size = new Size(720, 26),
+                    Name = $"rtbAnswer_{i}_{j}",
+                    Font = new Font("Be Vietnam Pro", 10),
+                    Text = dapAn,
+                    ReadOnly = true,
+                    BorderStyle = BorderStyle.None,
+                    BackColor = Color.White,
+                    ForeColor = Color.Black,
+                    DetectUrls = false,
+                    ScrollBars = RichTextBoxScrollBars.None,
+                    TabStop = false,
+                    ShortcutsEnabled = true,
+                    Cursor = Cursors.IBeam
+                };
+                rtbAnswer.Multiline = true;
+                rtbAnswer.WordWrap = true;
+                rtbAnswer.HideSelection = false;
+                rtbAnswer.Select(0, 0);
+
+                try
                 {
-                    rdo.Text = cauHoiMonThi[i].DapAn4;
+                    var preferred = TextRenderer.MeasureText(rtbAnswer.Text, rtbAnswer.Font,
+                        new Size(rtbAnswer.Width, int.MaxValue),
+                        TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl);
+                    int desiredHeight = Math.Min(50, Math.Max(22, preferred.Height + 6));
+                    rtbAnswer.Height = desiredHeight;
                 }
+                catch
+                {
+                    // ignore
+                }
+
+                // Click on answer text should also select the radio
+                rtbAnswer.MouseDown += (sender, args) =>
+                {
+                    if (args.Button != MouseButtons.Left) return;
+                    rdo.Checked = true;
+                    buttonNext_Click(rdo, EventArgs.Empty, groupBox.Name, rdo, (i + 1));
+                };
 
                 groupBox.Controls.Add(rdo);
+                groupBox.Controls.Add(rtbAnswer);
 
-                rdo.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, groupBox.Name, rdo, (i + 1)) ; };
+                rdo.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, groupBox.Name, rdo, (i + 1)); };
             }
+
+            // Ensure groupbox tall enough for answers
+            int lastRowY = answerTop + (2 * stepY);
+            groupBox.Height = Math.Max(groupBox.Height, lastRowY + 110);
 
             return groupBox;
         }
+
+        // Copy theo kiểu bôi đen: dùng RichTextBox (ReadOnly) nên không cần click-to-copy
 
         private void buttonNext_Click(object sender, EventArgs e, string index, RadioButton rdo, int traloi)
         {
@@ -327,15 +449,72 @@ namespace PhanMemThiTracNghiem
             btn.Font = new Font("Be Vietnam Pro", 10);
             btn.Text = i.ToString();
             btn.Name = i.ToString();
+            btn.Tag = i;
             btn.TextAlign = ContentAlignment.MiddleCenter;
             btn.Size = new Size(42, 36);
             btn.BackColor = Color.White;
             btn.Focus();
 
+            btn.Click += BtnCauHoi_Click;
+
             panelMenu.Controls.Add(btn);
             btn.BringToFront();
 
             return btn;
+        }
+
+        private void BtnCauHoi_Click(object sender, EventArgs e)
+        {
+            if (sender is not Button btn) return;
+            if (btn.Tag is not int soCau) return;
+            ScrollToQuestionTop(soCau);
+        }
+
+        private void ScrollToQuestionTop(int questionNumber)
+        {
+            int index = questionNumber - 1;
+            if (index < 0 || index >= luuBaiCham.Count) return;
+
+            var target = luuBaiCham[index];
+            if (target == null) return;
+
+            flowLayoutPanel1.ScrollControlIntoView(target);
+
+            // Force align to top
+            int desiredY = Math.Max(0, target.Top - flowLayoutPanel1.Padding.Top);
+            int max = Math.Max(flowLayoutPanel1.VerticalScroll.Minimum,
+                flowLayoutPanel1.VerticalScroll.Maximum - flowLayoutPanel1.VerticalScroll.LargeChange + 1);
+            int newValue = Math.Min(Math.Max(desiredY, flowLayoutPanel1.VerticalScroll.Minimum), max);
+            flowLayoutPanel1.VerticalScroll.Value = newValue;
+            flowLayoutPanel1.PerformLayout();
+            flowLayoutPanel1.Invalidate();
+            target.Focus();
+        }
+
+        private void FrmThi_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                // Nếu đã bị chặn vì đã nộp trước đó thì cho đóng luôn
+                if (_daNopTruocDo) return;
+
+                if (_isSubmitting) return;
+                if (_maBaiThi <= 0) return;
+
+                var baiThi = duLieu.Set<BaiThi>().Find(_maBaiThi);
+                var rawTrangThai = (baiThi?.TrangThai ?? "").Trim().ToLowerInvariant();
+                bool dangThi = rawTrangThai == "dang_thi";
+
+                // Thoát khi đang thi => tự động nộp bài (không hiện màn nộp bài thành công)
+                if (dangThi)
+                {
+                    SubmitBaiThi(showSuccessScreen: false);
+                }
+            }
+            catch
+            {
+                // ignore: ưu tiên đóng form
+            }
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -421,62 +600,138 @@ namespace PhanMemThiTracNghiem
 
         private void NopBai_Click()
         {
-            // Lấy thời gian kết thúc thi
-            DateTime thoiGianThi = DateTime.Now;
-            float diemMotCau;
-            float diemThi = 0;
-            int demSoCauDung = 0;
-            int soCauHoi = CauHoiService.GetThongTinCauHoi().Count();
-            diemMotCau = (float)10.0 / soCauHoi;
-            List<int> luuBaiLam = new List<int>(soCauHoi);
-            for (int i = 0; i < soCauHoi; i++)
-            {
-                luuBaiLam.Add(0);
-            }
+            SubmitBaiThi(showSuccessScreen: true);
+        }
 
-            for (int i = 0; i < soCauHoi; i++)
+        private void SubmitBaiThi(bool showSuccessScreen)
+        {
+            if (_isSubmitting) return;
+            _isSubmitting = true;
+
+            try
             {
-                if (layDapAnThi[i] != null)
+                // Lấy thời gian kết thúc thi
+                DateTime thoiGianThi = DateTime.Now;
+                float diemMotCau;
+                float diemThi = 0;
+                int soCauHoi = cauHoiMonThi.Count;
+
+                if (soCauHoi <= 0)
                 {
-                    if (String.Equals(layDapAnThi[i].Text.ToString(), CauHoiService.GetThongTinCauHoi()[i].DapAnDung))
+                    _dangHienDialog = true;
+                    MessageBox.Show("Không có câu hỏi để chấm điểm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _dangHienDialog = false;
+                    return;
+                }
+
+                diemMotCau = (float)10.0 / soCauHoi;
+                for (int i = 0; i < soCauHoi; i++)
+                {
+                    if (layDapAnThi[i] != null)
                     {
-                        diemThi += diemMotCau;
-                        demSoCauDung++;
-                        luuBaiLam[i] = 1;
+                        var luaChon = GetSelectedAnswerText(layDapAnThi[i]);
+                        if (String.Equals(luaChon, cauHoiMonThi[i].DapAnDung))
+                        {
+                            diemThi += diemMotCau;
+                        }
                     }
                 }
-            }
-            diemThi = (float)(Math.Round(diemThi, 2));
+                diemThi = (float)(Math.Round(diemThi, 2));
 
-            // Lưu dữ liệu: cập nhật bài thi đã tạo khi bắt đầu thi
-            if (_maBaiThi > 0)
-            {
                 try
                 {
-                    var baiThi = duLieu.Set<BaiThi>().Find(_maBaiThi);
-                    if (baiThi != null)
+                    // Lưu dữ liệu: cập nhật bài thi đã tạo khi bắt đầu thi
+                    if (_maBaiThi > 0)
                     {
-                        baiThi.ThoiGianNopBai = thoiGianThi;
-                        baiThi.DiemSo = (int)Math.Round(diemThi);
-                        baiThi.TrangThai = "da_nop";
-                        duLieu.SaveChanges();
+                        var baiThi = duLieu.Set<BaiThi>().Find(_maBaiThi);
+                        if (baiThi != null)
+                        {
+                            baiThi.ThoiGianNopBai = thoiGianThi;
+                            baiThi.DiemSo = (int)Math.Round(diemThi);
+                            baiThi.TrangThai = "da_nop";
+                            duLieu.SaveChanges();
+
+                            LuuChiTietTraLoi(baiThi.Id);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Lỗi cập nhật bài thi: " + ex.Message);
                 }
-            }
 
-            // Hiển thị màn hình nộp bài thành công (không hiện điểm)
-            // Điểm sẽ được xem ở lịch sử thi sau khi kỳ thi kết thúc
-            _dangHienDialog = true;
-            this.Deactivate -= FrmThi_Deactivate; // Gỡ sự kiện chống gian lận khi đã nộp bài
-            ThiTracNghiem thiTracNghiem = new ThiTracNghiem(nguoiDung);
-            thiTracNghiem.HienThiNopBaiThanhCong(DateTime.Now);
-            this.Hide();
-            thiTracNghiem.ShowDialog();
-            this.Close();
+                if (showSuccessScreen)
+                {
+                    // Hiển thị màn hình nộp bài thành công (không hiện điểm)
+                    _dangHienDialog = true;
+                    this.Deactivate -= FrmThi_Deactivate; // Gỡ sự kiện chống gian lận khi đã nộp bài
+                    ThiTracNghiem thiTracNghiem = new ThiTracNghiem(nguoiDung);
+                    thiTracNghiem.HienThiNopBaiThanhCong(DateTime.Now);
+                    this.Hide();
+                    thiTracNghiem.ShowDialog();
+                    this.Close();
+                }
+            }
+            finally
+            {
+                _isSubmitting = false;
+            }
+        }
+
+        private void LuuChiTietTraLoi(long maBaiThi)
+        {
+            try
+            {
+                var existing = duLieu.Set<TraLoiBaiThi>()
+                    .Where(t => t.MaBaiThi == maBaiThi)
+                    .ToList();
+                if (existing.Count > 0)
+                {
+                    duLieu.Set<TraLoiBaiThi>().RemoveRange(existing);
+                }
+
+                for (int i = 0; i < cauHoiMonThi.Count; i++)
+                {
+                    var dto = cauHoiMonThi[i];
+                    long cauHoiId = dto.MaCauHoi;
+
+                    string luaChonNoiDung = layDapAnThi.Count > i ? GetSelectedAnswerText(layDapAnThi[i]) : null;
+
+                    LuaChonTracNghiem luaChon = null;
+                    if (!string.IsNullOrWhiteSpace(luaChonNoiDung))
+                    {
+                        luaChon = duLieu.Set<LuaChonTracNghiem>()
+                            .FirstOrDefault(l => l.MaCauHoi == cauHoiId && l.NoiDung == luaChonNoiDung);
+                    }
+
+                    bool? dungHaySai = null;
+                    if (!string.IsNullOrWhiteSpace(luaChonNoiDung) && !string.IsNullOrWhiteSpace(dto.DapAnDung))
+                    {
+                        dungHaySai = string.Equals(luaChonNoiDung, dto.DapAnDung, StringComparison.Ordinal);
+                    }
+
+                    duLieu.Set<TraLoiBaiThi>().Add(new TraLoiBaiThi
+                    {
+                        MaBaiThi = maBaiThi,
+                        MaCauHoi = cauHoiId,
+                        MaLuaChon = luaChon?.Id,
+                        DungHaySai = dungHaySai,
+                        ThoiGianTraLoi = DateTime.Now
+                    });
+                }
+
+                duLieu.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Lỗi lưu chi tiết trả lời: " + ex.Message);
+            }
+        }
+
+        private static string GetSelectedAnswerText(RadioButton rdo)
+        {
+            if (rdo == null) return null;
+            return (rdo.Tag as string) ?? rdo.Text;
         }
 
         private void HienThiPhutGio()
@@ -519,8 +774,16 @@ namespace PhanMemThiTracNghiem
             if (e.Control && e.KeyCode == Keys.C)
             {
                 _soLanCopy++;
-                e.SuppressKeyPress = true; // Chặn copy
-                XuLyViPham("copy", _soLanCopy, "⚠ Cảnh báo: Không được phép copy! (" + _soLanCopy + " lần)");
+
+                bool isCopyExamText = IsCopyingExamText();
+
+                // Copy câu hỏi: vẫn tính vi phạm + hiện cảnh báo, nhưng không chặn để người dùng copy được
+                if (!isCopyExamText)
+                {
+                    e.SuppressKeyPress = true; // Chặn copy ở nơi khác
+                }
+
+                XuLyViPham("copy", _soLanCopy, "⚠ Cảnh báo: Bạn đã copy (" + _soLanCopy + " lần)");
             }
             else if (e.Control && e.KeyCode == Keys.V)
             {
@@ -528,6 +791,28 @@ namespace PhanMemThiTracNghiem
                 e.SuppressKeyPress = true; // Chặn paste
                 XuLyViPham("paste", _soLanPaste, "⚠ Cảnh báo: Không được phép paste! (" + _soLanPaste + " lần)");
             }
+        }
+
+        private bool IsCopyingExamText()
+        {
+            var focused = GetDeepActiveControl(this);
+            if (focused is RichTextBox rtb)
+            {
+                if (rtb.Name == null) return false;
+                return rtb.Name.StartsWith("rtbQuestion_", StringComparison.Ordinal)
+                    || rtb.Name.StartsWith("rtbAnswer_", StringComparison.Ordinal);
+            }
+            return false;
+        }
+
+        private static Control GetDeepActiveControl(Control control)
+        {
+            Control current = control;
+            while (current is ContainerControl container && container.ActiveControl != null)
+            {
+                current = container.ActiveControl;
+            }
+            return current;
         }
 
         /// <summary>

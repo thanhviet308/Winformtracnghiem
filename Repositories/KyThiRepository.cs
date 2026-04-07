@@ -24,7 +24,7 @@ namespace PhanMemThiTracNghiem.Repositories
                 .Include(k => k.NganHangDe)
                     .ThenInclude(n => n.MonHoc)
                 .Include(k => k.LopHoc)
-                .OrderByDescending(k => k.NgayTao)
+                .OrderBy(k => k.Id)
                 .ToList();
         }
 
