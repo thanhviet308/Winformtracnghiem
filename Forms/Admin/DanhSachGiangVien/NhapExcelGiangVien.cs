@@ -21,18 +21,25 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
 {
     public partial class NhapExcelGiangVien : Form
     {
-        AppDbContext AppDbContext = new AppDbContext();
-        List<NguoiDung> listGV = new List<NguoiDung>();
-        frmAdmin frmAdmin = new frmAdmin();
+        private readonly AppDbContext AppDbContext = new AppDbContext();
+        private readonly List<NguoiDung> listGV = new List<NguoiDung>();
         private readonly GiangVienService GiangVienService;
         private readonly NguoiDungService NguoiDungService;
-        public NhapExcelGiangVien(frmAdmin _frmAdmin)
+        private Action _afterSave;
+
+        public NhapExcelGiangVien()
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             GiangVienService = new GiangVienService();
             NguoiDungService = new NguoiDungService();
-            frmAdmin = _frmAdmin;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        }
+
+        public NhapExcelGiangVien(frmAdmin _frmAdmin) : this()
+        {
+            // Giữ tương thích màn hình cũ: import xong thì gọi lại hàm reload của frmAdmin.
+            _afterSave = () => _frmAdmin.frmAdmin_Load(_frmAdmin, EventArgs.Empty);
         }
 
         DataTableCollection tableCollection;
@@ -65,9 +72,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
         private void cboSheet_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tableCollection == null || cboSheet.SelectedItem == null) return;
-            
+
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-            
+
             if (dt != null)
             {
                 listGV.Clear(); // Clear danh sách cũ trước khi thêm mới
@@ -94,30 +101,37 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                 MessageBox.Show("Vui lòng chọn file Excel và sheet trước!");
                 return;
             }
-            
+
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-            List<NguoiDung> list = new List<NguoiDung>();   
-         
+            List<NguoiDung> list = new List<NguoiDung>();
+
             try
             {
-               
-                    for (int i = 0; i < dt.Rows.Count; i++)
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    var email = dt.Rows[i]["EMAIL"]?.ToString() ?? "";
+                    var hoTen = dt.Rows[i]["TENGV"]?.ToString() ?? "";
+                    var matKhauRaw = dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456";
+
+                    var giangvien = new NguoiDung()
                     {
-                        NguoiDung giangvien = new NguoiDung()
-                        {
-                            Email = dt.Rows[i]["EMAIL"].ToString(),
-                            HoTen = dt.Rows[i]["TENGV"].ToString(),
-                            MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"].ToString()),
-                            MaVaiTro = 2 // Role GiangVien
-                        };
-                        list.Add(giangvien);
-                    }
-                    foreach (var giangvien in list)
-                    {
-                        NguoiDungService.Add(giangvien);
-                    frmAdmin.frmAdmin_Load(sender, e);
-                    }
+                        Email = email,
+                        HoTen = hoTen,
+                        MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(matKhauRaw),
+                        MaVaiTro = 2 // Role GiangVien
+                    };
+                    list.Add(giangvien);
+                }
+
+                foreach (var giangvien in list)
+                {
+                    NguoiDungService.Add(giangvien);
+                }
+
+                if (_afterSave != null) _afterSave();
                 MessageBox.Show("Lưu thành công");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -141,12 +155,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                         using (var package = new ExcelPackage())
                         {
                             var worksheet = package.Workbook.Worksheets.Add("DanhSachGiangVien");
-                            
+
                             // Header
                             worksheet.Cells[1, 1].Value = "EMAIL";
                             worksheet.Cells[1, 2].Value = "TENGV";
                             worksheet.Cells[1, 3].Value = "MATKHAU";
-                            
+
                             // Style header
                             using (var range = worksheet.Cells[1, 1, 1, 3])
                             {
@@ -154,23 +168,23 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachGiangVien
                                 range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                 range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
                             }
-                            
+
                             // Dữ liệu mẫu
                             worksheet.Cells[2, 1].Value = "giangvien1@gmail.com";
                             worksheet.Cells[2, 2].Value = "Nguyễn Văn Giảng";
                             worksheet.Cells[2, 3].Value = "123456";
-                            
+
                             worksheet.Cells[3, 1].Value = "giangvien2@gmail.com";
                             worksheet.Cells[3, 2].Value = "Trần Thị Viên";
                             worksheet.Cells[3, 3].Value = "123456";
-                            
+
                             // Auto fit columns
                             worksheet.Cells.AutoFitColumns();
-                            
+
                             // Save file
                             FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
                             package.SaveAs(fileInfo);
-                            
+
                             MessageBox.Show("Đã tải file mẫu thành công!\n\nHướng dẫn:\n- EMAIL: Email đăng nhập\n- TENGV: Họ và tên giảng viên\n- MATKHAU: Mật khẩu đăng nhập", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }

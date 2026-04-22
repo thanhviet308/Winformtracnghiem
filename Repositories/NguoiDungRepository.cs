@@ -20,6 +20,7 @@ namespace PhanMemThiTracNghiem.Repositories
         public List<NguoiDung> GetAll()
         {
             return AppDbContext.NguoiDung
+                .AsNoTracking()
                 .Include(x => x.VaiTro)
                 .OrderBy(x => x.Id)
                 .ToList();
@@ -29,6 +30,7 @@ namespace PhanMemThiTracNghiem.Repositories
         public NguoiDung GetById(long id)
         {
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .AsNoTracking()
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -36,6 +38,7 @@ namespace PhanMemThiTracNghiem.Repositories
         public NguoiDung GetByEmail(string email)
         {
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .AsNoTracking()
                 .FirstOrDefault(x => x.Email == email);
         }
 
@@ -44,6 +47,7 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             string hashedPassword = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(matKhau);
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .AsNoTracking()
                 .FirstOrDefault(x => x.Email == email && x.MatKhau == hashedPassword);
         }
 
@@ -51,6 +55,7 @@ namespace PhanMemThiTracNghiem.Repositories
         public List<NguoiDung> GetByRole(long maVaiTro)
         {
             return AppDbContext.NguoiDung.Include(x => x.VaiTro)
+                .AsNoTracking()
                 .Where(x => x.MaVaiTro == maVaiTro)
                 .OrderBy(x => x.Id)
                 .ToList();

@@ -23,16 +23,21 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
         private readonly AppDbContext AppDbContext;
         private readonly SinhVienService SinhVienService;
         private readonly NguoiDungService NguoiDungService;
-        frmAdmin frmadmin = new frmAdmin();
-        
-        public NhapExcelSinhVien(frmAdmin frm)
+        private Action _afterSave;
+
+        public NhapExcelSinhVien()
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             AppDbContext = new AppDbContext();
             SinhVienService = new SinhVienService();
             NguoiDungService = new NguoiDungService();
-            this.frmadmin = frm;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+        }
+
+        public NhapExcelSinhVien(frmAdmin frm) : this()
+        {
+            _afterSave = () => frm.frmAdmin_Load(frm, EventArgs.Empty);
         }
 
         DataTableCollection tableCollection;
@@ -65,9 +70,9 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
         public void cboSheet_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tableCollection == null || cboSheet.SelectedItem == null) return;
-            
+
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
-           
+
             if (dt != null)
             {
                 List<NguoiDung> listsinhVien = new List<NguoiDung>();
@@ -78,7 +83,7 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
                     sinhVien.HoTen = dt.Rows[i]["TENSV"]?.ToString() ?? "";
                     sinhVien.MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456");
                     sinhVien.MaVaiTro = 3; // Role SinhVien
-                    listsinhVien.Add(sinhVien);  
+                    listsinhVien.Add(sinhVien);
                 }
                 // Chỉ hiển thị các cột cần thiết
                 var displayList = listsinhVien.Select(x => new { Email = x.Email, HoTen = x.HoTen }).ToList();
@@ -94,31 +99,37 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
                 MessageBox.Show("Vui lòng chọn file Excel và sheet trước!");
                 return;
             }
-            
+
             DataTable dt = tableCollection[cboSheet.SelectedItem.ToString()];
             List<NguoiDung> list = new List<NguoiDung>();
 
             try
             {
-
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    NguoiDung sinhvien = new NguoiDung()
+                    var email = dt.Rows[i]["EMAIL"]?.ToString() ?? "";
+                    var hoTen = dt.Rows[i]["TENSV"]?.ToString() ?? "";
+                    var matKhauRaw = dt.Rows[i]["MATKHAU"]?.ToString() ?? "123456";
+
+                    var sinhvien = new NguoiDung()
                     {
-                        Email = dt.Rows[i]["EMAIL"].ToString(),
-                        HoTen = dt.Rows[i]["TENSV"].ToString(),
-                        MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(dt.Rows[i]["MATKHAU"].ToString()),
+                        Email = email,
+                        HoTen = hoTen,
+                        MatKhau = PhanMemThiTracNghiem.Helpers.PasswordHelper.HashPassword(matKhauRaw),
                         MaVaiTro = 3 // Role SinhVien
                     };
                     list.Add(sinhvien);
                 }
+
                 foreach (var sinhvien in list)
                 {
                     NguoiDungService.Add(sinhvien);
-                    frmadmin.frmAdmin_Load(sender, e);
                 }
+
+                if (_afterSave != null) _afterSave();
                 MessageBox.Show("Lưu thành công!");
-               
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -142,12 +153,12 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
                         using (var package = new ExcelPackage())
                         {
                             var worksheet = package.Workbook.Worksheets.Add("DanhSachSinhVien");
-                            
+
                             // Header
                             worksheet.Cells[1, 1].Value = "EMAIL";
                             worksheet.Cells[1, 2].Value = "TENSV";
                             worksheet.Cells[1, 3].Value = "MATKHAU";
-                            
+
                             // Style header
                             using (var range = worksheet.Cells[1, 1, 1, 3])
                             {
@@ -155,23 +166,23 @@ namespace PhanMemThiTracNghiem.Forms.Admin.DanhSachSinhVien
                                 range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                                 range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
                             }
-                            
+
                             // Dữ liệu mẫu
                             worksheet.Cells[2, 1].Value = "sinhvien1@gmail.com";
                             worksheet.Cells[2, 2].Value = "Nguyễn Văn A";
                             worksheet.Cells[2, 3].Value = "123456";
-                            
+
                             worksheet.Cells[3, 1].Value = "sinhvien2@gmail.com";
                             worksheet.Cells[3, 2].Value = "Trần Thị B";
                             worksheet.Cells[3, 3].Value = "123456";
-                            
+
                             // Auto fit columns
                             worksheet.Cells.AutoFitColumns();
-                            
+
                             // Save file
                             FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
                             package.SaveAs(fileInfo);
-                            
+
                             MessageBox.Show("Đã tải file mẫu thành công!\n\nHướng dẫn:\n- EMAIL: Email đăng nhập\n- TENSV: Họ và tên sinh viên\n- MATKHAU: Mật khẩu đăng nhập", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }

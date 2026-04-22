@@ -118,6 +118,47 @@ namespace PhanMemThiTracNghiem.Services
 
         // ========== PHÂN CÔNG GIẢNG DẠY ==========
 
+        // Lấy danh sách lớp mà giảng viên được phân công (bất kỳ môn nào)
+        public List<LopHoc> GetLopHocDuocPhanCong(long maGiangVien)
+        {
+            var lopIds = _context.PhanCongGiangDay
+                .Where(p => p.MaGiangVien == maGiangVien)
+                .Select(p => p.MaLop)
+                .Distinct()
+                .ToList();
+
+            if (lopIds.Count == 0) return new List<LopHoc>();
+
+            return _context.LopHoc
+                .Where(l => lopIds.Contains(l.Id))
+                .OrderBy(l => l.Id)
+                .ToList();
+        }
+
+        // Lấy danh sách lớp mà giảng viên được phân công theo môn
+        public List<LopHoc> GetLopHocDuocPhanCong(long maGiangVien, long maMon)
+        {
+            var lopIds = _context.PhanCongGiangDay
+                .Where(p => p.MaGiangVien == maGiangVien && p.MaMon == maMon)
+                .Select(p => p.MaLop)
+                .Distinct()
+                .ToList();
+
+            if (lopIds.Count == 0) return new List<LopHoc>();
+
+            return _context.LopHoc
+                .Where(l => lopIds.Contains(l.Id))
+                .OrderBy(l => l.Id)
+                .ToList();
+        }
+
+        // Kiểm tra giảng viên có được phân công dạy môn này cho lớp này không
+        public bool IsGiangVienDuocPhanCong(long maGiangVien, long maLop, long maMon)
+        {
+            return _context.PhanCongGiangDay
+                .Any(p => p.MaGiangVien == maGiangVien && p.MaLop == maLop && p.MaMon == maMon);
+        }
+
         // Lấy tất cả phân công
         public List<PhanCongGiangDay> GetAllPhanCong()
         {

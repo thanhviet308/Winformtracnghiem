@@ -32,6 +32,7 @@ namespace PhanMemThiTracNghiem.Data
         public virtual DbSet<VaiTro> VaiTro { get; set; }
         public virtual DbSet<NguoiDung> NguoiDung { get; set; }
         public virtual DbSet<MonHoc> MonHoc { get; set; }
+        public virtual DbSet<ChuongMonHoc> ChuongMonHoc { get; set; }
         public virtual DbSet<LopHoc> LopHoc { get; set; }
         public virtual DbSet<LopHocSinhVien> LopHocSinhVien { get; set; }
         public virtual DbSet<CauHoiThi> CauHoiThi { get; set; }
@@ -117,10 +118,24 @@ namespace PhanMemThiTracNghiem.Data
                     .HasForeignKey(e => e.MaMon)
                     .OnDelete(DeleteBehavior.SetNull);
 
+                entity.HasMany(e => e.ChuongMonHocs)
+                    .WithOne(c => c.MonHoc)
+                    .HasForeignKey(c => c.MaMon)
+                    .OnDelete(DeleteBehavior.Cascade);
+
                 entity.HasMany(e => e.NganHangDes)
                     .WithOne(e => e.MonHoc)
                     .HasForeignKey(e => e.MaMon)
                     .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // ===== ChuongMonHoc =====
+            modelBuilder.Entity<ChuongMonHoc>(entity =>
+            {
+                entity.HasMany(e => e.CauHoiThis)
+                    .WithOne(c => c.ChuongMonHoc)
+                    .HasForeignKey(c => c.MaChuong)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             // ===== CauHoiThi =====
@@ -153,6 +168,15 @@ namespace PhanMemThiTracNghiem.Data
                 entity.HasOne(e => e.NguoiDung)
                     .WithMany(n => n.NganHangDes)
                     .HasForeignKey(e => e.NguoiTao)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // ===== CauTrucDe =====
+            modelBuilder.Entity<CauTrucDe>(entity =>
+            {
+                entity.HasOne(e => e.ChuongMonHoc)
+                    .WithMany()
+                    .HasForeignKey(e => e.MaChuong)
                     .OnDelete(DeleteBehavior.SetNull);
             });
 

@@ -101,24 +101,20 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
         private void btnNhapExcel_Click(object sender, EventArgs e)
         {
-            var frm = this.FindForm() as frmAdmin;
-            if (frm != null)
-            {
-                NhapExcelSinhVien nhapExcel = new NhapExcelSinhVien(frm);
-                nhapExcel.ShowDialog();
-                LoadSinhVien();
-            }
-            else
-            {
-                MessageBox.Show("Không thể mở form nhập Excel!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            var legacyAdmin = this.FindForm() as frmAdmin;
+            using var nhapExcel = legacyAdmin != null
+                ? new NhapExcelSinhVien(legacyAdmin)
+                : new NhapExcelSinhVien();
+
+            nhapExcel.ShowDialog();
+            LoadSinhVien();
         }
 
         private void dgvSinhVien_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            string email = dgvSinhVien.Rows[e.RowIndex].Cells["EMAIL"].Value?.ToString();
+            string email = dgvSinhVien.Rows[e.RowIndex].Cells["Email"].Value?.ToString();
 
             if (dgvSinhVien.Columns[e.ColumnIndex].Name == "colSua")
             {

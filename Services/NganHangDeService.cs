@@ -1,6 +1,7 @@
 using PhanMemThiTracNghiem.Repositories;
 using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace PhanMemThiTracNghiem.Services
         public List<NganHangDe> GetByNguoiTao(long nguoiTaoId)
         {
             return _context.NganHangDe
+                .AsNoTracking()
                 .Where(n => n.NguoiTao == nguoiTaoId)
                 .OrderBy(n => n.Id)
                 .ToList();

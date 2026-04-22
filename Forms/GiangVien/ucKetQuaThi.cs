@@ -132,7 +132,10 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     if (bt.DiemSo == null)
                         trangThai = "⏳ Chưa chấm";
                     else
-                        trangThai = $"{bt.DiemSo}/10";
+                    {
+                        var tongDiem = bt.KyThi?.TongDiem ?? 10;
+                        trangThai = $"{bt.DiemSo}/{tongDiem}";
+                    }
                     dgvKetQua.Rows[index].Cells["colTrangThai"].Value = trangThai;
 
                     // Đếm vi phạm - tìm theo bài thi ID hoặc theo sinh viên + kỳ thi
@@ -142,8 +145,15 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     dgvKetQua.Rows[index].Cells["colViPham"].Value = tongViPham > 0 ? $"⚠ {tongViPham}" : "0";
 
                     // Tô màu hàng theo kết quả
-                    if (bt.DiemSo != null && bt.DiemSo < 5)
-                        dgvKetQua.Rows[index].DefaultCellStyle.ForeColor = Color.FromArgb(220, 53, 69);
+                    if (bt.DiemSo != null)
+                    {
+                        var tongDiem = bt.KyThi?.TongDiem ?? 10;
+                        var diemDat = (int)Math.Ceiling(tongDiem * 0.5);
+                        if (bt.DiemSo < diemDat)
+                        {
+                            dgvKetQua.Rows[index].DefaultCellStyle.ForeColor = Color.FromArgb(220, 53, 69);
+                        }
+                    }
                     if (tongViPham > 0)
                         dgvKetQua.Rows[index].Cells["colViPham"].Style.ForeColor = Color.FromArgb(255, 152, 0);
                 }

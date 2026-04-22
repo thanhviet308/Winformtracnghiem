@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using PhanMemThiTracNghiem.Forms;
@@ -23,11 +24,45 @@ namespace PhanMemThiTracNghiem
     {
         private readonly NguoiDungService NguoiDungService;
 
+        [DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+
+        private const int WM_NCLBUTTONDOWN = 0x00A1;
+        private const int HTCAPTION = 0x0002;
+
         public frmLogin()
         {
             InitializeComponent();
             ThemeHelper.ApplyVietnameseFont(this);
             NguoiDungService = new NguoiDungService();
+
+            EnableWindowDrag();
+        }
+
+        private void EnableWindowDrag()
+        {
+            void Attach(Control c)
+            {
+                if (c == null) return;
+                c.MouseDown -= Drag_MouseDown;
+                c.MouseDown += Drag_MouseDown;
+            }
+
+            Attach(this);
+            Attach(panel1);
+            Attach(panel3);
+            Attach(guna2HtmlLabel1);
+            Attach(lblSubtitle);
+        }
+
+        private void Drag_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left) return;
+            ReleaseCapture();
+            SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
         }
 
 
@@ -101,7 +136,7 @@ namespace PhanMemThiTracNghiem
             txtTaiKhoan.Focus();
         }
 
-        
+
 
         private void chkHienMatKhau_CheckedChanged_1(object sender, EventArgs e)
         {

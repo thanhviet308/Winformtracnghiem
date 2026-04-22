@@ -20,6 +20,9 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelContent = new System.Windows.Forms.Panel();
+            this.lblCauTruc = new System.Windows.Forms.Label();
+            this.dgvCauTruc = new System.Windows.Forms.DataGridView();
+            this.lblCauTrucNote = new System.Windows.Forms.Label();
             this.lblSoCauHoiHienCo = new System.Windows.Forms.Label();
             this.numTongSoCau = new System.Windows.Forms.NumericUpDown();
             this.lblTongSoCau = new System.Windows.Forms.Label();
@@ -32,6 +35,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.btnLuu = new Guna.UI2.WinForms.Guna2Button();
             this.panelHeader.SuspendLayout();
             this.panelContent.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCauTruc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTongSoCau)).BeginInit();
             this.panelButtons.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +64,9 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             // panelContent
             // 
             this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
+            this.panelContent.Controls.Add(this.lblCauTrucNote);
+            this.panelContent.Controls.Add(this.dgvCauTruc);
+            this.panelContent.Controls.Add(this.lblCauTruc);
             this.panelContent.Controls.Add(this.lblSoCauHoiHienCo);
             this.panelContent.Controls.Add(this.numTongSoCau);
             this.panelContent.Controls.Add(this.lblTongSoCau);
@@ -71,8 +78,50 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelContent.Location = new System.Drawing.Point(0, 50);
             this.panelContent.Name = "panelContent";
             this.panelContent.Padding = new System.Windows.Forms.Padding(20);
-            this.panelContent.Size = new System.Drawing.Size(500, 230);
+            this.panelContent.Size = new System.Drawing.Size(650, 430);
             this.panelContent.TabIndex = 1;
+
+            // 
+            // lblCauTruc
+            // 
+            this.lblCauTruc.AutoSize = true;
+            this.lblCauTruc.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblCauTruc.ForeColor = System.Drawing.Color.White;
+            this.lblCauTruc.Location = new System.Drawing.Point(20, 185);
+            this.lblCauTruc.Name = "lblCauTruc";
+            this.lblCauTruc.Size = new System.Drawing.Size(210, 19);
+            this.lblCauTruc.TabIndex = 7;
+            this.lblCauTruc.Text = "Cấu trúc theo chương (tùy chọn):";
+
+            // 
+            // dgvCauTruc
+            // 
+            this.dgvCauTruc.AllowUserToAddRows = true;
+            this.dgvCauTruc.AllowUserToDeleteRows = true;
+            this.dgvCauTruc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvCauTruc.BackgroundColor = System.Drawing.Color.White;
+            this.dgvCauTruc.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvCauTruc.ColumnHeadersHeight = 40;
+            this.dgvCauTruc.Location = new System.Drawing.Point(20, 210);
+            this.dgvCauTruc.MultiSelect = false;
+            this.dgvCauTruc.Name = "dgvCauTruc";
+            this.dgvCauTruc.RowHeadersVisible = false;
+            this.dgvCauTruc.RowTemplate.Height = 35;
+            this.dgvCauTruc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCauTruc.Size = new System.Drawing.Size(610, 170);
+            this.dgvCauTruc.TabIndex = 8;
+
+            // 
+            // lblCauTrucNote
+            // 
+            this.lblCauTrucNote.AutoSize = true;
+            this.lblCauTrucNote.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblCauTrucNote.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblCauTrucNote.Location = new System.Drawing.Point(20, 385);
+            this.lblCauTrucNote.Name = "lblCauTrucNote";
+            this.lblCauTrucNote.Size = new System.Drawing.Size(470, 15);
+            this.lblCauTrucNote.TabIndex = 9;
+            this.lblCauTrucNote.Text = "Nếu không nhập cấu trúc theo chương, hệ thống sẽ lấy ngẫu nhiên theo số câu.";
             // 
             // lblMonHoc
             // 
@@ -168,9 +217,9 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelButtons.Controls.Add(this.btnHuy);
             this.panelButtons.Controls.Add(this.btnLuu);
             this.panelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButtons.Location = new System.Drawing.Point(0, 280);
+            this.panelButtons.Location = new System.Drawing.Point(0, 480);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(500, 60);
+            this.panelButtons.Size = new System.Drawing.Size(650, 60);
             this.panelButtons.TabIndex = 2;
             // 
             // btnLuu
@@ -204,7 +253,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(56)))));
-            this.ClientSize = new System.Drawing.Size(500, 340);
+            this.ClientSize = new System.Drawing.Size(650, 540);
             this.Controls.Add(this.panelContent);
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelHeader);
@@ -218,6 +267,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelHeader.PerformLayout();
             this.panelContent.ResumeLayout(false);
             this.panelContent.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCauTruc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTongSoCau)).EndInit();
             this.panelButtons.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -235,6 +285,9 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private System.Windows.Forms.Label lblTongSoCau;
         private System.Windows.Forms.NumericUpDown numTongSoCau;
         private System.Windows.Forms.Label lblSoCauHoiHienCo;
+        private System.Windows.Forms.Label lblCauTruc;
+        private System.Windows.Forms.DataGridView dgvCauTruc;
+        private System.Windows.Forms.Label lblCauTrucNote;
         private System.Windows.Forms.Panel panelButtons;
         private Guna.UI2.WinForms.Guna2Button btnLuu;
         private Guna.UI2.WinForms.Guna2Button btnHuy;

@@ -39,13 +39,33 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             cboMonHoc.Items.Clear();
             cboMonHoc.Items.Add("-- Tất cả môn học --");
 
-            var monHocs = _monHocService.GetThongTinMonThi();
-            if (monHocs != null)
+            List<MonHoc> monHocs;
+
+            // Giảng viên chỉ thấy các môn đã được phân công
+            if (_nguoiDung != null && _nguoiDung.MaVaiTro == 2)
             {
-                foreach (var mh in monHocs.OrderBy(m => m.Id))
-                {
-                    cboMonHoc.Items.Add(mh);
-                }
+                var monIds = _context.PhanCongGiangDay
+                    .Where(p => p.MaGiangVien == _nguoiDung.Id)
+                    .Select(p => p.MaMon)
+                    .Distinct()
+                    .ToList();
+
+                monHocs = monIds.Count == 0
+                    ? new List<MonHoc>()
+                    : _context.MonHoc
+                        .Where(m => monIds.Contains(m.Id))
+                        .OrderBy(m => m.Id)
+                        .ToList();
+            }
+            else
+            {
+                monHocs = _monHocService.GetThongTinMonThi() ?? new List<MonHoc>();
+                monHocs = monHocs.OrderBy(m => m.Id).ToList();
+            }
+
+            foreach (var mh in monHocs)
+            {
+                cboMonHoc.Items.Add(mh);
             }
             cboMonHoc.SelectedIndex = 0;
             cboMonHoc.DisplayMember = "TenMon";

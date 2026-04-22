@@ -22,6 +22,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelContent = new System.Windows.Forms.Panel();
             this.lblMonHoc = new System.Windows.Forms.Label();
             this.cboMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblChuong = new System.Windows.Forms.Label();
+            this.cboChuong = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblNoiDung = new System.Windows.Forms.Label();
             this.txtNoiDung = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblDapAnA = new System.Windows.Forms.Label();
@@ -82,6 +84,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelContent.Controls.Add(this.lblDapAnA);
             this.panelContent.Controls.Add(this.txtNoiDung);
             this.panelContent.Controls.Add(this.lblNoiDung);
+            this.panelContent.Controls.Add(this.cboChuong);
+            this.panelContent.Controls.Add(this.lblChuong);
             this.panelContent.Controls.Add(this.cboMonHoc);
             this.panelContent.Controls.Add(this.lblMonHoc);
             this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -114,8 +118,34 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.cboMonHoc.ItemHeight = 25;
             this.cboMonHoc.Location = new System.Drawing.Point(120, 20);
             this.cboMonHoc.Name = "cboMonHoc";
-            this.cboMonHoc.Size = new System.Drawing.Size(450, 31);
+            this.cboMonHoc.Size = new System.Drawing.Size(220, 31);
             this.cboMonHoc.TabIndex = 1;
+            // 
+            // lblChuong
+            // 
+            this.lblChuong.AutoSize = true;
+            this.lblChuong.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblChuong.ForeColor = System.Drawing.Color.White;
+            this.lblChuong.Location = new System.Drawing.Point(360, 25);
+            this.lblChuong.Name = "lblChuong";
+            this.lblChuong.Size = new System.Drawing.Size(60, 19);
+            this.lblChuong.TabIndex = 15;
+            this.lblChuong.Text = "Chương:";
+            // 
+            // cboChuong
+            // 
+            this.cboChuong.BackColor = System.Drawing.Color.Transparent;
+            this.cboChuong.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cboChuong.BorderRadius = 5;
+            this.cboChuong.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboChuong.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+            this.cboChuong.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(76)))));
+            this.cboChuong.ForeColor = System.Drawing.Color.White;
+            this.cboChuong.ItemHeight = 25;
+            this.cboChuong.Location = new System.Drawing.Point(430, 20);
+            this.cboChuong.Name = "cboChuong";
+            this.cboChuong.Size = new System.Drawing.Size(140, 31);
+            this.cboChuong.TabIndex = 2;
             // 
             // lblNoiDung
             // 
@@ -125,7 +155,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.lblNoiDung.Location = new System.Drawing.Point(20, 65);
             this.lblNoiDung.Name = "lblNoiDung";
             this.lblNoiDung.Size = new System.Drawing.Size(128, 19);
-            this.lblNoiDung.TabIndex = 2;
+            this.lblNoiDung.TabIndex = 3;
             this.lblNoiDung.Text = "Nội dung câu hỏi: *";
             // 
             // txtNoiDung
@@ -142,7 +172,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.txtNoiDung.PlaceholderText = "Nhập nội dung câu hỏi...";
             this.txtNoiDung.SelectedText = "";
             this.txtNoiDung.Size = new System.Drawing.Size(550, 80);
-            this.txtNoiDung.TabIndex = 3;
+            this.txtNoiDung.TabIndex = 4;
             // 
             // lblDapAnA
             // 
@@ -388,6 +418,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private System.Windows.Forms.Panel panelContent;
         private System.Windows.Forms.Label lblMonHoc;
         private Guna.UI2.WinForms.Guna2ComboBox cboMonHoc;
+        private System.Windows.Forms.Label lblChuong;
+        private Guna.UI2.WinForms.Guna2ComboBox cboChuong;
         private System.Windows.Forms.Label lblNoiDung;
         private Guna.UI2.WinForms.Guna2TextBox txtNoiDung;
         private System.Windows.Forms.Label lblDapAnA;

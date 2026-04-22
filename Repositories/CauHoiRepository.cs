@@ -21,6 +21,7 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             return _context.CauHoiThi
                 .Include(c => c.MonHoc)
+                .Include(c => c.ChuongMonHoc)
                 .Include(c => c.LuaChonTracNghiems)
                 .Where(c => c.TrangThai == true)
                 .ToList();
@@ -31,6 +32,7 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             return _context.CauHoiThi
                 .Include(c => c.MonHoc)
+                .Include(c => c.ChuongMonHoc)
                 .Include(c => c.LuaChonTracNghiems)
                 .FirstOrDefault(c => c.Id == id);
         }
@@ -49,6 +51,7 @@ namespace PhanMemThiTracNghiem.Repositories
         {
             return _context.CauHoiThi
                 .Include(c => c.MonHoc)
+                .Include(c => c.ChuongMonHoc)
                 .Include(c => c.LuaChonTracNghiems)
                 .Where(c => c.NguoiTao == nguoiTao && c.TrangThai == true)
                 .ToList();
@@ -101,6 +104,7 @@ namespace PhanMemThiTracNghiem.Repositories
                 {
                     existing.NoiDung = cauHoi.NoiDung;
                     existing.MaMon = cauHoi.MaMon;
+                    existing.MaChuong = cauHoi.MaChuong;
                     existing.TrangThai = cauHoi.TrangThai;
                     _context.SaveChanges();
                     return true;

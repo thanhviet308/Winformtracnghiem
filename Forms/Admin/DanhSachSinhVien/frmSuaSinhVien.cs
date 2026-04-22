@@ -76,7 +76,14 @@ namespace PhanMemThiTracNghiem.Forms.Admin
                     _sinhVien.MatKhau = PasswordHelper.HashPassword(txtMatKhau.Text);
                 }
 
-                _nguoiDungService.Update(_sinhVien);
+                var updated = _nguoiDungService.Update(_sinhVien);
+                if (!updated)
+                {
+                    MessageBox.Show("Không thể cập nhật sinh viên (có thể do Email bị trùng hoặc dữ liệu không hợp lệ).", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 MessageBox.Show("Cập nhật sinh viên thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;

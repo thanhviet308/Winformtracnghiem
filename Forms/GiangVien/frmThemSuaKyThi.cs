@@ -38,6 +38,9 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             LoadGioPhut();
             LoadComboBoxes();
 
+            // Đổi khung đề → lọc lại danh sách lớp theo phân công + môn
+            cboKhungDe.SelectedIndexChanged += (s, e) => LoadLopHocTheoKhungDe();
+
             if (_isEdit)
             {
                 lblTitle.Text = "✏️ SỬA KỲ THI";
@@ -52,6 +55,50 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
             // Khi đổi ngày → cập nhật lại danh sách giờ hợp lệ
             dtpNgayBatDau.ValueChanged += (s, e) => UpdateGioPhutMinDate();
+        }
+
+        private void LoadLopHocTheoKhungDe()
+        {
+            cboLopHoc.Items.Clear();
+
+            // Mặc định: với giảng viên thì chỉ hiển thị lớp đã được phân công.
+            // Nếu khung đề có môn học → lọc theo đúng môn đó.
+            List<LopHoc> lopHocs;
+            if (_nguoiDung?.MaVaiTro == 2)
+            {
+                if (cboKhungDe.SelectedItem is NganHangDe nhd && nhd.MaMon != null)
+                    lopHocs = _lopHocService.GetLopHocDuocPhanCong(_nguoiDung.Id, nhd.MaMon.Value);
+                else
+                    lopHocs = _lopHocService.GetLopHocDuocPhanCong(_nguoiDung.Id);
+            }
+            else
+            {
+                // Không phải giảng viên (ví dụ admin) → giữ hành vi cũ
+                lopHocs = _lopHocService.GetAll();
+            }
+
+            foreach (var lh in lopHocs)
+                cboLopHoc.Items.Add(lh);
+
+            // Nếu đang sửa kỳ thi cũ mà lớp không còn trong danh sách lọc,
+            // vẫn add vào để form không bị trống / không load được.
+            if (_isEdit && _kyThi?.MaLop != null)
+            {
+                var maLopEdit = _kyThi.MaLop.Value;
+                bool exists = lopHocs.Any(l => l.Id == maLopEdit);
+                if (!exists)
+                {
+                    var lopEdit = _context.LopHoc.FirstOrDefault(l => l.Id == maLopEdit);
+                    if (lopEdit != null)
+                        cboLopHoc.Items.Add(lopEdit);
+                }
+            }
+
+            cboLopHoc.DisplayMember = "TenLop";
+            cboLopHoc.ValueMember = "Id";
+
+            if (cboLopHoc.Items.Count > 0)
+                cboLopHoc.SelectedIndex = 0;
         }
 
         private void LoadGioPhut()
@@ -92,15 +139,11 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             cboKhungDe.DisplayMember = "TenDe";
             cboKhungDe.ValueMember = "Id";
 
-            cboLopHoc.Items.Clear();
-            var lopHocs = _lopHocService.GetAll();
-            foreach (var lh in lopHocs)
-                cboLopHoc.Items.Add(lh);
-            cboLopHoc.DisplayMember = "TenLop";
-            cboLopHoc.ValueMember = "Id";
+            if (nganHangDes.Count > 0)
+                cboKhungDe.SelectedIndex = 0;
 
-            if (nganHangDes.Count > 0) cboKhungDe.SelectedIndex = 0;
-            if (lopHocs.Count > 0) cboLopHoc.SelectedIndex = 0;
+            // Lớp học sẽ được load theo khung đề + phân công
+            LoadLopHocTheoKhungDe();
         }
 
         private void LoadKyThi()
@@ -167,6 +210,26 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 MessageBox.Show("Vui lòng chọn lớp học!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
+            // Chặn tạo kỳ thi cho lớp chưa được phân công (áp dụng cho giảng viên)
+            if (_nguoiDung?.MaVaiTro == 2)
+            {
+                var khungDe = (NganHangDe)cboKhungDe.SelectedItem;
+                var lopHoc = (LopHoc)cboLopHoc.SelectedItem;
+
+                if (khungDe.MaMon == null)
+                {
+                    MessageBox.Show("Khung đề chưa gắn môn học nên không thể kiểm tra phân công.\nVui lòng cập nhật khung đề (chọn môn học).", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                if (!_lopHocService.IsGiangVienDuocPhanCong(_nguoiDung.Id, lopHoc.Id, khungDe.MaMon.Value))
+                {
+                    MessageBox.Show("Bạn chưa được phân công giảng dạy môn này cho lớp đã chọn!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+
             if (cboGio.SelectedIndex < 0)
             {
                 MessageBox.Show("Vui lòng chọn giờ bắt đầu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);

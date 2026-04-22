@@ -101,17 +101,15 @@ namespace PhanMemThiTracNghiem.Forms.Admin
 
         private void btnNhapExcel_Click(object sender, EventArgs e)
         {
-            var frm = this.FindForm() as frmAdmin;
-            if (frm != null)
-            {
-                NhapExcelGiangVien nhapExcel = new NhapExcelGiangVien(frm);
-                nhapExcel.ShowDialog();
-                LoadGiangVien();
-            }
-            else
-            {
-                MessageBox.Show("Không thể mở form nhập Excel!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // Không phụ thuộc vào đúng type của form cha (frmAdmin / frmAdminNew ...)
+            // Form import vẫn có overload nhận frmAdmin để refresh kiểu cũ.
+            var legacyAdmin = this.FindForm() as frmAdmin;
+            using var nhapExcel = legacyAdmin != null
+                ? new NhapExcelGiangVien(legacyAdmin)
+                : new NhapExcelGiangVien();
+
+            nhapExcel.ShowDialog();
+            LoadGiangVien();
         }
 
         private void dgvGiangVien_CellContentClick(object sender, DataGridViewCellEventArgs e)

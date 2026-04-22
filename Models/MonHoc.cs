@@ -14,6 +14,7 @@ namespace PhanMemThiTracNghiem.Models
         public MonHoc()
         {
             CauHoiThis = new HashSet<CauHoiThi>();
+            ChuongMonHocs = new HashSet<ChuongMonHoc>();
             NganHangDes = new HashSet<NganHangDe>();
             CauTrucDes = new HashSet<CauTrucDe>();
             PhanCongGiangDays = new HashSet<PhanCongGiangDay>();
@@ -37,6 +38,7 @@ namespace PhanMemThiTracNghiem.Models
 
         // Navigation properties
         public virtual ICollection<CauHoiThi> CauHoiThis { get; set; }
+        public virtual ICollection<ChuongMonHoc> ChuongMonHocs { get; set; }
         public virtual ICollection<NganHangDe> NganHangDes { get; set; }
         public virtual ICollection<CauTrucDe> CauTrucDes { get; set; }
         public virtual ICollection<PhanCongGiangDay> PhanCongGiangDays { get; set; }

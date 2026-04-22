@@ -6,13 +6,18 @@
     <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>PhanMemThiTracNghiem</RootNamespace>
     <AssemblyName>PhanMemThiTracNghiem</AssemblyName>
-    <ApplicationIcon></ApplicationIcon>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <NoWarn>$(NoWarn);CA1416</NoWarn>
+    <AppHostIcon>$(ApplicationIcon)</AppHostIcon>
+    <ApplicationIcon>Assets\Icon\app.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Icon\app.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />

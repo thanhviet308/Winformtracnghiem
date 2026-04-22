@@ -25,6 +25,9 @@ namespace PhanMemThiTracNghiem.Models
         [Column("ma_mon")]
         public long? MaMon { get; set; }
 
+        [Column("ma_chuong")]
+        public long? MaChuong { get; set; }
+
         [Required]
         [Column("noi_dung")]
         public string NoiDung { get; set; }
@@ -41,6 +44,9 @@ namespace PhanMemThiTracNghiem.Models
         // Navigation properties
         [ForeignKey("MaMon")]
         public virtual MonHoc MonHoc { get; set; }
+
+        [ForeignKey("MaChuong")]
+        public virtual ChuongMonHoc ChuongMonHoc { get; set; }
 
         [ForeignKey("NguoiTao")]
         public virtual NguoiDung NguoiDung { get; set; }

@@ -24,6 +24,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelFilter = new System.Windows.Forms.Panel();
             this.cboMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblMonHoc = new System.Windows.Forms.Label();
+            this.cboChuong = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblChuong = new System.Windows.Forms.Label();
             this.txtTimKiem = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnThem = new Guna.UI2.WinForms.Guna2Button();
             this.btnImport = new Guna.UI2.WinForms.Guna2Button();
@@ -67,6 +69,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelFilter.Controls.Add(this.btnImport);
             this.panelFilter.Controls.Add(this.btnThem);
             this.panelFilter.Controls.Add(this.txtTimKiem);
+            this.panelFilter.Controls.Add(this.cboChuong);
+            this.panelFilter.Controls.Add(this.lblChuong);
             this.panelFilter.Controls.Add(this.cboMonHoc);
             this.panelFilter.Controls.Add(this.lblMonHoc);
             this.panelFilter.Dock = System.Windows.Forms.DockStyle.Top;
@@ -100,9 +104,37 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.cboMonHoc.ItemHeight = 25;
             this.cboMonHoc.Location = new System.Drawing.Point(90, 18);
             this.cboMonHoc.Name = "cboMonHoc";
-            this.cboMonHoc.Size = new System.Drawing.Size(200, 31);
+            this.cboMonHoc.Size = new System.Drawing.Size(170, 31);
             this.cboMonHoc.TabIndex = 1;
             this.cboMonHoc.SelectedIndexChanged += new System.EventHandler(this.cboMonHoc_SelectedIndexChanged);
+            // 
+            // lblChuong
+            // 
+            this.lblChuong.AutoSize = true;
+            this.lblChuong.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblChuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblChuong.Location = new System.Drawing.Point(270, 25);
+            this.lblChuong.Name = "lblChuong";
+            this.lblChuong.Size = new System.Drawing.Size(60, 19);
+            this.lblChuong.TabIndex = 5;
+            this.lblChuong.Text = "Chương:";
+            // 
+            // cboChuong
+            // 
+            this.cboChuong.BackColor = System.Drawing.Color.Transparent;
+            this.cboChuong.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cboChuong.BorderRadius = 5;
+            this.cboChuong.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboChuong.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboChuong.FillColor = System.Drawing.Color.White;
+            this.cboChuong.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cboChuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.cboChuong.ItemHeight = 25;
+            this.cboChuong.Location = new System.Drawing.Point(340, 18);
+            this.cboChuong.Name = "cboChuong";
+            this.cboChuong.Size = new System.Drawing.Size(170, 31);
+            this.cboChuong.TabIndex = 2;
+            this.cboChuong.SelectedIndexChanged += new System.EventHandler(this.cboChuong_SelectedIndexChanged);
             // 
             // txtTimKiem
             // 
@@ -112,13 +144,13 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.txtTimKiem.FillColor = System.Drawing.Color.White;
             this.txtTimKiem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
             this.txtTimKiem.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtTimKiem.Location = new System.Drawing.Point(310, 18);
+            this.txtTimKiem.Location = new System.Drawing.Point(520, 18);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtTimKiem.PlaceholderText = "\ud83d\udd0d T\u00ecm ki\u1ebfm c\u00e2u h\u1ecfi...";
             this.txtTimKiem.SelectedText = "";
-            this.txtTimKiem.Size = new System.Drawing.Size(250, 31);
-            this.txtTimKiem.TabIndex = 2;
+            this.txtTimKiem.Size = new System.Drawing.Size(220, 31);
+            this.txtTimKiem.TabIndex = 3;
             this.txtTimKiem.TextChanged += new System.EventHandler(this.txtTimKiem_TextChanged);
             // 
             // btnThem
@@ -282,6 +314,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private System.Windows.Forms.Panel panelFilter;
         private Guna.UI2.WinForms.Guna2ComboBox cboMonHoc;
         private System.Windows.Forms.Label lblMonHoc;
+        private Guna.UI2.WinForms.Guna2ComboBox cboChuong;
+        private System.Windows.Forms.Label lblChuong;
         private Guna.UI2.WinForms.Guna2TextBox txtTimKiem;
         private Guna.UI2.WinForms.Guna2Button btnThem;
         private Guna.UI2.WinForms.Guna2Button btnImport;

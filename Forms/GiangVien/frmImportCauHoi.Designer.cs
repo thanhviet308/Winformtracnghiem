@@ -39,6 +39,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.lblSheet = new System.Windows.Forms.Label();
             this.cboMonHoc = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblMonHoc = new System.Windows.Forms.Label();
+            this.cboChuong = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblChuong = new System.Windows.Forms.Label();
             this.btnChonFileLai = new Guna.UI2.WinForms.Guna2Button();
             // Preview panel
             this.panelPreview = new System.Windows.Forms.Panel();
@@ -105,6 +107,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             // panelGuideContent
             // 
             this.panelGuideContent.BackColor = System.Drawing.Color.White;
+            this.panelGuideContent.AutoScroll = true;
             this.panelGuideContent.Controls.Add(this.lblGuideNotes);
             this.panelGuideContent.Controls.Add(this.panelFormatTable);
             this.panelGuideContent.Controls.Add(this.lblGuideFormat);
@@ -167,11 +170,12 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             // 
             // lblGuideNotes
             // 
+            this.lblGuideNotes.AutoSize = true;
             this.lblGuideNotes.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblGuideNotes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(114)))), ((int)(((byte)(128)))));
             this.lblGuideNotes.Location = new System.Drawing.Point(25, 268);
+            this.lblGuideNotes.MaximumSize = new System.Drawing.Size(750, 0);
             this.lblGuideNotes.Name = "lblGuideNotes";
-            this.lblGuideNotes.Size = new System.Drawing.Size(750, 120);
             this.lblGuideNotes.TabIndex = 3;
             this.lblGuideNotes.Text = "\u26a0\ufe0f L\u01b0u \u00fd:\r\n\u2022  C\u1ed9t DAPANDUNG nh\u1eadp A, B, C ho\u1eb7c D (vi\u1ebft hoa) t\u01b0\u01a1ng \u1ee9ng v\u1edbi \u0111\u00e1p \u00e1n \u0111\u00fang.\r\n\u2022  Kh\u00f4ng \u0111\u01b0\u1ee3c \u0111\u1ec3 tr\u1ed1ng n\u1ed9i dung c\u00e2u h\u1ecfi.\r\n\u2022  M\u1ed7i c\u00e2u h\u1ecfi ph\u1ea3i c\u00f3 \u00edt nh\u1ea5t 2 \u0111\u00e1p \u00e1n.\r\n\u2022  D\u1eef li\u1ec7u b\u1eaft \u0111\u1ea7u t\u1eeb d\u00f2ng 2 (d\u00f2ng 1 l\u00e0 ti\u00eau \u0111\u1ec1, kh\u00f4ng x\u00f3a).";
             // 
@@ -221,11 +225,13 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelConfig.Controls.Add(this.lblSheet);
             this.panelConfig.Controls.Add(this.cboMonHoc);
             this.panelConfig.Controls.Add(this.lblMonHoc);
+            this.panelConfig.Controls.Add(this.cboChuong);
+            this.panelConfig.Controls.Add(this.lblChuong);
             this.panelConfig.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelConfig.Location = new System.Drawing.Point(0, 55);
             this.panelConfig.Name = "panelConfig";
             this.panelConfig.Padding = new System.Windows.Forms.Padding(15);
-            this.panelConfig.Size = new System.Drawing.Size(850, 100);
+            this.panelConfig.Size = new System.Drawing.Size(850, 140);
             this.panelConfig.TabIndex = 1;
             this.panelConfig.Visible = false;
             // 
@@ -304,6 +310,34 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.cboSheet.Size = new System.Drawing.Size(250, 31);
             this.cboSheet.TabIndex = 4;
             this.cboSheet.SelectedIndexChanged += new System.EventHandler(this.cboSheet_SelectedIndexChanged);
+
+            // 
+            // lblChuong
+            // 
+            this.lblChuong.AutoSize = true;
+            this.lblChuong.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblChuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblChuong.Location = new System.Drawing.Point(15, 90);
+            this.lblChuong.Name = "lblChuong";
+            this.lblChuong.Size = new System.Drawing.Size(60, 19);
+            this.lblChuong.TabIndex = 5;
+            this.lblChuong.Text = "Chương:";
+
+            // 
+            // cboChuong
+            // 
+            this.cboChuong.BackColor = System.Drawing.Color.Transparent;
+            this.cboChuong.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cboChuong.BorderRadius = 5;
+            this.cboChuong.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboChuong.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+            this.cboChuong.FillColor = System.Drawing.Color.White;
+            this.cboChuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.cboChuong.ItemHeight = 25;
+            this.cboChuong.Location = new System.Drawing.Point(90, 85);
+            this.cboChuong.Name = "cboChuong";
+            this.cboChuong.Size = new System.Drawing.Size(590, 31);
+            this.cboChuong.TabIndex = 6;
             // 
             // ===================== PREVIEW PANEL =====================
             // 
@@ -311,10 +345,10 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             this.panelPreview.Controls.Add(this.dgvPreview);
             this.panelPreview.Controls.Add(this.lblTongSo);
             this.panelPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelPreview.Location = new System.Drawing.Point(0, 155);
+            this.panelPreview.Location = new System.Drawing.Point(0, 195);
             this.panelPreview.Name = "panelPreview";
             this.panelPreview.Padding = new System.Windows.Forms.Padding(15);
-            this.panelPreview.Size = new System.Drawing.Size(850, 345);
+            this.panelPreview.Size = new System.Drawing.Size(850, 305);
             this.panelPreview.TabIndex = 2;
             this.panelPreview.Visible = false;
             // 
@@ -556,6 +590,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             dgvFormat.Rows.Add("DAPAN3", "\u0110\u00e1p \u00e1n C", "\u0110\u00e0 N\u1eb5ng", "\u2705 C\u00f3");
             dgvFormat.Rows.Add("DAPAN4", "\u0110\u00e1p \u00e1n D", "Hu\u1ebf", "\u2705 C\u00f3");
             dgvFormat.Rows.Add("DAPANDUNG", "\u0110\u00e1p \u00e1n \u0111\u00fang (A/B/C/D)", "A", "\u2705 C\u00f3");
+            dgvFormat.Rows.Add("CHUONG", "T\u00ean ch\u01b0\u01a1ng (t\u00f9y ch\u1ecdn)", "Ch\u01b0\u01a1ng 1", "\u274c Kh\u00f4ng");
 
             dgvFormat.ClearSelection();
         }
@@ -583,6 +618,8 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private Guna.UI2.WinForms.Guna2ComboBox cboMonHoc;
         private System.Windows.Forms.Label lblSheet;
         private Guna.UI2.WinForms.Guna2ComboBox cboSheet;
+        private System.Windows.Forms.Label lblChuong;
+        private Guna.UI2.WinForms.Guna2ComboBox cboChuong;
         // Preview
         private System.Windows.Forms.Panel panelPreview;
         private System.Windows.Forms.Label lblTongSo;

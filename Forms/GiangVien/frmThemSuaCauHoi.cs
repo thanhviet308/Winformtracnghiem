@@ -17,6 +17,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
         private NguoiDung _nguoiDung;
         private CauHoiThi _cauHoi;
         private bool _isEdit = false;
+        private readonly ToolTip _chuongToolTip = new ToolTip();
 
         public frmThemSuaCauHoi(NguoiDung nguoiDung, CauHoiThi cauHoi = null)
         {
@@ -31,11 +32,115 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
             LoadMonHoc();
 
+            cboMonHoc.SelectedIndexChanged += (s, e) => LoadChuongByMonHoc();
+            cboChuong.SelectedIndexChanged += (s, e) => UpdateChuongToolTip();
+            cboChuong.TextChanged += (s, e) => UpdateChuongToolTip();
+            LoadChuongByMonHoc();
+            ApplyChuongComboUx();
+
             if (_isEdit)
             {
                 lblTitle.Text = "✏️ SỬA CÂU HỎI";
                 LoadCauHoi();
             }
+        }
+
+        private void LoadChuongByMonHoc()
+        {
+            if (cboChuong == null) return;
+            cboChuong.Items.Clear();
+
+            if (cboMonHoc?.SelectedItem is not MonHoc monHoc)
+            {
+                cboChuong.Text = "";
+                return;
+            }
+
+            var chuongs = _context.ChuongMonHoc
+                .Where(c => c.MaMon == monHoc.Id)
+                .OrderBy(c => c.Id)
+                .ToList();
+
+            foreach (var c in chuongs)
+            {
+                cboChuong.Items.Add(c);
+            }
+
+            cboChuong.DisplayMember = "TenChuong";
+            cboChuong.ValueMember = "Id";
+
+            ApplyChuongComboUx();
+        }
+
+        private void ApplyChuongComboUx()
+        {
+            if (cboChuong == null) return;
+
+            AutoSizeComboDropDownWidth(
+                cboChuong,
+                item => item is ChuongMonHoc c ? c.TenChuong : item?.ToString() ?? string.Empty,
+                maxWidth: 800
+            );
+
+            UpdateChuongToolTip();
+        }
+
+        private void UpdateChuongToolTip()
+        {
+            if (cboChuong == null) return;
+            _chuongToolTip.SetToolTip(cboChuong, cboChuong.Text);
+        }
+
+        private static void AutoSizeComboDropDownWidth(ComboBox combo, Func<object, string> getItemText, int maxWidth)
+        {
+            if (combo == null) return;
+
+            var current = combo.DropDownWidth;
+            var widest = current;
+
+            foreach (var raw in combo.Items)
+            {
+                var text = getItemText?.Invoke(raw) ?? raw?.ToString() ?? string.Empty;
+                var w = TextRenderer.MeasureText(text, combo.Font).Width;
+                if (w > widest) widest = w;
+            }
+
+            widest += SystemInformation.VerticalScrollBarWidth + 30;
+            if (widest < current) widest = current;
+            if (widest > maxWidth) widest = maxWidth;
+
+            combo.DropDownWidth = widest;
+        }
+
+        private long? ResolveOrCreateChuongId(MonHoc monHoc)
+        {
+            if (cboChuong == null) return null;
+            if (monHoc == null) return null;
+
+            // Nếu chọn item từ list
+            if (cboChuong.SelectedItem is ChuongMonHoc selected)
+            {
+                return selected.Id;
+            }
+
+            // Nếu user gõ tên chương mới
+            var tenChuong = (cboChuong.Text ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(tenChuong)) return null;
+
+            var tenChuongKey = tenChuong.ToLower();
+            var existing = _context.ChuongMonHoc
+                .FirstOrDefault(c => c.MaMon == monHoc.Id && c.TenChuong.ToLower() == tenChuongKey);
+            if (existing != null) return existing.Id;
+
+            var created = new ChuongMonHoc
+            {
+                MaMon = monHoc.Id,
+                TenChuong = tenChuong,
+                NgayTao = DateTime.Now
+            };
+            _context.ChuongMonHoc.Add(created);
+            _context.SaveChanges();
+            return created.Id;
         }
 
         private void LoadMonHoc()
@@ -48,7 +153,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             }
             cboMonHoc.DisplayMember = "TenMon";
             cboMonHoc.ValueMember = "Id";
-            
+
             if (monHocs.Count > 0)
                 cboMonHoc.SelectedIndex = 0;
         }
@@ -67,6 +172,20 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                 {
                     cboMonHoc.SelectedIndex = i;
                     break;
+                }
+            }
+
+            // Load chương (theo môn học đã chọn)
+            LoadChuongByMonHoc();
+            if (_cauHoi.MaChuong.HasValue)
+            {
+                for (int i = 0; i < cboChuong.Items.Count; i++)
+                {
+                    if (cboChuong.Items[i] is ChuongMonHoc c && c.Id == _cauHoi.MaChuong.Value)
+                    {
+                        cboChuong.SelectedIndex = i;
+                        break;
+                    }
                 }
             }
 
@@ -144,12 +263,14 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
             try
             {
                 var monHoc = (MonHoc)cboMonHoc.SelectedItem;
+                var maChuong = ResolveOrCreateChuongId(monHoc);
 
                 if (_isEdit)
                 {
                     // Cập nhật câu hỏi
                     _cauHoi.NoiDung = txtNoiDung.Text.Trim();
                     _cauHoi.MaMon = monHoc.Id;
+                    _cauHoi.MaChuong = maChuong;
 
                     _context.CauHoiThi.Update(_cauHoi);
 
@@ -160,7 +281,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
 
                     // Thêm lựa chọn mới
                     AddLuaChons(_cauHoi.Id);
-                    
+
                     MessageBox.Show("Cập nhật câu hỏi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -170,6 +291,7 @@ namespace PhanMemThiTracNghiem.Forms.GiangVien
                     {
                         NoiDung = txtNoiDung.Text.Trim(),
                         MaMon = monHoc.Id,
+                        MaChuong = maChuong,
                         NguoiTao = _nguoiDung.Id,
                         NgayTao = DateTime.Now,
                         TrangThai = true

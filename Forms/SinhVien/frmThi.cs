@@ -4,6 +4,7 @@ using PhanMemThiTracNghiem.Services;
 using PhanMemThiTracNghiem.Models;
 using PhanMemThiTracNghiem.DTOs;
 using PhanMemThiTracNghiem.Forms;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,6 +42,7 @@ namespace PhanMemThiTracNghiem
         private readonly List<CauHoiDTO> cauHoiMonThi = new List<CauHoiDTO>();
         private readonly long _maKyThi;
         private long _maBaiThi;
+        private int _tongDiemKyThi = 10;
 
 
         public int TongThoiGian = 6;
@@ -57,6 +59,7 @@ namespace PhanMemThiTracNghiem
         private bool _isSubmitting = false;
         private bool _daNopTruocDo = false;
         private string _thongBaoChanVaoThi = "";
+        private bool _timeUpHandled = false;
 
         private readonly ToolTip _toolTip = new ToolTip();
 
@@ -238,15 +241,9 @@ namespace PhanMemThiTracNghiem
         {
             // Tạo ô câu hỏi bên trái
             int x = 10, y = 105;
-            int soCauHoi = 0;
-            foreach (var item in CauHoiService.GetThongTinCauHoi())
-            {
-                if (item.MaMT == monThi.Id.ToString())
-                {
-                    soCauHoi++;
-                    cauHoiMonThi.Add(item);
-                }
-            }
+            cauHoiMonThi.Clear();
+            LoadCauHoiTheoKyThi();
+
             for (int i = 0; i < cauHoiMonThi.Count; i++)
             {
                 oCauHoi.Add(TaoNut((i + 1), ref x, ref y));
@@ -263,6 +260,160 @@ namespace PhanMemThiTracNghiem
 
             // Tạo tất cả câu hỏi trong vùng chứa câu hỏi
             // Note: danhMucCauHoiBAL.GetCauHoi() không còn dùng nữa
+        }
+
+        private void LoadCauHoiTheoKyThi()
+        {
+            try
+            {
+                long kyThiId = _maKyThi;
+                if (kyThiId == 0)
+                {
+                    var ktActive = duLieu.Set<KyThi>()
+                        .FirstOrDefault(k => DateTime.Now >= k.ThoiGianBatDau && DateTime.Now <= k.ThoiGianKetThuc);
+                    if (ktActive != null) kyThiId = ktActive.Id;
+                }
+
+                KyThi kyThi = null;
+                if (kyThiId > 0)
+                {
+                    kyThi = duLieu.Set<KyThi>()
+                        .Include(k => k.NganHangDe)
+                            .ThenInclude(n => n.CauTrucDes)
+                        .FirstOrDefault(k => k.Id == kyThiId);
+                }
+
+                _tongDiemKyThi = Math.Max(1, kyThi?.TongDiem ?? 10);
+
+                int tongSoCau = 0;
+                if (kyThi?.NganHangDe != null)
+                {
+                    tongSoCau = kyThi.NganHangDe.TongSoCau;
+                }
+
+                var baseQuery = duLieu.Set<CauHoiThi>()
+                    .Include(c => c.LuaChonTracNghiems)
+                    .Where(c => c.TrangThai && c.MaMon == monThi.Id);
+
+                List<CauHoiThi> selectedQuestions;
+
+                var cauTrucsChuong = kyThi?.NganHangDe?.CauTrucDes?
+                    .Where(c => c.MaChuong != null && c.SoCau > 0)
+                    .ToList() ?? new List<CauTrucDe>();
+
+                if (cauTrucsChuong.Count > 0)
+                {
+                    selectedQuestions = new List<CauHoiThi>();
+
+                    var grouped = cauTrucsChuong
+                        .GroupBy(c => c.MaChuong!.Value)
+                        .Select(g => new { MaChuong = g.Key, SoCau = g.Sum(x => x.SoCau) })
+                        .ToList();
+
+                    foreach (var g in grouped)
+                    {
+                        var pool = baseQuery
+                            .Where(c => c.MaChuong == g.MaChuong)
+                            .OrderBy(c => c.Id)
+                            .ToList();
+
+                        var picked = PickQuestions(pool, g.SoCau, kyThi?.TronCauHoi == true);
+                        selectedQuestions.AddRange(picked);
+                    }
+
+                    // Nếu người dùng nhập cấu trúc nhưng tổng không khớp, fallback an toàn
+                    if (tongSoCau > 0 && selectedQuestions.Count != tongSoCau)
+                    {
+                        // Không throw để tránh crash giữa ca thi; cứ lấy đúng tongSoCau theo pool tổng
+                        var allPool = baseQuery.OrderBy(c => c.Id).ToList();
+                        selectedQuestions = PickQuestions(allPool, tongSoCau, kyThi?.TronCauHoi == true);
+                    }
+                }
+                else
+                {
+                    var pool = baseQuery.OrderBy(c => c.Id).ToList();
+                    if (tongSoCau <= 0 || tongSoCau > pool.Count)
+                    {
+                        tongSoCau = pool.Count;
+                    }
+                    selectedQuestions = PickQuestions(pool, tongSoCau, kyThi?.TronCauHoi == true);
+                }
+
+                // Trộn lại toàn bộ danh sách sau khi đã chọn (để không bị gom theo chương)
+                if (kyThi?.TronCauHoi == true)
+                {
+                    ShuffleInPlace(selectedQuestions);
+                }
+
+                // Map to DTO list used by UI
+                foreach (var c in selectedQuestions)
+                {
+                    var dto = new CauHoiDTO
+                    {
+                        MaCauHoi = (int)c.Id,
+                        NDCAUHOI = c.NoiDung,
+                        MaMT = c.MaMon?.ToString() ?? monThi.Id.ToString(),
+                        MaGiaoVien = c.NguoiTao?.ToString() ?? ""
+                    };
+
+                    var luaChons = (c.LuaChonTracNghiems ?? new List<LuaChonTracNghiem>())
+                        .OrderBy(l => l.ThuTu)
+                        .ToList();
+
+                    if (kyThi?.TronDapAn == true)
+                    {
+                        ShuffleInPlace(luaChons);
+                    }
+
+                    if (luaChons.Count > 0) dto.DapAn1 = luaChons[0].NoiDung;
+                    if (luaChons.Count > 1) dto.DapAn2 = luaChons[1].NoiDung;
+                    if (luaChons.Count > 2) dto.DapAn3 = luaChons[2].NoiDung;
+                    if (luaChons.Count > 3) dto.DapAn4 = luaChons[3].NoiDung;
+
+                    var dung = luaChons.FirstOrDefault(l => l.LaDapAnDung);
+                    if (dung != null) dto.DapAnDung = dung.NoiDung;
+
+                    // Đảm bảo không add câu hỏi thiếu nội dung
+                    if (!string.IsNullOrWhiteSpace(dto.NDCAUHOI))
+                    {
+                        cauHoiMonThi.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Lỗi load câu hỏi theo kỳ thi: " + ex.Message);
+            }
+        }
+
+        private static List<CauHoiThi> PickQuestions(List<CauHoiThi> pool, int count, bool random)
+        {
+            if (pool == null) return new List<CauHoiThi>();
+            if (count <= 0) return new List<CauHoiThi>();
+
+            // Work on a copy to avoid surprising side-effects
+            var list = pool.ToList();
+
+            if (random)
+            {
+                ShuffleInPlace(list);
+            }
+
+            if (count >= list.Count) return list;
+            return list.Take(count).ToList();
+        }
+
+        private static void ShuffleInPlace<T>(IList<T> list)
+        {
+            if (list == null) return;
+            if (list.Count <= 1) return;
+
+            // Fisher–Yates using shared RNG to avoid same-seed issues
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = Random.Shared.Next(i + 1);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
         }
 
         private GroupBox TaoCauHoi(int i)
@@ -567,6 +718,10 @@ namespace PhanMemThiTracNghiem
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (_timeUpHandled) return;
+            if (_daNopTruocDo) return;
+            if (_isSubmitting) return;
+
             iGiay--;
 
             if (iGiay == 0)
@@ -587,10 +742,18 @@ namespace PhanMemThiTracNghiem
             {
                 HienThiPhutGio();
                 this.timer1.Enabled = false;
-                _dangHienDialog = true;
-                MessageBox.Show("Hết giờ làm bài!!");
-                _dangHienDialog = false;
-                NopBai_Click();
+                _timeUpHandled = true;
+
+                // Nếu form thi đang bị ẩn/nằm sau màn hình khác thì không bật MessageBox gây khó chịu
+                var shouldShowDialog = this.Visible && this.WindowState != FormWindowState.Minimized;
+                if (shouldShowDialog)
+                {
+                    _dangHienDialog = true;
+                    MessageBox.Show("Hết giờ làm bài!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _dangHienDialog = false;
+                }
+
+                SubmitBaiThi(showSuccessScreen: true);
             }
             else
             {
@@ -610,10 +773,17 @@ namespace PhanMemThiTracNghiem
 
             try
             {
+                // Stop timer immediately to avoid duplicate submits
+                try { this.timer1.Enabled = false; } catch { }
+            }
+            catch { }
+
+            try
+            {
                 // Lấy thời gian kết thúc thi
                 DateTime thoiGianThi = DateTime.Now;
-                float diemMotCau;
-                float diemThi = 0;
+                double diemMotCau;
+                double diemThi = 0;
                 int soCauHoi = cauHoiMonThi.Count;
 
                 if (soCauHoi <= 0)
@@ -624,7 +794,8 @@ namespace PhanMemThiTracNghiem
                     return;
                 }
 
-                diemMotCau = (float)10.0 / soCauHoi;
+                var tongDiem = Math.Max(1, _tongDiemKyThi);
+                diemMotCau = (double)tongDiem / soCauHoi;
                 for (int i = 0; i < soCauHoi; i++)
                 {
                     if (layDapAnThi[i] != null)
@@ -636,7 +807,10 @@ namespace PhanMemThiTracNghiem
                         }
                     }
                 }
-                diemThi = (float)(Math.Round(diemThi, 2));
+                diemThi = Math.Round(diemThi, 2, MidpointRounding.AwayFromZero);
+                var diemThiLamTron = (int)Math.Round(diemThi, 0, MidpointRounding.AwayFromZero);
+                if (diemThiLamTron < 0) diemThiLamTron = 0;
+                if (diemThiLamTron > tongDiem) diemThiLamTron = tongDiem;
 
                 try
                 {
@@ -647,7 +821,7 @@ namespace PhanMemThiTracNghiem
                         if (baiThi != null)
                         {
                             baiThi.ThoiGianNopBai = thoiGianThi;
-                            baiThi.DiemSo = (int)Math.Round(diemThi);
+                            baiThi.DiemSo = diemThiLamTron;
                             baiThi.TrangThai = "da_nop";
                             duLieu.SaveChanges();
 
